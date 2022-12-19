@@ -1,38 +1,184 @@
-.App {
-  text-align: center;
+@font-face {
+  font-family: "OpenSans-Bold";
+  src: url(./assets/fonts/OpenSans-Bold.ttf);
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+@font-face {
+  font-family: "OpenSans-ExtraBold";
+  src: url(./assets/fonts/OpenSans-ExtraBold.ttf);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+@font-face {
+  font-family: "OpenSans-Light";
+  src: url(./assets/fonts/OpenSans-Light.ttf);
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+@font-face {
+  font-family: "OpenSans-Medium";
+  src: url(./assets/fonts/OpenSans-Medium.ttf);
 }
 
-.App-link {
-  color: #61dafb;
+@font-face {
+  font-family: "OpenSans-Regular";
+  src: url(./assets/fonts/OpenSans-Regular.ttf);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@font-face {
+  font-family: "OpenSans-SemiBold";
+  src: url(./assets/fonts/OpenSans-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-Black";
+  src: url(./assets/fonts/Raleway-Black.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-Bold";
+  src: url(./assets/fonts/Raleway-Bold.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-ExtraBold";
+  src: url(./assets/fonts/Raleway-ExtraBold.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-ExtraLight";
+  src: url(./assets/fonts/Raleway-ExtraLight.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-Light";
+  src: url(./assets/fonts/Raleway-Light.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-Medium";
+  src: url(./assets/fonts/Raleway-Medium.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-SemiBold";
+  src: url(./assets/fonts/Raleway-SemiBold.ttf);
+}
+
+@font-face {
+  font-family: "Raleway-Thin";
+  src: url(./assets/fonts/Raleway-Thin.ttf);
+}
+
+@font-face {
+  font-family: "Roboto-Black";
+  src: url(./assets/fonts/Roboto-Black.ttf);
+}
+
+@font-face {
+  font-family: "Roboto-Bold";
+  src: url(./assets/fonts/Roboto-Bold.ttf);
+}
+@font-face {
+  font-family: "Roboto-Light";
+  src: url(./assets/fonts/Roboto-Light.ttf);
+}
+@font-face {
+  font-family: "Roboto-Medium";
+  src: url(./assets/fonts/Roboto-Medium.ttf);
+}
+@font-face {
+  font-family: "Roboto-Regular";
+  src: url(./assets/fonts/Roboto-Regular.ttf);
+}
+@font-face {
+  font-family: "Roboto-Thin";
+  src: url(./assets/fonts/Roboto-Thin.ttf);
+}
+
+* {
+  font-family: "OpenSans-Regular";
+}
+
+.switch {
+  position: relative;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+}
+
+.switch input {
+  appearance: none;
+  width: 200px;
+  height: 50px;
+  border-radius: 25px;
+  background: #1e1e1e;
+  outline: none;
+}
+
+.switch input::before,
+.switch input::after {
+  z-index: 2;
+  position: absolute;
+  top: 56%;
+  transform: translateY(-50%);
+  font-weight: bolder;
+}
+.switch input::before {
+  content: "TM";
+  left: 20px;
+}
+
+.switch input::after {
+  content: "RU";
+  right: 20px;
+}
+
+.switch input:checked {
+  background: #ff9800;
+}
+
+.switch label {
+  z-index: 1;
+  position: absolute;
+  top: 10px;
+  bottom: 4px;
+  border-radius: 20px;
+}
+
+.switch input {
+  transition: 0.25s;
+}
+
+.switch input:checked::after,
+.switch input:checked::before {
+  color: #fff;
+  transition: color 0.5s;
+}
+
+.switch input:checked + label {
+  left: 10px;
+  right: 100px;
+  background: #1e1e1e;
+  transition: left 0.5s, right 0.4s 0.2s;
+}
+
+.switch input:not(:checked) {
+  background: #1e1e1e;
+  transition: background 0.4s;
+}
+
+.switch input:not(:checked)::before {
+  color: #ffff;
+  transition: color 0.5s;
+}
+
+.switch input:not(:checked)::after {
+  color: #1e1e1e;
+  transition: color 0.5s 0.2s;
+}
+
+.switch input:not(:checked) + label {
+  left: 100px;
+  right: 10px;
+  background: #ff9800;
+  transition: left 0.4s 0.2s, right 0.5s, background 0.35s;
 }
