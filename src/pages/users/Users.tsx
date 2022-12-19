@@ -337,7 +337,7 @@ const Users: FC = () => {
   return (
     <>
       <Stack
-        direction="row"
+        // direction="row"
         alignItems={"center"}
         pb={3}
         justifyContent={"space-between"}
