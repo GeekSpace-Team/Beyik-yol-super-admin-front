@@ -9,7 +9,16 @@ import NotificationsIcon from "@mui/icons-material/Notifications";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { Avatar, Stack, Tab, Tabs, Box, Badge, ListItem } from "@mui/material";
+import {
+  Avatar,
+  Stack,
+  Tab,
+  Tabs,
+  Box,
+  Badge,
+  ListItem,
+  Tooltip,
+} from "@mui/material";
 import PersonIcon from "@mui/icons-material/Person";
 // import LightModeIcon from "@mui/icons-material/LightMode";
 import { styled, alpha } from "@mui/material/styles";
@@ -52,6 +61,32 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useTranslation } from "react-i18next";
 import BottomNavigation from "@mui/material/BottomNavigation";
 import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+
+const LeftB = {
+  width: "60px",
+  height: "35px",
+  display: "flex",
+  alignItems: "center",
+  border: "1px solid #008060",
+  textAlign: "center",
+  color: "#fff",
+  borderRight: "1px solid transparent",
+  borderRadius: "25px 0px 0px 25px",
+  cursor: "pointer",
+  background: "#e7e7e7",
+};
+
+const RightB = {
+  width: "60px",
+  height: "35px",
+  border: "1px solid #008060",
+  display: "flex",
+  alignItems: "center",
+  textAlign: "center",
+  borderRadius: "0px 25px 25px 0px",
+  cursor: "pointer",
+  background: "#e7e7e7",
+};
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -102,6 +137,7 @@ const CustomSwitch = () => {
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+
   return (
     <>
       <Box
@@ -190,7 +226,7 @@ const SidebarData: SidebarItem[] = [
   {
     id: 1,
     text: "cars",
-    link: "/cars",
+    link: "/",
     icon: <DirectionsCarIcon />,
   },
 
@@ -444,6 +480,33 @@ const Sidebar: FC = (props: Props) => {
 
   const location = useLocation();
   const navigator = useNavigate();
+
+  const [alignment, setAlignment] = useState(true);
+
+  useEffect(() => {
+    if (!alignment === true) {
+      i18n.changeLanguage("ru");
+      localStorage.setItem("lng", "ru");
+    } else {
+      i18n.changeLanguage("tm");
+      localStorage.setItem("lng", "tm");
+    }
+  }, [alignment]);
+
+  // const handleAlignment = (
+  //   event: React.MouseEvent<HTMLElement>,
+  //   newAlignment: string
+  // ) => {
+  //   setAlignment(newAlignment);
+  //   if (!alignment === true) {
+  //     i18n.changeLanguage("ru");
+  //     localStorage.setItem("lng", "ru");
+  //   } else {
+  //     i18n.changeLanguage("tm");
+  //     localStorage.setItem("lng", "tm");
+  //   }
+  // };
+
   const drawer = (
     <div>
       <Toolbar
@@ -455,7 +518,7 @@ const Sidebar: FC = (props: Props) => {
           boxShadow: "1.1px 2.2px 2.2px hsl(0deg 0% 0% / 0.47)",
         }}
       >
-        Beyik Yol Logo
+        <Typography>Beyik Yol logo</Typography>
       </Toolbar>
       <Divider />
 
@@ -557,26 +620,90 @@ const Sidebar: FC = (props: Props) => {
           direction="row"
           pt={3}
         >
-          <Switch
-            checked={checked}
-            onChange={handleChange}
-            inputProps={{ "aria-label": "controlled" }}
-          />
-          {!checked ? <Box sx={ruFlag}></Box> : <Box sx={tmFlag}></Box>}
-
-          {/* <FormGroup>
-            <FormControlLabel
-              // checked={checked}
-              // onChange={handleChange}
-              control={<Android12Switch defaultChecked />}
-              label=""
-            />
-          </FormGroup> */}
-        </Stack>
-        <Stack pt={2} alignItems="center">
-          <CustomSwitch />
-          {/* <MySwitch /> */}
-          {/* <ToggleButtonM /> */}
+          {/* <Stack direction="row" justifyContent={"center"} alignItems="center">
+            <ToggleButtonGroup
+              value={alignment}
+              exclusive
+              aria-label="text alignment"
+            >
+              <ToggleButton
+                sx={{ borderRadius: "25px", width: "50px", height: "35px" }}
+                value={alignment}
+                onClick={(e) => setAlignment(true)}
+                aria-label="left aligned"
+              >
+                <img
+                  src="/images/Tm.svg"
+                  alt="Alt"
+                  style={{ width: "25px", height: "25px" }}
+                />
+              </ToggleButton>
+              <ToggleButton
+                sx={{ borderRadius: "25px", width: "50px", height: "35px" }}
+                value={alignment}
+                onClick={(e) => setAlignment(false)}
+                aria-label="centered"
+              >
+                <img
+                  src="/images/ru.svg"
+                  alt="Alt"
+                  style={{ width: "25px", height: "25px" }}
+                />
+              </ToggleButton>
+            </ToggleButtonGroup>
+          </Stack> */}
+          <Stack direction={"row"} justifyContent={"center"} pt={3}>
+            <Tooltip title="Turkmen Language">
+              <Box
+                sx={{
+                  ...LeftB,
+                  // background: alignment === true ? Color.solid : "#e7e7e7",
+                }}
+                onClick={(e) => setAlignment(true)}
+              >
+                <Stack
+                  alignItems={"center"}
+                  justifyContent="center"
+                  pl={1}
+                  direction={"row"}
+                >
+                  <img
+                    src="/images/Tm.svg"
+                    style={{
+                      width: "25px",
+                      opacity: alignment === false ? 1 : 0.6,
+                    }}
+                    alt="TmFlag"
+                  />
+                </Stack>
+              </Box>
+            </Tooltip>
+            <Tooltip title="Russian Language">
+              <Box
+                sx={{
+                  ...RightB,
+                  // background: alignment === false ? Color.solid : "#e7e7e7",
+                }}
+                onClick={(e) => setAlignment(false)}
+              >
+                <Stack
+                  alignItems={"center"}
+                  justifyContent="center"
+                  pl={3}
+                  direction={"row"}
+                >
+                  <img
+                    src="/images/ru.svg"
+                    style={{
+                      width: "25px",
+                      opacity: alignment === true ? 1 : 0.6,
+                    }}
+                    alt="TmFlag"
+                  />
+                </Stack>
+              </Box>
+            </Tooltip>
+          </Stack>
         </Stack>
       </Stack>
     </div>
@@ -617,8 +744,6 @@ const Sidebar: FC = (props: Props) => {
                 <SearchBar />
               </Stack>
               <Stack direction={"row"} alignItems="center" spacing={2}>
-                {!checked ? <Box sx={ruFlag}></Box> : <Box sx={tmFlag}></Box>}
-
                 <Badge badgeContent={7} color="error">
                   <NotificationsIcon sx={{ color: Color.solid }} />
                 </Badge>

@@ -41,6 +41,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
+  useMediaQuery,
 } from "@mui/material";
 import {
   ButtonStyle,
@@ -2746,7 +2747,7 @@ export const CarTableInfo = () => {
     <>
       <Box sx={{ p: 5 }}>
         <Stack spacing={3} direction="row" alignItems={"center"} pb={3}>
-          <Link to="/cars">
+          <Link to="/">
             <Tooltip title="Come Back!">
               <IconButton sx={{ color: Color.secondaryDark }}>
                 <KeyboardBackspaceIcon />
@@ -2927,10 +2928,15 @@ const AnimationTab = () => {
             value={value}
             onChange={handleChange}
             indicatorColor="primary"
+            orientation="horizontal"
+            scrollButtons="auto"
+            variant="scrollable"
             textColor="primary"
             aria-label="action tabs example"
             TabIndicatorProps={{
-              sx: { ...indicatorTable },
+              sx: {
+                ...indicatorTable,
+              },
             }}
             sx={{
               ...TabsStyle,
@@ -3347,7 +3353,7 @@ const UpdateBrandModal = () => {
   );
 };
 // Update Brand Table section ends here ..................................
-const style = {
+export const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
@@ -3360,7 +3366,7 @@ const style = {
   p: 4,
 };
 
-const addCarStyle = {
+export const addCarStyle = {
   position: "absolute" as "absolute",
   width: "100%",
   height: "100%",
@@ -3371,7 +3377,7 @@ const addCarStyle = {
   p: 4,
 };
 
-const deleteStyle = {
+export const deleteStyle = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
@@ -3386,7 +3392,7 @@ const deleteStyle = {
 
 const Cars: FC = () => {
   const { t } = useTranslation();
-
+  const smallScreen = useMediaQuery("(max-width: 768px)");
   return (
     <>
       <Stack

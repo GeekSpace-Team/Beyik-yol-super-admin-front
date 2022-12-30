@@ -3,8 +3,11 @@ import {
   Box,
   Button,
   Divider,
+  FormControl,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
   Modal,
   Paper,
   Stack,
@@ -25,15 +28,20 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
+import Image from "@jy95/material-ui-image";
 import {
   ButtonStyle,
   Color,
+  Fonts,
   PageName,
   TableCellStyle,
   TableHeadStyle,
 } from "../../assets/theme/theme";
 import Fade from "@mui/material/Fade";
 import { useTranslation } from "react-i18next";
+import { ItemStatus } from "../../components/itemStatus/ItemStatus";
+import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { deleteStyle } from "../cars/Cars";
 
 const style = {
   position: "absolute" as "absolute",
@@ -65,9 +73,11 @@ const Users: FC = () => {
     const handleClose = () => setOpen(false);
     return (
       <>
-        <IconButton sx={{ color: "red" }} onClick={handleOpen}>
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Delete">
+          <IconButton sx={{ color: "red" }} onClick={handleOpen}>
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -80,8 +90,14 @@ const Users: FC = () => {
           }}
         >
           <Fade in={open}>
-            <Box sx={style}>
-              <Typography sx={{ textAlign: "center" }}>
+            <Box sx={deleteStyle}>
+              <Typography
+                sx={{
+                  fontFamily: Fonts.RalewayBold,
+                  fontSize: "17px",
+                  textAlign: "center",
+                }}
+              >
                 You serously want to delete this user items ?
               </Typography>
               <Stack
@@ -120,6 +136,11 @@ const Users: FC = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [year, setYear] = useState("2022");
+    const [status, setStatus] = useState("Active");
+
+    const handleChange = (event: SelectChangeEvent) => {
+      setStatus(event.target.value as string);
+    };
     return (
       <>
         <div>
@@ -145,7 +166,7 @@ const Users: FC = () => {
                   pb={1}
                   justifyContent={"space-between"}
                 >
-                  <Typography>Add User</Typography>
+                  <Typography sx={PageName}>Add User</Typography>
                   <IconButton onClick={handleClose}>
                     <ClearIcon />
                   </IconButton>
@@ -160,24 +181,62 @@ const Users: FC = () => {
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
+                      label="Full Name"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
+                    <TextField
+                      id="outlined-basic"
+                      label="Phone Number"
+                      variant="outlined"
+                      type={"number"}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
+                    <TextField
+                      id="outlined-basic"
                       label="User Name"
                       variant="outlined"
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={2} sm={7} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Status
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={status}
+                        label="Status"
+                        onChange={handleChange}
+                      >
+                        {ItemStatus.map((item, i) => {
+                          return (
+                            <MenuItem value={item} key={`item_status+${i}`}>
+                              {t(item)}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car Number"
+                      label="Password"
                       variant="outlined"
-                      type={"number"}
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car Model"
+                      label="Created At"
                       variant="outlined"
                       fullWidth
                     />
@@ -185,11 +244,8 @@ const Users: FC = () => {
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car year"
+                      label="Updated At"
                       variant="outlined"
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
-                      type={"number"}
                       fullWidth
                     />
                   </Grid>
@@ -230,12 +286,19 @@ const Users: FC = () => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const [year, setYear] = useState("2022");
+    const [status, setStatus] = useState("Active");
+
+    const handleChange = (event: SelectChangeEvent) => {
+      setStatus(event.target.value as string);
+    };
     return (
       <>
         <div>
-          <IconButton sx={{ color: Color.primary }} onClick={handleOpen}>
-            <EditIcon />
-          </IconButton>
+          <Tooltip title="Edit">
+            <IconButton sx={{ color: Color.primary }} onClick={handleOpen}>
+              <EditIcon />
+            </IconButton>
+          </Tooltip>
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
@@ -255,7 +318,7 @@ const Users: FC = () => {
                   pb={1}
                   justifyContent={"space-between"}
                 >
-                  <Typography>Edit User</Typography>
+                  <Typography sx={PageName}>Edit User</Typography>
                   <IconButton onClick={handleClose}>
                     <ClearIcon />
                   </IconButton>
@@ -270,24 +333,62 @@ const Users: FC = () => {
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
+                      label="Full Name"
+                      variant="outlined"
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
+                    <TextField
+                      id="outlined-basic"
+                      label="Phone Number"
+                      variant="outlined"
+                      type={"number"}
+                      fullWidth
+                    />
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
+                    <TextField
+                      id="outlined-basic"
                       label="User Name"
                       variant="outlined"
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={2} sm={7} md={6}>
+                    <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label">
+                        Status
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={status}
+                        label="Status"
+                        onChange={handleChange}
+                      >
+                        {ItemStatus.map((item, i) => {
+                          return (
+                            <MenuItem value={item} key={`item_status+${i}`}>
+                              {t(item)}
+                            </MenuItem>
+                          );
+                        })}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car Number"
+                      label="Password"
                       variant="outlined"
-                      type={"number"}
                       fullWidth
                     />
                   </Grid>
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car Model"
+                      label="Created At"
                       variant="outlined"
                       fullWidth
                     />
@@ -295,11 +396,8 @@ const Users: FC = () => {
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
-                      label="Car year"
+                      label="Updated At"
                       variant="outlined"
-                      value={year}
-                      onChange={(e) => setYear(e.target.value)}
-                      type={"number"}
                       fullWidth
                     />
                   </Grid>
@@ -311,15 +409,15 @@ const Users: FC = () => {
                   mt={3}
                 >
                   <Button
-                    sx={ButtonStyle}
                     startIcon={<ClearIcon />}
+                    sx={ButtonStyle}
                     variant="contained"
                   >
                     Clear
                   </Button>
                   <Button
-                    sx={ButtonStyle}
                     startIcon={<SaveIcon />}
+                    sx={ButtonStyle}
                     variant="contained"
                   >
                     Save
@@ -337,7 +435,7 @@ const Users: FC = () => {
   return (
     <>
       <Stack
-        // direction="row"
+        direction="row"
         alignItems={"center"}
         pb={3}
         justifyContent={"space-between"}
@@ -354,16 +452,19 @@ const Users: FC = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
+                <Typography sx={TableHeadStyle}>Full Name</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Number</Typography>
+                <Typography sx={TableHeadStyle}>Phone Number</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Model</Typography>
+                <Typography sx={TableHeadStyle}>User Name</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car year</Typography>
+                <Typography sx={TableHeadStyle}>Status</Typography>
+              </TableCell>
+              <TableCell>
+                <Typography sx={TableHeadStyle}>Image</Typography>
               </TableCell>
 
               <TableCell>
@@ -380,90 +481,20 @@ const Users: FC = () => {
                 <Typography sx={TableCellStyle}>1</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableCellStyle}>Halil Gayypov</Typography>
+                <Typography sx={TableCellStyle}>Name</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableCellStyle}>DZ 7777 DZ</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>BMW X7</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>2022</Typography>
-              </TableCell>
-
-              <TableCell>
-                <UpdateUser />
-              </TableCell>
-              <TableCell>
-                <DeleteUser />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography sx={TableCellStyle}>1</Typography>
+                <Typography sx={TableCellStyle}>+993 63 430338</Typography>
               </TableCell>
               <TableCell>
                 <Typography sx={TableCellStyle}>Halil Gayypov</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableCellStyle}>DZ 7777 DZ</Typography>
+                <Typography sx={TableCellStyle}>Active</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableCellStyle}>BMW X7</Typography>
+                <Image src="https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aHVtYW58ZW58MHx8MHx8&w=1000&q=80" />
               </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>2022</Typography>
-              </TableCell>
-
-              <TableCell>
-                <UpdateUser />
-              </TableCell>
-              <TableCell>
-                <DeleteUser />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography sx={TableCellStyle}>1</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>Halil Gayypov</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>DZ 7777 DZ</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>BMW X7</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>2022</Typography>
-              </TableCell>
-
-              <TableCell>
-                <UpdateUser />
-              </TableCell>
-              <TableCell>
-                <DeleteUser />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>
-                <Typography sx={TableCellStyle}>1</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>Halil Gayypov</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>DZ 7777 DZ</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>BMW X7</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableCellStyle}>2022</Typography>
-              </TableCell>
-
               <TableCell>
                 <UpdateUser />
               </TableCell>

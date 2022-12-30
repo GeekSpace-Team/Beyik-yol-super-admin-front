@@ -85,7 +85,7 @@ const App: FC = (props) => {
         <Router>
           <Routes>
             <Route path="/" element={<Sidebar />}>
-              <Route path="/cars" element={<Cars />} />
+              <Route path="/" element={<Cars />} />
               <Route path="/ads" element={<Ads />} />
               <Route path="/users" element={<Users />} />
               <Route path="/push" element={<Push />} />
