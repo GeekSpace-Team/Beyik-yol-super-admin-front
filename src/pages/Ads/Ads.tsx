@@ -46,12 +46,13 @@ import { useTranslation } from "react-i18next";
 const Ads: FC = () => {
   // Delete user modal section starts here ...................................................................
   const DeleteAds = () => {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     return (
       <>
-        <Tooltip title="Delete">
+        <Tooltip title={t("delete")}>
           <IconButton sx={{ color: "red" }} onClick={handleOpen}>
             <DeleteIcon />
           </IconButton>

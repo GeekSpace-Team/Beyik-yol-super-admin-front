@@ -73,7 +73,7 @@ const Users: FC = () => {
     const handleClose = () => setOpen(false);
     return (
       <>
-        <Tooltip title="Delete">
+        <Tooltip title={t("delete")}>
           <IconButton sx={{ color: "red" }} onClick={handleOpen}>
             <DeleteIcon />
           </IconButton>

@@ -246,3 +246,7 @@ export const TabStyleLg = {
     color: "#000",
   },
 };
+
+export const PhoneNumberInput = {
+  height: "50px",
+};

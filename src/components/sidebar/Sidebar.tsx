@@ -94,134 +94,6 @@ interface TabPanelProps {
   value: number;
 }
 
-function TabPanel(props: TabPanelProps) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ pt: 3, pb: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-function a11yProps(index: number) {
-  return {
-    id: `simple-tab-${index}`,
-    "aria-controls": `simple-tabpanel-${index}`,
-  };
-}
-
-const CustomSwitch = () => {
-  const [value, setValue] = useState(0);
-
-  useEffect(() => {
-    if (!value === true) {
-      i18n.changeLanguage("ru");
-      localStorage.setItem("lng", "ru");
-    } else {
-      i18n.changeLanguage("tm");
-      localStorage.setItem("lng", "tm");
-    }
-  }, [value]);
-
-  const handleChange = (event: React.SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  return (
-    <>
-      <Box
-        sx={{
-          width: "100%",
-          display: "flex",
-          justifyContent: "center",
-        }}
-      >
-        <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-          <Tabs
-            value={value}
-            onChange={handleChange}
-            aria-label="basic tabs example"
-            TabIndicatorProps={{
-              sx: { ...indicatorTable },
-            }}
-            sx={{
-              ...TabsStyleLg,
-            }}
-          >
-            <Tab
-              iconPosition="start"
-              sx={{
-                ...TabStyleLg,
-                backgroundImage: "url(/images/tmFlag.jpg)",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "50% 50%",
-                backgroundPosition: "center",
-                width: "30px",
-                height: "20px",
-              }}
-              {...a11yProps(0)}
-            />
-            <Tab
-              iconPosition="start"
-              sx={{
-                ...TabStyle,
-                backgroundImage: "url(/images/ruFlag.jpg)",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "50% 50%",
-                backgroundPosition: "center",
-                width: "30px",
-                height: "20px",
-              }}
-              {...a11yProps(1)}
-            />
-          </Tabs>
-        </Box>
-      </Box>
-    </>
-  );
-};
-
-const MySwitch = () => {
-  return (
-    <>
-      <Box sx={mySwitch}>
-        <Box sx={leftSwitch}></Box>
-        <Box sx={rightSwith}></Box>
-      </Box>
-    </>
-  );
-};
-
-const ToggleButtonM = () => {
-  const [value, setValue] = useState("recents");
-
-  const handleChange = (event: React.SyntheticEvent, newValue: string) => {
-    setValue(newValue);
-  };
-
-  return (
-    <>
-      <BottomNavigation value={value} onChange={handleChange}>
-        <Stack direction={"row"}>
-          <BottomNavigationAction value="recents" sx={toggleTm} />
-          <BottomNavigationAction value="favorites" sx={toggleRu} />
-        </Stack>
-      </BottomNavigation>
-    </>
-  );
-};
-
 const SidebarData: SidebarItem[] = [
   {
     id: 1,
@@ -293,37 +165,6 @@ const SidebarData: SidebarItem[] = [
     icon: <AttachMoneyIcon />,
   },
 ];
-
-// Switch language style section starts here .................................................
-const Android12Switch = styled(Switch)(({ theme }) => ({
-  padding: 8,
-  "& .MuiSwitch-track": {
-    borderRadius: 22 / 2,
-    "&:before, &:after": {
-      content: '""',
-      position: "absolute",
-      top: "50%",
-      transform: "translateY(-50%)",
-      width: 16,
-      height: 16,
-    },
-    "&:before": {
-      backgroundImage: `url('./images/Tm.svg')`,
-      left: 12,
-    },
-    "&:after": {
-      backgroundImage: `url('./images/ru.svg')`,
-      right: 12,
-    },
-  },
-  "& .MuiSwitch-thumb": {
-    boxShadow: "none",
-    width: 16,
-    height: 16,
-    margin: 2,
-  },
-}));
-// Switch language style section ends here ...................................................
 
 // Avatar section ............................ starts here ...............................
 function stringToColor(string: string) {
@@ -493,20 +334,6 @@ const Sidebar: FC = (props: Props) => {
     }
   }, [alignment]);
 
-  // const handleAlignment = (
-  //   event: React.MouseEvent<HTMLElement>,
-  //   newAlignment: string
-  // ) => {
-  //   setAlignment(newAlignment);
-  //   if (!alignment === true) {
-  //     i18n.changeLanguage("ru");
-  //     localStorage.setItem("lng", "ru");
-  //   } else {
-  //     i18n.changeLanguage("tm");
-  //     localStorage.setItem("lng", "tm");
-  //   }
-  // };
-
   const drawer = (
     <div>
       <Toolbar
@@ -620,38 +447,6 @@ const Sidebar: FC = (props: Props) => {
           direction="row"
           pt={3}
         >
-          {/* <Stack direction="row" justifyContent={"center"} alignItems="center">
-            <ToggleButtonGroup
-              value={alignment}
-              exclusive
-              aria-label="text alignment"
-            >
-              <ToggleButton
-                sx={{ borderRadius: "25px", width: "50px", height: "35px" }}
-                value={alignment}
-                onClick={(e) => setAlignment(true)}
-                aria-label="left aligned"
-              >
-                <img
-                  src="/images/Tm.svg"
-                  alt="Alt"
-                  style={{ width: "25px", height: "25px" }}
-                />
-              </ToggleButton>
-              <ToggleButton
-                sx={{ borderRadius: "25px", width: "50px", height: "35px" }}
-                value={alignment}
-                onClick={(e) => setAlignment(false)}
-                aria-label="centered"
-              >
-                <img
-                  src="/images/ru.svg"
-                  alt="Alt"
-                  style={{ width: "25px", height: "25px" }}
-                />
-              </ToggleButton>
-            </ToggleButtonGroup>
-          </Stack> */}
           <Stack direction={"row"} justifyContent={"center"} pt={3}>
             <Tooltip title="Turkmen Language">
               <Box
@@ -671,7 +466,7 @@ const Sidebar: FC = (props: Props) => {
                     src="/images/Tm.svg"
                     style={{
                       width: "25px",
-                      opacity: alignment === false ? 1 : 0.6,
+                      opacity: alignment === true ? 1 : 0.6,
                     }}
                     alt="TmFlag"
                   />
@@ -696,7 +491,7 @@ const Sidebar: FC = (props: Props) => {
                     src="/images/ru.svg"
                     style={{
                       width: "25px",
-                      opacity: alignment === true ? 1 : 0.6,
+                      opacity: alignment === false ? 1 : 0.6,
                     }}
                     alt="TmFlag"
                   />
@@ -744,9 +539,13 @@ const Sidebar: FC = (props: Props) => {
                 <SearchBar />
               </Stack>
               <Stack direction={"row"} alignItems="center" spacing={2}>
-                <Badge badgeContent={7} color="error">
-                  <NotificationsIcon sx={{ color: Color.solid }} />
-                </Badge>
+                <Tooltip title={t("unreadNote")}>
+                  <IconButton>
+                    <Badge badgeContent={7} color="error">
+                      <NotificationsIcon />
+                    </Badge>
+                  </IconButton>
+                </Tooltip>
                 <AvatarCustom />
                 <Typography
                   sx={{
@@ -757,11 +556,6 @@ const Sidebar: FC = (props: Props) => {
                 >
                   Gayypov Halil
                 </Typography>
-                {/* <IconButton
-                  onClick={() => (setIsDark ? setIsDark(!isDark) : {})}
-                >
-                  {isDark ? <NightlightIcon /> : <LightModeIcon />}
-                </IconButton> */}
               </Stack>
             </Stack>
           </Toolbar>

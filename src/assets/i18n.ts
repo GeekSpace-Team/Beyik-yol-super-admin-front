@@ -9,6 +9,11 @@ const resources = {
     translation: {
       cars_page: "Awtoulaglar",
       user_name: "Imya polzovotelya",
+      unreadNote: "У вас есть 7 нерпрочитанное письмо",
+      delete: "Удалить",
+      edit: "Редактироваь",
+      fullInfo: "Польное информация",
+
       // Success:"ustunlikli amala asyryldy"
 
       // Item status translation section starts here ..........................................................
@@ -48,6 +53,10 @@ const resources = {
     translation: {
       cars_page: "Awto",
       user_name: "Ulanyjy ady",
+      unreadNote: "Sizin 7 sany okalmadyk hatynyz  bar",
+      delete: "Pozmak",
+      edit: "Üýtgetmek",
+      fullInfo: "Doly maglumat",
       //
       // Item status translation section starts here ..........................................................
       PENDING: "Garasylyar",

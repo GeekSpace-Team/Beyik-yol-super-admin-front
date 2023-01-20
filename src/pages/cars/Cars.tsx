@@ -18,6 +18,9 @@ import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import Image from "@jy95/material-ui-image";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import TuneIcon from "@mui/icons-material/Tune";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import {
   Backdrop,
   Tab,
@@ -53,6 +56,7 @@ import {
   TableHeadStyle,
   TabStyle,
   Fonts,
+  PhoneNumberInput,
 } from "../../assets/theme/theme";
 import { Tooltip } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
@@ -63,12 +67,13 @@ import { ItemStatus } from "../../components/itemStatus/ItemStatus";
 
 // Delete Car modal section starts here ...................................................................
 const DeleteCar = () => {
+  // const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   return (
     <>
-      <Tooltip title="Delete">
+      <Tooltip title="delete">
         <IconButton sx={{ color: "red" }} onClick={handleOpen}>
           <DeleteIcon />
         </IconButton>
@@ -120,12 +125,53 @@ const DeleteCar = () => {
 // Delete Car modal section ends here .....................................................................
 
 // Add car modal section starts here ..............................................................
+
+const CarFilterModal = () => {
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const [valueE, setValueE] = useState<any[]>([]);
+  return (
+    <>
+      <Tooltip title="Filterlemek">
+        <IconButton onClick={handleOpen}>
+          <TuneIcon />
+        </IconButton>
+      </Tooltip>
+
+      <Modal
+        aria-labelledby="transition-modal-title"
+        aria-describedby="transition-modal-description"
+        open={open}
+        onClose={handleClose}
+        closeAfterTransition
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+          timeout: 500,
+        }}
+      >
+        <Fade in={open}>
+          <Box sx={deleteStyle}>
+            <PhoneInput
+              style={{ height: "40px" }}
+              defaultCountry="TM"
+              className="phoneNumberInput"
+              values={valueE}
+              onChange={(any) => setValueE([any])}
+            />
+          </Box>
+        </Fade>
+      </Modal>
+    </>
+  );
+};
+
 const AddCar = () => {
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [year, setYear] = useState("2022");
+  // const [year, setYear] = useState("2022");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -2661,7 +2707,8 @@ const CarTable = () => {
   const { t } = useTranslation();
   return (
     <>
-      <Stack pb={3} direction="row" justifyContent={"flex-end"}>
+      <Stack pb={3} direction="row" spacing={3} justifyContent={"flex-end"}>
+        <CarFilterModal />
         <AddCar />
       </Stack>
       <TableContainer component={Paper}>
