@@ -56,7 +56,6 @@ import {
   TableHeadStyle,
   TabStyle,
   Fonts,
-  PhoneNumberInput,
 } from "../../assets/theme/theme";
 import { Tooltip } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
@@ -224,7 +223,7 @@ const AddCar = () => {
                 pb={1}
                 justifyContent={"space-between"}
               >
-                <Typography sx={PageName}>Add Car</Typography>
+                <Typography sx={PageName}>Add Car</Typography>,
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
                 </IconButton>
@@ -467,7 +466,6 @@ const UpdateCar = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [year, setYear] = useState("2022");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
