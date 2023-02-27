@@ -1,36 +1,28 @@
-import {
-  IconButton,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { IconButton, Tooltip, Typography } from "@mui/material";
+import { TableCellStyle, TableHeadStyle } from "../../assets/theme/theme";
+import SubRegion from "./SubRegion";
 import { AxiosInstance } from "../../api/AxiosInstance";
-import {
-  PageName,
-  TableCellStyle,
-  TableHeadStyle,
-} from "../../assets/theme/theme";
-import { ConstantI } from "../../common/model";
-import { showError, showSuccess } from "../../components/alert/Alert";
-import AddConstant from "../../layout/constant/AddConstant";
-import UpdateConstant from "../../layout/constant/UpdateConstant";
+import { Regions } from "../../common/model";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddRegion from "./AddRegion";
+import UpdateRegion from "./UpdateRegion";
+import { showError, showSuccess } from "../../components/alert/Alert";
+import { useTranslation } from "react-i18next";
 
-const Constant = () => {
+const SettingsTable = () => {
   const { t } = useTranslation();
-  const [list, setList] = useState<ConstantI[]>([]);
+  const [list, setList] = useState<Regions[]>([]);
 
   const getData = async () => {
-    await AxiosInstance.get<ConstantI[]>("/constant/get-all-constants")
+    await AxiosInstance.get<Regions[]>("/region/get-all-regions")
       .then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
           setList(resp.data);
@@ -45,31 +37,22 @@ const Constant = () => {
     getData();
   }, []);
 
-  function deleteConstant(id: number) {
+  function deleteRegion(id: number) {
     if (window.confirm("want_delete")) {
-      AxiosInstance.delete("/constant/delete-constant/" + id)
+      AxiosInstance.delete("/region/remove-region/" + id)
         .then((response) => {
           showSuccess(t("Deleted!"));
-          // setLoading(false);
           getData();
         })
         .catch((err) => {
-          // setLoading(false);
           showError(err.toString());
         });
     }
   }
   return (
-    <>
-      <Stack
-        direction="row"
-        justifyContent={"space-between"}
-        alignItems="center"
-        pb={3}
-      >
-        <Typography sx={PageName}>Constant</Typography>
-        <AddConstant getData={getData} />
-      </Stack>
+    <div>
+      <AddRegion getData={getData} />
+
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -84,10 +67,7 @@ const Constant = () => {
                 <Typography sx={TableHeadStyle}>Name RU</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Content TM</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableHeadStyle}>Content RU</Typography>
+                <Typography sx={TableHeadStyle}>Description</Typography>
               </TableCell>
               <TableCell>
                 <Typography sx={TableHeadStyle}>Edit</Typography>
@@ -95,12 +75,15 @@ const Constant = () => {
               <TableCell>
                 <Typography sx={TableHeadStyle}>Delete</Typography>
               </TableCell>
+              <TableCell>
+                <Typography sx={TableHeadStyle}>Sub Region</Typography>
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {list.map((item, i) => {
               return (
-                <TableRow key={`get_constant_key${i}`}>
+                <TableRow>
                   <TableCell>
                     <Typography sx={TableCellStyle}>{item.id}</Typography>
                   </TableCell>
@@ -112,26 +95,28 @@ const Constant = () => {
                   </TableCell>
                   <TableCell>
                     <Typography sx={TableCellStyle}>
-                      {item.content_tm}
+                      {item.description}
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {item.content_ru}
-                    </Typography>
+                    <UpdateRegion getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <UpdateConstant getData={getData} item={item} />
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title={t("delete constant")}>
+                    <Tooltip title="Delete">
                       <IconButton
-                        onClick={() => deleteConstant(item.id)}
+                        onClick={() => deleteRegion(item.id)}
                         sx={{ color: "red" }}
                       >
                         <DeleteIcon />
                       </IconButton>
                     </Tooltip>
+                  </TableCell>
+                  <TableCell>
+                    <SubRegion
+                      regionId={item.id}
+                      subRegion={item.subRegion}
+                      getData={getData}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -139,8 +124,8 @@ const Constant = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </div>
   );
 };
 
-export default Constant;
+export default SettingsTable;

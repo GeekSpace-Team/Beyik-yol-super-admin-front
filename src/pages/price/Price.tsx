@@ -1,36 +1,25 @@
-import {
-  IconButton,
-  Paper,
-  Stack,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Tooltip,
-  Typography,
-} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import { PriceI } from "../../common/model";
 import { AxiosInstance } from "../../api/AxiosInstance";
-import {
-  PageName,
-  TableCellStyle,
-  TableHeadStyle,
-} from "../../assets/theme/theme";
-import { ConstantI } from "../../common/model";
-import { showError, showSuccess } from "../../components/alert/Alert";
-import AddConstant from "../../layout/constant/AddConstant";
-import UpdateConstant from "../../layout/constant/UpdateConstant";
+import { IconButton, Tooltip, Typography } from "@mui/material";
+import { TableCellStyle, TableHeadStyle } from "../../assets/theme/theme";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddPrice from "./AddPrice";
+import UpdatePrice from "./UpdatePrice";
+import { showError, showSuccess } from "../../components/alert/Alert";
 
-const Constant = () => {
-  const { t } = useTranslation();
-  const [list, setList] = useState<ConstantI[]>([]);
+const Price = () => {
+  const [list, setList] = useState<PriceI[]>([]);
 
   const getData = async () => {
-    await AxiosInstance.get<ConstantI[]>("/constant/get-all-constants")
+    await AxiosInstance.get<PriceI[]>("/price/get-all-prices")
       .then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
           setList(resp.data);
@@ -45,11 +34,11 @@ const Constant = () => {
     getData();
   }, []);
 
-  function deleteConstant(id: number) {
+  function deletePrice(id: number) {
     if (window.confirm("want_delete")) {
-      AxiosInstance.delete("/constant/delete-constant/" + id)
+      AxiosInstance.delete("/price/delete-price/" + id)
         .then((response) => {
-          showSuccess(t("Deleted!"));
+          showSuccess("Deleted!");
           // setLoading(false);
           getData();
         })
@@ -59,17 +48,10 @@ const Constant = () => {
         });
     }
   }
+
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent={"space-between"}
-        alignItems="center"
-        pb={3}
-      >
-        <Typography sx={PageName}>Constant</Typography>
-        <AddConstant getData={getData} />
-      </Stack>
+      <AddPrice getData={getData} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -78,16 +60,13 @@ const Constant = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name TM</Typography>
+                <Typography sx={TableHeadStyle}>Title</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name RU</Typography>
+                <Typography sx={TableHeadStyle}>Type</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Content TM</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableHeadStyle}>Content RU</Typography>
+                <Typography sx={TableHeadStyle}>Value</Typography>
               </TableCell>
               <TableCell>
                 <Typography sx={TableHeadStyle}>Edit</Typography>
@@ -100,33 +79,26 @@ const Constant = () => {
           <TableBody>
             {list.map((item, i) => {
               return (
-                <TableRow key={`get_constant_key${i}`}>
+                <TableRow key={`get_rice_key${i}`}>
                   <TableCell>
                     <Typography sx={TableCellStyle}>{item.id}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>{item.name_tm}</Typography>
+                    <Typography sx={TableCellStyle}>{item.title}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>{item.name_ru}</Typography>
+                    <Typography sx={TableCellStyle}>{item.type}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {item.content_tm}
-                    </Typography>
+                    <Typography sx={TableCellStyle}>{item.value}</Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {item.content_ru}
-                    </Typography>
+                    <UpdatePrice getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <UpdateConstant getData={getData} item={item} />
-                  </TableCell>
-                  <TableCell>
-                    <Tooltip title={t("delete constant")}>
+                    <Tooltip title="Delete">
                       <IconButton
-                        onClick={() => deleteConstant(item.id)}
+                        onClick={() => deletePrice(item.id)}
                         sx={{ color: "red" }}
                       >
                         <DeleteIcon />
@@ -143,4 +115,4 @@ const Constant = () => {
   );
 };
 
-export default Constant;
+export default Price;

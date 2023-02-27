@@ -19,6 +19,9 @@ import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { ToastContainer } from "react-toastify";
 import Login from "./pages/login/Login";
+import Settings from "./pages/settings/Settings";
+import { AxiosInstance } from "./api/AxiosInstance";
+import { AllCars, TypesI } from "./common/model";
 
 export interface ContextProps {
   isDark?: boolean;
@@ -27,6 +30,10 @@ export interface ContextProps {
   setIsDark?: React.Dispatch<React.SetStateAction<boolean>>;
   theme?: Theme;
   isMobile?: boolean;
+  list?: Partial<TypesI>;
+  adsList?: Partial<TypesI>;
+  status?: Partial<TypesI>;
+  listAllCars?: any;
 }
 
 export function useWidth() {
@@ -46,10 +53,30 @@ export const AppContext = createContext<ContextProps>({});
 const App: FC = (props) => {
   const [isDark, setIsDark] = useState(false);
   const theme = isDark ? darkMode : lightMode;
-
+  const [list, setList] = useState<Partial<TypesI>>({});
+  const [adsList, setAdsList] = useState<Partial<TypesI>>({});
+  const [status, setStatus] = useState<Partial<TypesI>>({});
   const changeLanguage = (lng: string) => {
     i18n.changeLanguage(lng);
   };
+
+  const [listAllCars, setListAllCars] = useState<AllCars[]>([]);
+
+  const getAllCarsData = async () => {
+    await AxiosInstance.get<AllCars[]>("/cars/get-all-cars")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setListAllCars(resp.data);
+        }
+      })
+      .catch((err) => {
+        alert(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getAllCarsData();
+  }, []);
 
   const { t, i18n } = useTranslation();
 
@@ -60,6 +87,54 @@ const App: FC = (props) => {
   };
   const [isMobile, setIsMobile] = useState(checker(wwidth));
 
+  const getType = async () => {
+    await AxiosInstance.get("/other/get-types")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setList(resp.data);
+        }
+      })
+      .catch((err) => {
+        alert(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getType();
+  }, []);
+
+  const getAdsType = async () => {
+    await AxiosInstance.get("/other/get-types")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setAdsList(resp.data);
+        }
+      })
+      .catch((err) => {
+        alert(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getAdsType();
+  }, []);
+
+  const getStatus = async () => {
+    await AxiosInstance.get("/other/get-types")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setStatus(resp.data);
+        }
+      })
+      .catch((err) => {
+        alert(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getStatus();
+  }, []);
+
   useEffect(() => {
     setIsMobile(checker(wwidth));
   }, [wwidth]);
@@ -69,7 +144,7 @@ const App: FC = (props) => {
     if (typeof lng !== "undefined" && lng !== null && lng !== "") {
       changeLanguage(lng);
     }
-  }, []);
+  });
   return (
     <AppContext.Provider
       value={{
@@ -79,6 +154,10 @@ const App: FC = (props) => {
         t: t,
         changeLanguage: changeLanguage,
         isMobile: isMobile,
+        list: list,
+        adsList: adsList,
+        status: status,
+        listAllCars: listAllCars,
       }}
     >
       <ThemeProvider theme={theme}>
@@ -95,6 +174,7 @@ const App: FC = (props) => {
               <Route path="/objects" element={<Objects />} />
               <Route path="/client" element={<Client />} />
               <Route path="/costs" element={<Costs />} />
+              <Route path="/settings" element={<Settings />} />
             </Route>
             <Route path={"/login"} element={<Login />} />
             <Route path={"/carTable"} element={<CarTableInfo />} />

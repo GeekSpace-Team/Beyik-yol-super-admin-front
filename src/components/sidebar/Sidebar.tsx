@@ -8,46 +8,23 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
-import { Outlet, useLocation, useNavigate } from "react-router-dom";
+import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
 import {
   Avatar,
   Stack,
-  Tab,
-  Tabs,
   Box,
   Badge,
-  ListItem,
   Tooltip,
+  Button,
+  Menu,
 } from "@mui/material";
-import PersonIcon from "@mui/icons-material/Person";
-// import LightModeIcon from "@mui/icons-material/LightMode";
 import { styled, alpha } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
-// import NightlightIcon from "@mui/icons-material/Nightlight";
 import { useContext } from "react";
 import { AppContext } from "../../App";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import {
-  ButtonStyle,
-  Color,
-  Fonts,
-  indicatorTable,
-  leftSwitch,
-  mySwitch,
-  rightSwith,
-  ruFlag,
-  tmFlag,
-  toggleRu,
-  toggleTm,
-  TabsStyle,
-  TabStyle,
-  TabStyleLg,
-  TabsStyleLg,
-} from "../../assets/theme/theme";
+import { Color, Fonts } from "../../assets/theme/theme";
 import i18n from "i18next";
-import Switch, { SwitchProps } from "@mui/material/Switch";
 import { SidebarItem } from "./sidebarItems";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import GroupIcon from "@mui/icons-material/Group";
@@ -59,8 +36,10 @@ import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
 import Diversity3Icon from "@mui/icons-material/Diversity3";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useTranslation } from "react-i18next";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import LogoutIcon from "@mui/icons-material/Logout";
+import MenuItem from "@mui/material/MenuItem";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const LeftB = {
   width: "60px",
@@ -87,12 +66,6 @@ const RightB = {
   cursor: "pointer",
   background: "#e7e7e7",
 };
-
-interface TabPanelProps {
-  children?: React.ReactNode;
-  index: number;
-  value: number;
-}
 
 const SidebarData: SidebarItem[] = [
   {
@@ -123,19 +96,19 @@ const SidebarData: SidebarItem[] = [
     icon: <NotificationsIcon />,
   },
 
-  {
-    id: 5,
-    text: "Inbox",
-    link: "/inbox",
-    icon: <EmailIcon />,
-  },
+  // {
+  //   id: 5,
+  //   text: "Inbox",
+  //   link: "/inbox",
+  //   icon: <EmailIcon />,
+  // },
 
-  {
-    id: 6,
-    text: "Voices",
-    link: "/voices",
-    icon: <KeyboardVoiceIcon />,
-  },
+  // {
+  //   id: 6,
+  //   text: "Voices",
+  //   link: "/voices",
+  //   icon: <KeyboardVoiceIcon />,
+  // },
 
   {
     id: 7,
@@ -144,25 +117,31 @@ const SidebarData: SidebarItem[] = [
     icon: <AcUnitIcon />,
   },
 
-  {
-    id: 8,
-    text: "Objects",
-    link: "/objects",
-    icon: <EmojiObjectsIcon />,
-  },
+  // {
+  //   id: 8,
+  //   text: "Objects",
+  //   link: "/objects",
+  //   icon: <EmojiObjectsIcon />,
+  // },
 
-  {
-    id: 9,
-    text: "Client Users",
-    link: "/client",
-    icon: <Diversity3Icon />,
-  },
+  // {
+  //   id: 9,
+  //   text: "Client Users",
+  //   link: "/client",
+  //   icon: <Diversity3Icon />,
+  // },
 
+  // {
+  //   id: 10,
+  //   text: "Costs",
+  //   link: "/costs",
+  //   icon: <AttachMoneyIcon />,
+  // },
   {
-    id: 10,
-    text: "Costs",
-    link: "/costs",
-    icon: <AttachMoneyIcon />,
+    id: 11,
+    text: "Settings",
+    link: "/settings",
+    icon: <SettingsIcon />,
   },
 ];
 
@@ -235,66 +214,8 @@ interface Props {
   window?: () => Window;
 }
 
-const Search = styled("div")(({ theme }) => ({
-  position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(Color.transparentBg, 0.45),
-  "&:hover": {
-    backgroundColor: alpha(Color.transparentBg, 0.95),
-  },
-  marginLeft: 0,
-  width: "100%",
-  [theme.breakpoints.up("sm")]: {
-    marginLeft: theme.spacing(1),
-    width: "auto",
-  },
-}));
-
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: "activeColor",
-  "& .MuiInputBase-input": {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
-    width: "100%",
-    [theme.breakpoints.up("sm")]: {
-      width: "20ch",
-      "&:focus": {
-        width: "45ch",
-      },
-    },
-  },
-}));
-
 const Sidebar: FC = (props: Props) => {
   const { t } = useTranslation();
-
-  const SearchBar = () => {
-    return (
-      <>
-        <Search>
-          <SearchIconWrapper>
-            <SearchIcon />
-          </SearchIconWrapper>
-          <StyledInputBase
-            placeholder="Search…"
-            inputProps={{ "aria-label": "search" }}
-          />
-        </Search>
-      </>
-    );
-  };
 
   const [checked, setChecked] = useState(true);
   useEffect(() => {
@@ -452,7 +373,6 @@ const Sidebar: FC = (props: Props) => {
               <Box
                 sx={{
                   ...LeftB,
-                  // background: alignment === true ? Color.solid : "#e7e7e7",
                 }}
                 onClick={(e) => setAlignment(true)}
               >
@@ -477,7 +397,6 @@ const Sidebar: FC = (props: Props) => {
               <Box
                 sx={{
                   ...RightB,
-                  // background: alignment === false ? Color.solid : "#e7e7e7",
                 }}
                 onClick={(e) => setAlignment(false)}
               >
@@ -506,6 +425,15 @@ const Sidebar: FC = (props: Props) => {
 
   const container =
     window !== undefined ? () => window().document.body : undefined;
+
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -535,9 +463,7 @@ const Sidebar: FC = (props: Props) => {
               width="100%"
               direction="row"
             >
-              <Stack>
-                <SearchBar />
-              </Stack>
+              <Stack></Stack>
               <Stack direction={"row"} alignItems="center" spacing={2}>
                 <Tooltip title={t("unreadNote")}>
                   <IconButton>
@@ -547,15 +473,53 @@ const Sidebar: FC = (props: Props) => {
                   </IconButton>
                 </Tooltip>
                 <AvatarCustom />
-                <Typography
-                  sx={{
-                    fontFamily: Fonts.RalewayBold,
-                    fontSize: "14px",
-                    color: Color.solid,
-                  }}
-                >
-                  Gayypov Halil
-                </Typography>
+                <Box>
+                  <Button
+                    sx={{
+                      fontFamily: Fonts.RalewayBold,
+                      fontSize: "14px",
+                      color: Color.solid,
+                      textTransform: "none",
+                    }}
+                    id="basic-button"
+                    aria-controls={open ? "basic-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={open ? "true" : undefined}
+                    onClick={handleClick}
+                  >
+                    Super Admin
+                  </Button>
+                  <Menu
+                    id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    MenuListProps={{
+                      "aria-labelledby": "basic-button",
+                    }}
+                  >
+                    <MenuItem onClick={handleClose}>
+                      <IconButton>
+                        <AccountCircleIcon />
+                      </IconButton>
+                      Profile
+                    </MenuItem>
+                    <Link
+                      to={"/login"}
+                      style={{
+                        textDecoration: "none",
+                        color: Color.solid,
+                      }}
+                    >
+                      <MenuItem onClick={handleClose}>
+                        <IconButton>
+                          <LogoutIcon />
+                        </IconButton>
+                        Logout
+                      </MenuItem>
+                    </Link>
+                  </Menu>
+                </Box>
               </Stack>
             </Stack>
           </Toolbar>
