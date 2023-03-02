@@ -19,19 +19,24 @@ import { showError, showSuccess } from "../../../components/alert/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateEngine from "./UpdateEngine";
 import AddEngine from "./AddEngine";
+import Loading from "../../../common/Loading";
 
 const CarEngineTable = () => {
   const { t } = useTranslation();
   const [list, setList] = useState<Engine[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
+    setLoading(true);
     await AxiosInstance.get<Engine[]>("/car-engine/get-all-car-engine")
       .then((response) => {
         if (response.status >= 200 && response.status < 300) {
           setList(response.data);
         }
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         alert(err + "");
       });
   };
@@ -41,15 +46,16 @@ const CarEngineTable = () => {
   }, []);
 
   function deleteCarOption(id: number) {
+    setLoading(true);
     if (window.confirm("want_delete")) {
       AxiosInstance.delete("/car-engine/delete-car-engine/" + id)
         .then((response) => {
           showSuccess(t("Deleted!"));
-          // setLoading(false);
+          setLoading(false);
           getData();
         })
         .catch((err) => {
-          // setLoading(false);
+          setLoading(false);
           showError(err.toString());
         });
     }
@@ -133,6 +139,7 @@ const CarEngineTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Loading open={loading} />
     </>
   );
 };

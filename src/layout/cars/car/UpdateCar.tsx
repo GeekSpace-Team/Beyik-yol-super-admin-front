@@ -48,11 +48,10 @@ interface IProps {
 }
 
 const UpdateCar: FC<IProps> = (props: IProps) => {
-  const { listAllCars } = useContext(AppContext);
+  const { listAllCars, status } = useContext(AppContext);
   const [selectedImages, setImages] = useState<any | null>(null);
-  const { status } = useContext(AppContext);
   const { t } = useTranslation();
-  const [statusValue, setStatusValue] = useState("");
+  const [statusValue, setStatusValue] = useState(props.item.status);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
@@ -65,6 +64,7 @@ const UpdateCar: FC<IProps> = (props: IProps) => {
     setYear(props.item.year);
     setLastMile(props.item.lastMile);
     setPhoneNumber(props.item.phoneNumber);
+    setStatusValue(props.item.status);
   };
   const handleClose = () => setOpen(false);
 

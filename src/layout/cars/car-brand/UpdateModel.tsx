@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -15,51 +15,79 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
-  TextareaAutosize,
   TextField,
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
+import { Model } from "../../../common/model";
+import { AxiosInstance } from "../../../api/AxiosInstance";
+import { showError, showSuccess } from "../../../components/alert/Alert";
+import { AppContext } from "../../../App";
 
-const UpdateModel = () => {
-  const { t } = useTranslation();
+interface IProps {
+  getData(): void;
+  brandId: number;
+  item: Model;
+}
+
+const UpdateModel: FC<IProps> = (props: IProps) => {
+  const { status } = useContext(AppContext);
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    setName(props.item.name);
+    setDescription(props.item.description);
+    setStatusValue(props.item.status);
+  };
+  const [statusValue, setStatusValue] = useState(props.item.status);
+  const [name, setName] = useState(props.item.name);
+  const [description, setDescription] = useState(props.item.description);
   const handleClose = () => setOpen(false);
-  const [year, setYear] = useState("2022");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const timer = useRef<number>();
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
 
   const handleButtonClick = () => {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
+      addCarModel();
     }
   };
 
-  const [status, setStatus] = useState("");
+  function addCarModel() {
+    const data = {
+      name: name,
+      description: description,
+      status: statusValue,
+      brandId: props.brandId,
+    };
+    AxiosInstance.patch(`/car-model/update-car-model/${props.item.id}`, data)
+      .then((response) => {
+        if (!response.data.error) {
+          showSuccess("Successfully edited car model");
+          props.getData();
+          handleClose();
+          setLoading(false);
+          setName("");
+          setDescription("");
+          setStatusValue("");
+        } else {
+          showError("Something went wrong!");
+        }
+      })
+      .catch((error) => {
+        alert(error + "");
+      });
+  }
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
   return (
     <>
@@ -91,7 +119,7 @@ const UpdateModel = () => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Update Model
+                  Add Model
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -109,6 +137,8 @@ const UpdateModel = () => {
                     id="outlined-basic"
                     label="Title Name"
                     variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     fullWidth
                   />
                 </Grid>
@@ -121,26 +151,34 @@ const UpdateModel = () => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <TextareaAutosize
-                    aria-label="empty textarea"
-                    placeholder="Description"
-                    minRows={6}
-                    style={{ width: "100%" }}
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Description"
+                    multiline
+                    fullWidth
+                    maxRows={5}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -157,9 +195,6 @@ const UpdateModel = () => {
                 >
                   Clear
                 </Button>
-                {/* <Button sx={ButtonStyle} variant="contained">
-                    Save
-                  </Button> */}
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
                     variant="contained"

@@ -6,6 +6,7 @@ export interface Model {
   status: string;
   createdAt: string;
   updatedAt: string;
+  statusValue: string;
 }
 
 export interface Brand {
@@ -251,4 +252,17 @@ export interface UserI {
   createdAt: string;
   updatedAt: string;
   cars: AllCars[];
+}
+
+export interface SendAllInboxI {
+  id: number;
+  titleTm: string;
+  titleRu: string;
+  messageTm: string;
+  messageRu: string;
+  userId: any;
+  isRead: false;
+  url: string;
+  createdAt: string;
+  updatedAt: string;
 }

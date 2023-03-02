@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -18,28 +18,27 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
 import { AxiosInstance } from "../../../api/AxiosInstance";
 import { showError, showSuccess } from "../../../components/alert/Alert";
+import { AppContext } from "../../../App";
 
 interface IProps {
   getData(): void;
 }
 
 const AddTransitionModal: FC<IProps> = (props: IProps) => {
-  const { t } = useTranslation();
+  const { status } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const [name_tm, setName_tm] = useState("");
   const [name_ru, setName_ru] = useState("");
   const [description, setDescription] = useState("");
-  const [status, setStatus] = useState("");
+  const [statusValue, setStatusValue] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -57,7 +56,7 @@ const AddTransitionModal: FC<IProps> = (props: IProps) => {
       name_tm: name_tm,
       name_ru: name_ru,
       description: description,
-      status: status,
+      status: statusValue,
     };
     AxiosInstance.post("/car-transmition/create", body)
       .then((response) => {
@@ -66,7 +65,7 @@ const AddTransitionModal: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setStatus("");
+          setStatusValue("");
           setName_tm("");
           setName_ru("");
           setDescription("");
@@ -79,9 +78,10 @@ const AddTransitionModal: FC<IProps> = (props: IProps) => {
       });
   }
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
+
   return (
     <>
       <div>
@@ -152,17 +152,22 @@ const AddTransitionModal: FC<IProps> = (props: IProps) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>

@@ -44,13 +44,13 @@ import CarEngineTable from "../../layout/cars/car-engine/CarEngineTable";
 import CarOptionTable from "../../layout/cars/car-option/CarOptionTable";
 import CarBrand from "../../layout/cars/car-brand/CarBrand";
 import UpdateCar from "../../layout/cars/car/UpdateCar";
-import DeleteCar from "../../layout/cars/car/DeleteCar";
 import CarTransmitionTable from "../../layout/cars/car-transmition/CarTransmitionTable";
 import { AxiosInstance } from "../../api/AxiosInstance";
-import { AllCars, AllCarsImage } from "../../common/model";
+import { AllCars } from "../../common/model";
 import { convertToDate, getImageUrl, ImageType } from "../../common/utils";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Loading from "../../common/Loading";
 
 const CarFilterModal = () => {
   const [open, setOpen] = useState(false);
@@ -98,15 +98,19 @@ const CarFilterModal = () => {
 const CarTable = () => {
   const { t } = useTranslation();
   const [list, setList] = useState<AllCars[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
+    setLoading(true);
     await AxiosInstance.get<AllCars[]>("/cars/get-all-cars")
       .then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
           setList(resp.data);
         }
+        setLoading(false);
       })
       .catch((err) => {
+        setLoading(false);
         alert(err + "");
       });
   };
@@ -227,6 +231,7 @@ const CarTable = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Loading open={loading} />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -15,7 +15,6 @@ import {
   Select,
   SelectChangeEvent,
   Stack,
-  TextareaAutosize,
   TextField,
   Typography,
 } from "@mui/material";
@@ -23,41 +22,65 @@ import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
+import { showError, showSuccess } from "../../../components/alert/Alert";
+import { AxiosInstance } from "../../../api/AxiosInstance";
+import { AppContext } from "../../../App";
 
-const AddModel = () => {
+interface IProps {
+  getData(): void;
+  brandId: number;
+}
+
+const AddModel: FC<IProps> = (props: IProps) => {
+  const { status } = useContext(AppContext);
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
-  const [year, setYear] = useState("2022");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const timer = useRef<number>();
-
-  useEffect(() => {
-    return () => {
-      clearTimeout(timer.current);
-    };
-  }, []);
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [statusValue, setStatusValue] = useState("");
 
   const handleButtonClick = () => {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
-      timer.current = window.setTimeout(() => {
-        setSuccess(true);
-        setLoading(false);
-      }, 2000);
+      addCarModel();
     }
   };
 
-  const [status, setStatus] = useState("");
+  function addCarModel() {
+    const data = {
+      name: name,
+      description: description,
+      status: statusValue,
+      brandId: props.brandId,
+    };
+    AxiosInstance.post("/car-model/create-car-model", data)
+      .then((response) => {
+        if (!response.data.error) {
+          showSuccess("Successfully added new car model");
+          props.getData();
+          handleClose();
+          setLoading(false);
+          setName("");
+          setDescription("");
+          setStatusValue("");
+        } else {
+          showError("Something went wrong!");
+        }
+      })
+      .catch((error) => {
+        alert(error + "");
+      });
+  }
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
   return (
     <>
@@ -105,6 +128,8 @@ const AddModel = () => {
                     id="outlined-basic"
                     label="Title Name"
                     variant="outlined"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
                     fullWidth
                   />
                 </Grid>
@@ -117,31 +142,34 @@ const AddModel = () => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>
                 <Grid item xs={12} sm={12} md={12}>
-                  <TextareaAutosize
-                    aria-label="empty textarea"
-                    placeholder="Description"
-                    minRows={6}
-                    style={{
-                      width: "100%",
-                      fontFamily: Fonts.OpenSansMedium,
-                      outline: "none",
-                      padding: "10px",
-                    }}
+                  <TextField
+                    id="outlined-multiline-flexible"
+                    label="Description"
+                    multiline
+                    fullWidth
+                    maxRows={5}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -158,9 +186,6 @@ const AddModel = () => {
                 >
                   Clear
                 </Button>
-                {/* <Button sx={ButtonStyle} variant="contained">
-                    Save
-                  </Button> */}
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
                     variant="contained"

@@ -27,12 +27,23 @@ import { ButtonStyle, Color, Fonts } from "../../assets/theme/theme";
 import { addCarStyle } from "../../pages/cars/Cars";
 import { ConstantType } from "../../common/types";
 import JoditEditor from "jodit-react";
+// import { Editor } from "react-draft-wysiwyg";
+// import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+// import SunEditor from "suneditor-react";
+// import SunEditorCore from "suneditor/src/lib/core";
+// import "suneditor/dist/css/suneditor.min.css"; // Import Sun Editor's CSS File
 
 interface IProps {
   getData(): void;
 }
 
 const AddConstant: FC<IProps> = (props: IProps) => {
+  // const editor = useRef<SunEditorCore>();
+
+  // // The sunEditor parameter will be set to the core suneditor instance when this function is called
+  // const getSunEditorInstance = (sunEditor: SunEditorCore) => {
+  //   editor.current = sunEditor;
+  // };
   const [name_tm, setName_tm] = useState("");
   const [name_ru, setName_ru] = useState("");
   const [content_tm, setContent_tm] = useState("");
@@ -55,14 +66,14 @@ const AddConstant: FC<IProps> = (props: IProps) => {
     }
   };
 
+  const editor = useRef(null);
+
   const config = {
     readonly: false,
-    placeholder: "Start typings...",
+    placeholder: "Start typings here...",
     height: 400,
     enableDragAndDropFileToEditor: true,
   };
-
-  const editor = useRef(null);
 
   function addRegion() {
     const data = {
@@ -78,12 +89,8 @@ const AddConstant: FC<IProps> = (props: IProps) => {
           showSuccess("Successfully added new constant!");
           handleClose();
           setLoading(false);
+          clearInput();
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setContent_ru("");
-          setContent_tm("");
-          setType("");
         } else {
           showError("Something went wrong!");
         }
@@ -92,6 +99,14 @@ const AddConstant: FC<IProps> = (props: IProps) => {
         showError(error + "");
       });
   }
+
+  const clearInput = () => {
+    setName_tm("");
+    setName_ru("");
+    setContent_ru("");
+    setContent_tm("");
+    setType("");
+  };
 
   const handleChange = (event: SelectChangeEvent) => {
     setType(event.target.value as string);
@@ -162,24 +177,20 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                   <Typography>Content TM</Typography>
                   <JoditEditor
                     ref={editor}
-                    config={{
-                      ...config,
-                    }}
-                    onBlur={(newContent) => setContent_tm(newContent)}
-                    onChange={(newContent) => {}}
                     value={content_tm}
+                    config={config}
+                    // onBlur={(newContent) => setContent_tm(newContent)} // preferred to use only this option to update the content for performance reasons
+                    onChange={(content) => setContent_tm(content)}
                   />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <Typography>Content RU</Typography>
                   <JoditEditor
                     ref={editor}
-                    config={{
-                      ...config,
-                    }}
+                    value={content_ru}
+                    config={config}
                     onBlur={(newContent) => setContent_ru(newContent)}
                     onChange={(newContent) => {}}
-                    value={content_ru}
                   />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
@@ -215,12 +226,10 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
                   Clear
                 </Button>
-                {/* <Button sx={ButtonStyle} variant="contained">
-                    Save
-                  </Button> */}
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
                     variant="contained"

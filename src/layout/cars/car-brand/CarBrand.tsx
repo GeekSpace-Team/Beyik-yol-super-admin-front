@@ -1,56 +1,45 @@
 import React, { useEffect, useState } from "react";
 import {
-  Box,
-  Card,
-  CardActionArea,
-  CardContent,
   IconButton,
   Paper,
   Stack,
-  SwipeableDrawer,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
-  Tooltip,
   Typography,
 } from "@mui/material";
-import {
-  Color,
-  Fonts,
-  TableCellStyle,
-  TableHeadStyle,
-} from "../../../assets/theme/theme";
+import { TableCellStyle, TableHeadStyle } from "../../../assets/theme/theme";
 import { useTranslation } from "react-i18next";
 import Image from "@jy95/material-ui-image";
-import InfoIcon from "@mui/icons-material/Info";
 import AddBrand from "./AddBrand";
 import UpdateBrand from "./UpdateBrand";
-import AddModel from "./AddModel";
-import UpdateModel from "./UpdateModel";
-import DeleteModel from "./DeleteModel";
 import { AxiosInstance } from "../../../api/AxiosInstance";
 import { getImageUrl, ImageType } from "../../../common/utils";
-import { Brand, Model } from "../../../common/model";
+import { Brand } from "../../../common/model";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { showError, showSuccess } from "../../../components/alert/Alert";
+import CarModel from "./CarModel";
+import Loading from "../../../common/Loading";
 
-type Anchor = "top" | "left" | "bottom" | "right";
 const CarBrand = () => {
   const [listt, setList] = useState<Brand[]>([]);
-  const [listModel, setListModel] = useState<Model[]>([]);
+  const [loading, setLoading] = useState(false);
 
   const getData = async () => {
-    await AxiosInstance.get<Model[]>("/car-model/get-all-models")
-      .then((response) => {
-        if (response.status >= 200 && response.status < 300) {
-          setListModel(response.data);
+    setLoading(true);
+    await AxiosInstance.get<Brand[]>("/car-brand/get-all-carBrand")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setList(resp.data);
         }
+        setLoading(false);
       })
-      .catch((error) => {
-        alert(error + "");
+      .catch((err) => {
+        setLoading(false);
+        alert(err + "");
       });
   };
 
@@ -58,150 +47,28 @@ const CarBrand = () => {
     getData();
   }, []);
 
-  const getCars = async () => {
-    await AxiosInstance.get<Brand[]>("/car-brand/get-all-carBrand")
-      .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) {
-          setList(resp.data);
-        }
-      })
-      .catch((err) => {
-        alert(err + "");
-      });
-  };
-
-  useEffect(() => {
-    getCars();
-  }, []);
-
   function deleteCarBrand(id: number) {
+    setLoading(true);
     if (window.confirm("want_delete")) {
       AxiosInstance.delete("/car-brand/remove-car-brand/" + id)
         .then((response) => {
           showSuccess(t("Deleted!"));
-          // setLoading(false);
-          getCars();
+          setLoading(false);
+          getData();
         })
         .catch((err) => {
-          // setLoading(false);
+          setLoading(false);
           showError(err.toString());
         });
     }
   }
 
   const { t } = useTranslation();
-  const [state, setState] = useState({
-    top: false,
-    left: false,
-    bottom: false,
-    right: false,
-  });
 
-  const toggleDrawer =
-    (anchor: Anchor, open: boolean) =>
-    (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event &&
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-
-      setState({ ...state, [anchor]: open });
-    };
-
-  const list = (anchor: Anchor) => (
-    <Box
-      sx={{ width: 500, p: 5 }}
-      role="presentation"
-      onClick={toggleDrawer(anchor, false)}
-      onKeyDown={toggleDrawer(anchor, false)}
-    >
-      <Stack
-        direction="row"
-        justifyContent={"space-between"}
-        pb={3}
-        alignItems="center"
-      >
-        <Typography sx={{ fontFamily: Fonts.RalewayBold, fontSize: "18px" }}>
-          Car Model
-        </Typography>
-        <AddModel />
-      </Stack>
-      {listModel.map((item, i) => {
-        return (
-          <Card key={`car_model_get_key${i}`}>
-            <CardActionArea>
-              <CardContent>
-                <Stack direction="row" pb={2} spacing={10}>
-                  <Typography sx={{ fontFamily: Fonts.OpenSansBold }}>
-                    {item.id}
-                  </Typography>
-                  <Typography sx={{ fontFamily: Fonts.OpenSansBold }}>
-                    {item.name}
-                  </Typography>
-                </Stack>
-                <Typography
-                  sx={{
-                    fontSize: "14px",
-                    fontFamily: Fonts.OpenSansMedium,
-                    color: Color.solid,
-                  }}
-                >
-                  {item.description}
-                </Typography>
-                <Stack
-                  direction="row"
-                  justifyContent={"space-between"}
-                  alignItems="center"
-                  pt={2}
-                >
-                  <Stack>
-                    <Typography
-                      sx={{
-                        fontSize: "12px",
-                        color: Color.solid,
-                        fontFamily: Fonts.OpenSansRegular,
-                      }}
-                    >
-                      Status
-                    </Typography>
-                    <Typography
-                      sx={{ fontSize: "15px", fontFamily: Fonts.RalewayBold }}
-                    >
-                      {item.status}
-                    </Typography>
-                  </Stack>
-                  <Stack direction="row" alignItems={"center"} spacing={2}>
-                    <UpdateModel />
-                    <DeleteModel />
-                  </Stack>
-                </Stack>
-              </CardContent>
-            </CardActionArea>
-          </Card>
-        );
-      })}
-    </Box>
-  );
   return (
     <>
-      <div>
-        <React.Fragment key={"right"}>
-          <SwipeableDrawer
-            anchor={"right"}
-            open={state["right"]}
-            onClose={toggleDrawer("right", true)}
-            onOpen={toggleDrawer("right", true)}
-          >
-            {list("right")}
-          </SwipeableDrawer>
-        </React.Fragment>
-      </div>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
-        <AddBrand getCars={getCars} />
+        <AddBrand getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -255,7 +122,7 @@ const CarBrand = () => {
                     <Typography sx={TableCellStyle}>{item.status}</Typography>
                   </TableCell>
                   <TableCell>
-                    <UpdateBrand getCars={getCars} item={item} />
+                    <UpdateBrand getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
                     <IconButton
@@ -266,11 +133,11 @@ const CarBrand = () => {
                     </IconButton>
                   </TableCell>
                   <TableCell>
-                    <Tooltip title="Car Model">
-                      <IconButton onClick={toggleDrawer("right", true)}>
-                        <InfoIcon />
-                      </IconButton>
-                    </Tooltip>
+                    <CarModel
+                      brandId={item.id}
+                      models={item.models}
+                      getData={getData}
+                    />
                   </TableCell>
                 </TableRow>
               );
@@ -278,6 +145,7 @@ const CarBrand = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      <Loading open={loading} />
     </>
   );
 };

@@ -11,58 +11,60 @@ import {
   Modal,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
+import { AxiosInstance } from "../../api/AxiosInstance";
+import { showError, showSuccess } from "../../components/alert/Alert";
 import { ButtonStyle, Color, Fonts } from "../../assets/theme/theme";
 import { style } from "../cars/Cars";
-import { showError, showSuccess } from "../../components/alert/Alert";
-import { AxiosInstance } from "../../api/AxiosInstance";
+import EditIcon from "@mui/icons-material/Edit";
+import { ChangeTypeI } from "./ChangeType";
 
 interface IProps {
   getData(): void;
+  item: ChangeTypeI;
 }
 
-const AddRegion: FC<IProps> = (props: IProps) => {
-  const [name_tm, setName_tm] = useState("");
-  const [name_ru, setName_ru] = useState("");
-
-  const [description, setDescription] = useState("");
-
-  const { t } = useTranslation();
+const UpdateChangeType: FC<IProps> = (props: IProps) => {
   const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
+  const handleOpen = () => {
+    setOpen(true);
+    setNameRu(props.item.name_tm);
+    setNameRu(props.item.name_ru);
+  };
   const handleClose = () => setOpen(false);
+  const [name_tm, setNameTm] = useState(props.item.name_tm);
+  const [name_ru, setNameRu] = useState(props.item.name_ru);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleButtonClick = () => {
     if (!loading) {
-      addRegion();
       setSuccess(false);
       setLoading(true);
+      updateData();
     }
   };
 
-  function addRegion() {
-    const data = {
+  function updateData() {
+    const body = {
       name_tm: name_tm,
       name_ru: name_ru,
-      description: description,
     };
-    AxiosInstance.post("/region/create-region", data)
+    AxiosInstance.patch(
+      `/change-type/update-change-type/${props.item.id}`,
+      body
+    )
       .then((response) => {
         if (!response.data.error) {
-          showSuccess("Successfully added new brand!");
+          showSuccess("Successfully edited Price!");
           handleClose();
           setLoading(false);
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setDescription("");
         } else {
           showError("Something went wrong!");
         }
@@ -75,11 +77,11 @@ const AddRegion: FC<IProps> = (props: IProps) => {
   return (
     <>
       <div>
-        <Stack direction="row" justifyContent={"flex-end"} pb={3}>
-          <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-            Add Region
-          </Button>
-        </Stack>
+        <Tooltip title="Edit Price">
+          <IconButton onClick={handleOpen} sx={{ color: Color.primary }}>
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
@@ -102,7 +104,7 @@ const AddRegion: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Region
+                  Add Change Type
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -118,33 +120,21 @@ const AddRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name TM"
+                    label="Title"
                     variant="outlined"
                     fullWidth
                     value={name_tm}
-                    onChange={(e) => setName_tm(e.target.value)}
+                    onChange={(e) => setNameTm(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name RU"
+                    label="Title"
                     variant="outlined"
                     fullWidth
                     value={name_ru}
-                    onChange={(e) => setName_ru(e.target.value)}
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={12}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Description"
-                    multiline
-                    fullWidth
-                    maxRows={9}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => setNameRu(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -194,4 +184,4 @@ const AddRegion: FC<IProps> = (props: IProps) => {
   );
 };
 
-export default AddRegion;
+export default UpdateChangeType;

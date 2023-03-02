@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -21,7 +21,6 @@ import {
 } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -30,25 +29,26 @@ import { AxiosInstanceFormData } from "../../../api/AxiosInstance";
 import { showError, showSuccess } from "../../../components/alert/Alert";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { Brand } from "../../../common/model";
+import { AppContext } from "../../../App";
 
 interface IProps {
-  getCars(): void;
+  getData(): void;
   item: Brand;
 }
 
 const UpdateBrand: React.FC<IProps> = (props: IProps) => {
+  const { status } = useContext(AppContext);
   const [selectedImages, setImages] = useState<string | File>();
   const [name, setName] = useState(props.item.name);
   const [description, setDescription] = useState(props.item.description);
-
-  const { t } = useTranslation();
+  const [statusValue, setStatusValue] = useState(props.item.status);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(true);
     setImages(undefined);
     setName(props.item.name);
     setDescription(props.item.description);
-    setStatus(props.item.status);
+    setStatusValue(props.item.status);
   };
 
   const handleClose = () => setOpen(false);
@@ -64,16 +64,14 @@ const UpdateBrand: React.FC<IProps> = (props: IProps) => {
     }
   };
 
-  const [status, setStatus] = useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
 
   function updateBrand() {
     let formData = new FormData();
     formData.append("name", name);
-    formData.append("status", status);
+    formData.append("status", statusValue);
     formData.append("description", description);
     if (selectedImages) {
       formData.append("image", selectedImages);
@@ -86,7 +84,7 @@ const UpdateBrand: React.FC<IProps> = (props: IProps) => {
         if (!response.data.error) {
           showSuccess("Car Brand Successfully Updated!");
           handleClose();
-          props.getCars();
+          props.getData();
           setLoading(false);
         } else {
           showError("Car Brand Update Error");
@@ -159,17 +157,22 @@ const UpdateBrand: React.FC<IProps> = (props: IProps) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -184,27 +187,13 @@ const UpdateBrand: React.FC<IProps> = (props: IProps) => {
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </Grid>
-                {/* <Grid item xs={12} sm={12} md={12}>
-                  <FileUploader
-                    defaultLabel={"Hello"}
-                    placeholder={<Image src={"/"} />}
-                    multiple={false}
-                    mimeTypes={["image/*"]}
-                    draggable={true}
-                    id={"image-selector"}
-                    setList={setImages}
-                    title={t("Images*")}
-                    type={Types.image}
-                    list={undefined}
-                    urlType={ImageType.Brand}
-                  />
-                </Grid> */}
                 <Grid item xs={2} sm={7} md={6}>
                   <Button
                     sx={ButtonStyle}
                     startIcon={<PhotoCamera />}
                     variant="contained"
                     component="label"
+                    fullWidth
                   >
                     Upload Image
                     <input

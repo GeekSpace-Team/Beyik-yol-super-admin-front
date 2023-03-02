@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -20,17 +20,20 @@ import SaveIcon from "@mui/icons-material/Save";
 import Autocomplete from "@mui/material/Autocomplete";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { UserI } from "../../common/model";
+import { showError, showSuccess } from "../../components/alert/Alert";
 
-const SendPush = () => {
+interface IProps {
+  getData(): void;
+}
+const SendPush: FC<IProps> = (props: IProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [titleTm, setTitleTm] = useState("");
   const [titleRu, setTitleRu] = useState("");
   const [messageTm, setMessageTm] = useState("");
   const [messageRu, setMessageRu] = useState("");
-  const [userId, setUserId] = useState(1);
+  const [userId, setUserId] = useState();
   const [url, setUrl] = useState("");
-  const [sendList, setSendList] = useState([]);
   const [isRead, setIsRead] = useState(false);
   const handleClose = () => setOpen(false);
   const [loading, setLoading] = useState(false);
@@ -65,8 +68,18 @@ const SendPush = () => {
     };
     AxiosInstance.post("/inbox/send-to-user", body)
       .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) {
-          setSendList(resp.data);
+        if (!resp.data.error) {
+          handleClose();
+          props.getData();
+          setTitleTm("");
+          setTitleRu("");
+          setMessageTm("");
+          setMessageRu("");
+          setUrl("");
+          setLoading(false);
+          showSuccess("Successfully sent to user");
+        } else {
+          showError("Something went wrong!");
         }
       })
       .catch((err) => {
@@ -74,15 +87,58 @@ const SendPush = () => {
       });
   }
 
-  useEffect(() => {
-    sendMessage();
-  }, []);
+  function sendToAll() {
+    const body = {
+      titleTm: titleTm,
+      titleRu: titleRu,
+      messageTm: messageTm,
+      messageRu: messageRu,
+      userId: userId,
+      isRead: isRead,
+      url: url,
+    };
+    AxiosInstance.post("/inbox/send-to-all", body)
+      .then((response) => {
+        if (!response.data.error) {
+          props.getData();
+          handleClose();
+          setTitleTm("");
+          setTitleRu("");
+          setMessageTm("");
+          setMessageRu("");
+          setUrl("");
+          setLoading(false);
+          showSuccess("Successfully sent to to all user");
+        } else {
+          showError("Something went wrong!");
+        }
+      })
+      .catch((err) => {
+        alert(err + "");
+      });
+  }
 
-  const handleButtonClick = () => {
+  const handleButtonClickAll = () => {
     if (!loading) {
       setSuccess(false);
       setLoading(true);
       sendMessage();
+    }
+  };
+
+  const handleButtonClickUser = () => {
+    if (!loading) {
+      setSuccess(false);
+      setLoading(true);
+      sendToAll();
+    }
+  };
+
+  const handleClick = () => {
+    if (userId === !null) {
+      handleButtonClickAll();
+    } else {
+      handleButtonClickUser();
     }
   };
 
@@ -128,6 +184,7 @@ const SendPush = () => {
                   disablePortal
                   id="combo-box-demo"
                   options={list}
+                  value={userId}
                   fullWidth
                   getOptionLabel={(user) => user.fullname}
                   renderInput={(params) => (
@@ -205,7 +262,7 @@ const SendPush = () => {
                   sx={ButtonStyle}
                   startIcon={<SaveIcon />}
                   disabled={loading}
-                  onClick={handleButtonClick}
+                  onClick={handleClick}
                 >
                   Send Message
                 </Button>

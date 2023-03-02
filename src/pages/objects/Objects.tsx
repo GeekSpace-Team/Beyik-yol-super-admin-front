@@ -4,11 +4,8 @@ import {
   Button,
   Divider,
   Fade,
-  FormControl,
   Grid,
   IconButton,
-  InputLabel,
-  MenuItem,
   Modal,
   Paper,
   Stack,
@@ -32,14 +29,12 @@ import {
   TableCellStyle,
   TableHeadStyle,
 } from "../../assets/theme/theme";
-import Select, { SelectChangeEvent } from "@mui/material/Select";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import CancelIcon from "@mui/icons-material/Cancel";
 import SaveIcon from "@mui/icons-material/Save";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
-import { ItemStatus } from "../../components/itemStatus/ItemStatus";
 import { deleteStyle, style } from "../cars/Cars";
 import { useTranslation } from "react-i18next";
 
@@ -115,12 +110,7 @@ const Objects: FC = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [year, setYear] = useState("2022");
-    const [status, setStatus] = useState("Active");
 
-    const handleChange = (event: SelectChangeEvent) => {
-      setStatus(event.target.value as string);
-    };
     return (
       <>
         <div>
@@ -174,28 +164,7 @@ const Objects: FC = () => {
                       fullWidth
                     />
                   </Grid>
-                  <Grid item xs={2} sm={7} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
-                        Status
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={status}
-                        label="Status"
-                        onChange={handleChange}
-                      >
-                        {ItemStatus.map((item, i) => {
-                          return (
-                            <MenuItem value={item} key={`item_status+${i}`}>
-                              {t(item)}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
-                  </Grid>
+
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField
                       id="outlined-basic"
@@ -265,12 +234,7 @@ const Objects: FC = () => {
     const [open, setOpen] = useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
-    const [year, setYear] = useState("2022");
-    const [status, setStatus] = useState("Active");
 
-    const handleChange = (event: SelectChangeEvent) => {
-      setStatus(event.target.value as string);
-    };
     return (
       <>
         <div>
@@ -325,28 +289,6 @@ const Objects: FC = () => {
                       variant="outlined"
                       fullWidth
                     />
-                  </Grid>
-                  <Grid item xs={2} sm={7} md={6}>
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
-                        Status
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={status}
-                        label="Status"
-                        onChange={handleChange}
-                      >
-                        {ItemStatus.map((item, i) => {
-                          return (
-                            <MenuItem value={item} key={`item_status+${i}`}>
-                              {t(item)}
-                            </MenuItem>
-                          );
-                        })}
-                      </Select>
-                    </FormControl>
                   </Grid>
                   <Grid item xs={2} sm={7} md={6}>
                     <TextField

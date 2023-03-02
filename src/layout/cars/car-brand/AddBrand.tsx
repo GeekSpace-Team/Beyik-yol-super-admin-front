@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -22,21 +22,22 @@ import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
 import { AxiosInstanceFormData } from "../../../api/AxiosInstance";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { showError, showSuccess } from "../../../components/alert/Alert";
+import { AppContext } from "../../../App";
 
 interface IProps {
-  getCars(): void;
+  getData(): void;
 }
 
 const AddBrand: FC<IProps> = (props: IProps) => {
+  const { status } = useContext(AppContext);
   const [selectedImages, setImages] = useState<string | File>();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-
+  const [statusValue, setStatusValue] = useState("");
   const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -53,16 +54,14 @@ const AddBrand: FC<IProps> = (props: IProps) => {
     }
   };
 
-  const [status, setStatus] = useState("");
-
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
 
   function addBrand() {
     let formData = new FormData();
     formData.append("name", name);
-    formData.append("status", status);
+    formData.append("status", statusValue);
     formData.append("description", description);
     if (selectedImages) {
       formData.append("image", selectedImages);
@@ -73,10 +72,10 @@ const AddBrand: FC<IProps> = (props: IProps) => {
           showSuccess("Successfully added new brand!");
           handleClose();
           setLoading(false);
-          props.getCars();
-          setStatus("");
+          props.getData();
           setName("");
           setDescription("");
+          setStatusValue("");
         } else {
           showError("Something went wrong!");
         }
@@ -150,17 +149,22 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>
@@ -175,27 +179,13 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                     onChange={(e) => setDescription(e.target.value)}
                   />
                 </Grid>
-                {/* <Grid item xs={12} sm={12} md={12}>
-                  <FileUploader
-                    defaultLabel={"Hello"}
-                    placeholder={<Image src={"/"} />}
-                    multiple={false}
-                    mimeTypes={["image/*"]}
-                    draggable={true}
-                    id={"image-selector"}
-                    setList={setImages}
-                    title={t("Images*")}
-                    type={Types.image}
-                    list={undefined}
-                    urlType={ImageType.Brand}
-                  />
-                </Grid> */}
                 <Grid item xs={2} sm={7} md={6}>
                   <Button
                     sx={ButtonStyle}
                     startIcon={<PhotoCamera />}
                     variant="contained"
                     component="label"
+                    fullWidth
                   >
                     Upload Image
                     <input
@@ -222,9 +212,6 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                 >
                   Clear
                 </Button>
-                {/* <Button sx={ButtonStyle} variant="contained">
-                    Save
-                  </Button> */}
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
                     variant="contained"

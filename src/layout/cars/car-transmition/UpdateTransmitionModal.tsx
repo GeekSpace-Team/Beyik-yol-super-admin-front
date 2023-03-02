@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -19,9 +19,7 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
-import { ItemStatus } from "../../../components/itemStatus/ItemStatus";
 import { style } from "../../../pages/cars/Cars";
 import EditIcon from "@mui/icons-material/Edit";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -29,6 +27,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { Option } from "../../../common/model";
 import { showError, showSuccess } from "../../../components/alert/Alert";
 import { AxiosInstance } from "../../../api/AxiosInstance";
+import { AppContext } from "../../../App";
 
 interface IProps {
   getData(): void;
@@ -36,7 +35,7 @@ interface IProps {
 }
 
 const UpdateTransmitionModal: React.FC<IProps> = (props: IProps) => {
-  const { t } = useTranslation();
+  const { status } = useContext(AppContext);
   const [name_tm, setName_tm] = useState(props.item.name_tm);
   const [name_ru, setName_ru] = useState(props.item.name_ru);
   const [description, setDescription] = useState(props.item.description);
@@ -46,10 +45,10 @@ const UpdateTransmitionModal: React.FC<IProps> = (props: IProps) => {
     setName_tm(props.item.name_tm);
     setName_ru(props.item.name_ru);
     setDescription(props.item.description);
-    setStatus(props.item.status);
+    setStatusValue(props.item.status);
   };
   const handleClose = () => setOpen(false);
-  const [status, setStatus] = useState("");
+  const [statusValue, setStatusValue] = useState(props.item.status);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -62,8 +61,8 @@ const UpdateTransmitionModal: React.FC<IProps> = (props: IProps) => {
     }
   };
 
-  const handleChange = (event: SelectChangeEvent) => {
-    setStatus(event.target.value as string);
+  const handleChangeStatus = (event: SelectChangeEvent) => {
+    setStatusValue(event.target.value as string);
   };
 
   function updateData() {
@@ -71,7 +70,7 @@ const UpdateTransmitionModal: React.FC<IProps> = (props: IProps) => {
       name_tm: name_tm,
       name_ru: name_ru,
       description: description,
-      status: status,
+      status: statusValue,
     };
     AxiosInstance.patch(`/car-transmition/update/${props.item.id}`, body)
       .then((response) => {
@@ -161,17 +160,22 @@ const UpdateTransmitionModal: React.FC<IProps> = (props: IProps) => {
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      value={status}
+                      value={statusValue}
                       label="Status"
-                      onChange={handleChange}
+                      onChange={handleChangeStatus}
                     >
-                      {ItemStatus.map((item, i) => {
-                        return (
-                          <MenuItem value={item} key={`item_status+${i}`}>
-                            {t(item)}
-                          </MenuItem>
-                        );
-                      })}
+                      {status?.itemStatus
+                        ? status?.itemStatus.map((item, i) => {
+                            return (
+                              <MenuItem
+                                value={item}
+                                key={`get_item_status_key+${i}`}
+                              >
+                                {item}
+                              </MenuItem>
+                            );
+                          })
+                        : null}
                     </Select>
                   </FormControl>
                 </Grid>

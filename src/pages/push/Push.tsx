@@ -63,7 +63,7 @@ const Push: FC = () => {
         pb={3}
       >
         <Typography sx={PageName}>Inbox</Typography>
-        <SendPush />
+        <SendPush getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

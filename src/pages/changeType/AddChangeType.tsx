@@ -13,56 +13,49 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
+import { AxiosInstance } from "../../api/AxiosInstance";
+import { showError, showSuccess } from "../../components/alert/Alert";
 import { ButtonStyle, Color, Fonts } from "../../assets/theme/theme";
 import { style } from "../cars/Cars";
-import { showError, showSuccess } from "../../components/alert/Alert";
-import { AxiosInstance } from "../../api/AxiosInstance";
 
 interface IProps {
   getData(): void;
 }
 
-const AddRegion: FC<IProps> = (props: IProps) => {
-  const [name_tm, setName_tm] = useState("");
-  const [name_ru, setName_ru] = useState("");
-
-  const [description, setDescription] = useState("");
-
-  const { t } = useTranslation();
+const AddChangeType: FC<IProps> = (props: IProps) => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const [name_tm, setNameTm] = useState("");
+  const [name_ru, setNameRu] = useState("");
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
   const handleButtonClick = () => {
     if (!loading) {
-      addRegion();
       setSuccess(false);
       setLoading(true);
+      addData();
     }
   };
 
-  function addRegion() {
-    const data = {
+  function addData() {
+    const body = {
       name_tm: name_tm,
       name_ru: name_ru,
-      description: description,
     };
-    AxiosInstance.post("/region/create-region", data)
+    AxiosInstance.post("/change-type/create-change-type", body)
       .then((response) => {
         if (!response.data.error) {
-          showSuccess("Successfully added new brand!");
+          showSuccess("Successfully added new evacuator!");
           handleClose();
           setLoading(false);
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setDescription("");
+          setNameTm("");
+          setNameRu("");
         } else {
           showError("Something went wrong!");
         }
@@ -77,7 +70,7 @@ const AddRegion: FC<IProps> = (props: IProps) => {
       <div>
         <Stack direction="row" justifyContent={"flex-end"} pb={3}>
           <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-            Add Region
+            Add Change Type
           </Button>
         </Stack>
         <Modal
@@ -102,7 +95,7 @@ const AddRegion: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Region
+                  Add Change Type
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -118,33 +111,21 @@ const AddRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name TM"
+                    label="Title"
                     variant="outlined"
                     fullWidth
                     value={name_tm}
-                    onChange={(e) => setName_tm(e.target.value)}
+                    onChange={(e) => setNameTm(e.target.value)}
                   />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name RU"
+                    label="Title"
                     variant="outlined"
                     fullWidth
                     value={name_ru}
-                    onChange={(e) => setName_ru(e.target.value)}
-                  />
-                </Grid>
-
-                <Grid item xs={12} sm={12} md={12}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Description"
-                    multiline
-                    fullWidth
-                    maxRows={9}
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
+                    onChange={(e) => setNameRu(e.target.value)}
                   />
                 </Grid>
               </Grid>
@@ -194,4 +175,4 @@ const AddRegion: FC<IProps> = (props: IProps) => {
   );
 };
 
-export default AddRegion;
+export default AddChangeType;

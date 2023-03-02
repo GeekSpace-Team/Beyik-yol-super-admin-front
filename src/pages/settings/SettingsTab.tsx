@@ -9,6 +9,8 @@ import Evacuator from "../evacuator/Evacuator";
 import CarRepairIcon from "@mui/icons-material/CarRepair";
 import Price from "../price/Price";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
+import ChangeType from "../changeType/ChangeType";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -113,6 +115,13 @@ const AnimationTab = () => {
               label="Price"
               {...a11yProps(1)}
             />
+            <Tab
+              iconPosition="start"
+              icon={<ManageHistoryIcon />}
+              sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
+              label="Change Type"
+              {...a11yProps(1)}
+            />
           </Tabs>
         </Box>
         <SwipeableViews
@@ -128,6 +137,9 @@ const AnimationTab = () => {
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <Price />
+          </TabPanel>
+          <TabPanel value={value} index={3} dir={theme.direction}>
+            <ChangeType />
           </TabPanel>
         </SwipeableViews>
       </Box>

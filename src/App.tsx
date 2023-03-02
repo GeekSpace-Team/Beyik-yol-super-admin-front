@@ -13,7 +13,7 @@ import Objects from "./pages/objects/Objects";
 import Client from "./pages/client/Client";
 import Costs from "./pages/costs/Costs";
 import { ThemeProvider } from "@material-ui/core";
-import { Color, darkMode, getTheme, lightMode } from "./assets/theme/theme";
+import { darkMode, lightMode } from "./assets/theme/theme";
 import { Theme, useMediaQuery, useTheme } from "@mui/material";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
