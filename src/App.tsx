@@ -163,8 +163,11 @@ const App: FC = (props) => {
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
+            <Route path={"/"} element={<Login />} />
             <Route path="/" element={<Sidebar />}>
-              <Route path="/" element={<Cars />} />
+              <Route path="/cars" element={<Cars />} />
+              <Route path="/cars/:id" element={<CarTableInfo />} />
+              {/* <Route path={"/carTable"} element={< />} /> */}
               <Route path="/ads" element={<Ads />} />
               <Route path="/users" element={<Users />} />
               <Route path="/push" element={<Push />} />
@@ -176,8 +179,6 @@ const App: FC = (props) => {
               <Route path="/costs" element={<Costs />} />
               <Route path="/settings" element={<Settings />} />
             </Route>
-            <Route path={"/login"} element={<Login />} />
-            <Route path={"/carTable"} element={<CarTableInfo />} />
           </Routes>
         </Router>
       </ThemeProvider>

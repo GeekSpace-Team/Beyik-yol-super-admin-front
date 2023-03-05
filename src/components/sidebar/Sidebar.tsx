@@ -18,9 +18,6 @@ import {
   Button,
   Menu,
 } from "@mui/material";
-import { styled, alpha } from "@mui/material/styles";
-import SearchIcon from "@mui/icons-material/Search";
-import InputBase from "@mui/material/InputBase";
 import { useContext } from "react";
 import { AppContext } from "../../App";
 import { Color, Fonts } from "../../assets/theme/theme";
@@ -29,12 +26,7 @@ import { SidebarItem } from "./sidebarItems";
 import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import GroupIcon from "@mui/icons-material/Group";
 import WifiPasswordIcon from "@mui/icons-material/WifiPassword";
-import EmailIcon from "@mui/icons-material/Email";
-import KeyboardVoiceIcon from "@mui/icons-material/KeyboardVoice";
 import AcUnitIcon from "@mui/icons-material/AcUnit";
-import EmojiObjectsIcon from "@mui/icons-material/EmojiObjects";
-import Diversity3Icon from "@mui/icons-material/Diversity3";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import { useTranslation } from "react-i18next";
 import LogoutIcon from "@mui/icons-material/Logout";
 import MenuItem from "@mui/material/MenuItem";
@@ -71,7 +63,7 @@ const SidebarData: SidebarItem[] = [
   {
     id: 1,
     text: "cars",
-    link: "/",
+    link: "/cars",
     icon: <DirectionsCarIcon />,
   },
 
@@ -228,10 +220,7 @@ const Sidebar: FC = (props: Props) => {
     }
   }, [checked]);
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(event.target.checked);
-  };
-  const { isDark, setIsDark, theme } = useContext(AppContext);
+  const { theme } = useContext(AppContext);
 
   const { window } = props;
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -266,9 +255,16 @@ const Sidebar: FC = (props: Props) => {
           boxShadow: "1.1px 2.2px 2.2px hsl(0deg 0% 0% / 0.47)",
         }}
       >
-        <Typography>Beyik Yol logo</Typography>
+        <Stack direction="row" alignItems={"center"}>
+          <img
+            src={"../images/logo.png"}
+            style={{ width: "50px" }}
+            alt="logo"
+          />
+          <Typography>Beyik Yol logo</Typography>
+        </Stack>
       </Toolbar>
-      <Divider />
+      {/* <Divider /> */}
 
       <Stack
         pt={10}
@@ -428,12 +424,14 @@ const Sidebar: FC = (props: Props) => {
 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <>
       <Box sx={{ display: "flex" }}>
@@ -490,6 +488,9 @@ const Sidebar: FC = (props: Props) => {
                     Super Admin
                   </Button>
                   <Menu
+                    TransitionProps={{
+                      timeout: 700,
+                    }}
                     id="basic-menu"
                     anchorEl={anchorEl}
                     open={open}
@@ -505,7 +506,7 @@ const Sidebar: FC = (props: Props) => {
                       Profile
                     </MenuItem>
                     <Link
-                      to={"/login"}
+                      to={"/"}
                       style={{
                         textDecoration: "none",
                         color: Color.solid,

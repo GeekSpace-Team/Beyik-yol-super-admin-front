@@ -2013,6 +2013,52 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
+"@react-spring/animated@~9.7.1":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/animated/-/animated-9.7.1.tgz#0f2d78184ee0cce703acd41abb87ea56765b5713"
+  integrity sha512-EX5KAD9y7sD43TnLeTNG1MgUVpuRO1YaSJRPawHNRgUWYfILge3s85anny4S4eTJGpdp5OoFV2kx9fsfeo0qsw==
+  dependencies:
+    "@react-spring/shared" "~9.7.1"
+    "@react-spring/types" "~9.7.1"
+
+"@react-spring/core@~9.7.1":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/core/-/core-9.7.1.tgz#cfe176a48ee0a05545b1af5f2fbae718b50e9a99"
+  integrity sha512-8K9/FaRn5VvMa24mbwYxwkALnAAyMRdmQXrARZLcBW2vxLJ6uw9Cy3d06Z8M12kEqF2bDlccaCSDsn2bSz+Q4A==
+  dependencies:
+    "@react-spring/animated" "~9.7.1"
+    "@react-spring/rafz" "~9.7.1"
+    "@react-spring/shared" "~9.7.1"
+    "@react-spring/types" "~9.7.1"
+
+"@react-spring/rafz@~9.7.1":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/rafz/-/rafz-9.7.1.tgz#bdfea463fcb5ddc4e7253a8fa3870dd52ebbc59a"
+  integrity sha512-JSsrRfbEJvuE3w/uvU3mCTuWwpQcBXkwoW14lBgzK9XJhuxmscGo59AgJUpFkGOiGAVXFBGB+nEXtSinFsopgw==
+
+"@react-spring/shared@~9.7.1":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/shared/-/shared-9.7.1.tgz#29611bb63d0c9e1ac18b6ced7aa4db1d48d136f3"
+  integrity sha512-R2kZ+VOO6IBeIAYTIA3C1XZ0ZVg/dDP5FKtWaY8k5akMer9iqf5H9BU0jyt3Qtxn0qQY7whQdf6MTcWtKeaawg==
+  dependencies:
+    "@react-spring/rafz" "~9.7.1"
+    "@react-spring/types" "~9.7.1"
+
+"@react-spring/types@~9.7.1":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/types/-/types-9.7.1.tgz#b540752a479d210c6fb68d2b1d5ff35556df4308"
+  integrity sha512-yBcyfKUeZv9wf/ZFrQszvhSPuDx6Py6yMJzpMnS+zxcZmhXPeOCKZSHwqrUz1WxvuRckUhlgb7eNI/x5e1e8CA==
+
+"@react-spring/web@^9.2.4":
+  version "9.7.1"
+  resolved "https://registry.yarnpkg.com/@react-spring/web/-/web-9.7.1.tgz#a9ee730d06c686b8432cd20f41683b1acb9b6300"
+  integrity sha512-6uUE5MyKqdrJnIJqlDN/AXf3i8PjOQzUuT26nkpsYxUGOk7c+vZVPcfrExLSoKzTb9kF0i66DcqzO5fXz/Z1AA==
+  dependencies:
+    "@react-spring/animated" "~9.7.1"
+    "@react-spring/core" "~9.7.1"
+    "@react-spring/shared" "~9.7.1"
+    "@react-spring/types" "~9.7.1"
+
 "@remix-run/router@1.0.3":
   version "1.0.3"
   resolved "https://registry.npmjs.org/@remix-run/router/-/router-1.0.3.tgz"
@@ -2315,6 +2361,14 @@
   dependencies:
     "@types/node" "*"
 
+"@types/draft-js@^0.11.5":
+  version "0.11.10"
+  resolved "https://registry.yarnpkg.com/@types/draft-js/-/draft-js-0.11.10.tgz#46cf41e142b4b572467f7a78269a630a77e1f19c"
+  integrity sha512-o/DST8x0wNerwhRiaE577UHFIXb6HCywaZOZfj9TF2vU3CONvsCGoQmdOsKqERdXp+3ZNlSvFUH0B8lEEYOT4A==
+  dependencies:
+    "@types/react" "*"
+    immutable "~3.7.4"
+
 "@types/eslint-scope@^3.7.3":
   version "3.7.4"
   resolved "https://registry.npmjs.org/@types/eslint-scope/-/eslint-scope-3.7.4.tgz"
@@ -2489,6 +2543,13 @@
   integrity sha512-aBTIWg1emtu95bLTLx0cpkxwGW3ueZv71nE2YFBpL8k/z5czEW8yYpOo8Dp+UUAFAtKwNaOsh/ioSeQnWlZcfw==
   dependencies:
     "@types/react" "*"
+
+"@types/react-owl-carousel@^2.3.0":
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/@types/react-owl-carousel/-/react-owl-carousel-2.3.0.tgz#4de47c149be59db80b440b28f9f17516a5234bd1"
+  integrity sha512-av5eyleRnG0Lm+7mIY74OxJdO1HTd8k5zGnfg1AFh/j+0nndxvFlpuKsSyD24FhwNck26rZTeDvRS+++j5DvKQ==
+  dependencies:
+    react-owl-carousel "*"
 
 "@types/react-phone-number-input@^3.0.14":
   version "3.0.14"
@@ -5676,6 +5737,11 @@ immer@^9.0.7:
   resolved "https://registry.npmjs.org/immer/-/immer-9.0.16.tgz"
   integrity sha512-qenGE7CstVm1NrHQbMh8YaSzTZTFNP3zPqr3YU0S0UY441j4bJTg4A2Hh5KAhwgaiU6ZZ1Ar6y/2f4TblnMReQ==
 
+immutable@^3.8.2:
+  version "3.8.2"
+  resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.8.2.tgz#c2439951455bb39913daf281376f1530e104adf3"
+  integrity sha512-15gZoQ38eYjEjxkorfbcgBKBL6R7T459OuK+CpcWt7O3KF4uPCx2tD0uFETlUDIyo+1789crbMhTvQBSR5yBMg==
+
 immutable@~3.7.4:
   version "3.7.6"
   resolved "https://registry.yarnpkg.com/immutable/-/immutable-3.7.6.tgz#13b4d3cb12befa15482a26fe1b2ebae640071e4b"
@@ -6551,6 +6617,13 @@ jest@^27.4.3:
     import-local "^3.0.2"
     jest-cli "^27.5.1"
 
+jodit-react-ts@^0.9.0:
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/jodit-react-ts/-/jodit-react-ts-0.9.0.tgz#2f988c7203ffe48b2b95a3cc7516247f9e195814"
+  integrity sha512-DBLYcbRYo+zwwgA0Dc9BGsESr3lz1f3mXGsN2g8X1jdiE89PZ1SChH5V+EHSCu+n04rpUWUZTXPrbH0uPj/7zg==
+  dependencies:
+    jodit "^3.7.2"
+
 jodit-react@^1.3.36:
   version "1.3.36"
   resolved "https://registry.yarnpkg.com/jodit-react/-/jodit-react-1.3.36.tgz#79f198b8453444e106abf5fdae2b4f7a2b8fb62e"
@@ -6558,7 +6631,7 @@ jodit-react@^1.3.36:
   dependencies:
     jodit "^3.20.2"
 
-jodit@^3.20.2:
+jodit@^3.20.2, jodit@^3.24.5, jodit@^3.7.2:
   version "3.24.5"
   resolved "https://registry.yarnpkg.com/jodit/-/jodit-3.24.5.tgz#09d3a1b465ba212d2581d0bb48a710397869a64f"
   integrity sha512-YD7oFNaX6qvSuiWgp+M2aPN9+XS8NtHTZHH3vAE49Z3/AHseNrjAB9tRd9P12JpjPQyOaDUQls/oJdKaZEtT4w==
@@ -7107,6 +7180,16 @@ mui-image@^1.0.7:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/mui-image/-/mui-image-1.0.7.tgz#f665432d2cbf6140a34903b9a5143560ebd4df27"
   integrity sha512-U79TWMKMfMC1ZiGnv/M+SaVJeUpubEjXOdy7w53RsvidUAMZ+4nW+QmDG9yg5fgWeYy6YJgLHyI9BHSDw76iIg==
+
+mui-rte@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/mui-rte/-/mui-rte-2.0.1.tgz#d9f0df4635265812ec411eb7ccb0576e566b0e16"
+  integrity sha512-bFr+IDefwLlKwkzn2wnrH1GXy73vUtUhCMLyIbqJ4s7ge7LKnh7OxIYczU4Rd36rT0jXlLhLmkwnCRf35rTb0A==
+  dependencies:
+    "@types/draft-js" "^0.11.5"
+    classnames "^2.3.1"
+    draft-js "^0.11.7"
+    immutable "^3.8.2"
 
 multicast-dns@^7.2.5:
   version "7.2.5"
@@ -8403,7 +8486,7 @@ react-is@^18.0.0, react-is@^18.2.0:
   resolved "https://registry.npmjs.org/react-is/-/react-is-18.2.0.tgz"
   integrity sha512-xWGDIW6x921xtzPkhiULtthJHoJvBbF3q26fzloPCK0hsvxtPVelvftw3zjbHWSkR2km9Z+4uxbDDK/6Zw9B8w==
 
-react-owl-carousel@^2.3.3:
+react-owl-carousel@*, react-owl-carousel@^2.3.3:
   version "2.3.3"
   resolved "https://registry.npmjs.org/react-owl-carousel/-/react-owl-carousel-2.3.3.tgz"
   integrity sha512-B4TI2EDDtp7IDM8CWzl5Rh/17p1NfMW/QBIbkC18CkiMGCbO9ztY+vAPTN60tp+63V9v/oLqArLjkiQtDGqj/A==
@@ -8540,12 +8623,26 @@ react-swipeable-views@^0.14.0:
     react-swipeable-views-utils "^0.14.0"
     warning "^4.0.1"
 
+react-to-print@^2.14.12:
+  version "2.14.12"
+  resolved "https://registry.yarnpkg.com/react-to-print/-/react-to-print-2.14.12.tgz#e3ecddca2a03eddef1773ffb7c1a63c140f44036"
+  integrity sha512-qFJAwvDFd95Z+FWNqitt+HaB1/z+Zdd0MMrNOPUSus3fG32vqv512yB+HXhQ94J3HKoyqaIg44v0Zfc6xUBqlg==
+  dependencies:
+    prop-types "^15.8.1"
+
 react-toastify@^9.1.1:
   version "9.1.1"
   resolved "https://registry.npmjs.org/react-toastify/-/react-toastify-9.1.1.tgz"
   integrity sha512-pkFCla1z3ve045qvjEmn2xOJOy4ZciwRXm1oMPULVkELi5aJdHCN/FHnuqXq8IwGDLB7PPk2/J6uP9D8ejuiRw==
   dependencies:
     clsx "^1.1.1"
+
+react-touch-carousel@^0.10.2:
+  version "0.10.2"
+  resolved "https://registry.yarnpkg.com/react-touch-carousel/-/react-touch-carousel-0.10.2.tgz#9538fdbd9c30259a2af08492e285dc7b82608df4"
+  integrity sha512-nZnZsfHLvOTsb6VITdykY6nvhlOSFWRWqV9l72E/wXv8bNLSmwg71luaq4D0R5+BeY1eLSJC7PUrafJyzdftow==
+  dependencies:
+    "@react-spring/web" "^9.2.4"
 
 react-transition-group@^4.4.0, react-transition-group@^4.4.5:
   version "4.4.5"
@@ -9192,6 +9289,11 @@ sprintf-js@~1.0.2:
   resolved "https://registry.npmjs.org/sprintf-js/-/sprintf-js-1.0.3.tgz"
   integrity sha512-D9cPgkvLlV3t3IzL0D0YLvGA9Ahk4PcvVwUbN0dSGr1aP0Nrt4AEnTUbuGvquEC0mA64Gqt1fzirlRs5ibXx8g==
 
+ssr-window@^4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/ssr-window/-/ssr-window-4.0.2.tgz#dc6b3ee37be86ac0e3ddc60030f7b3bc9b8553be"
+  integrity sha512-ISv/Ch+ig7SOtw7G2+qkwfVASzazUnvlDTwypdLoPoySv+6MqlOV10VwPSE6EWkGjhW50lUmghPmpYZXMu/+AQ==
+
 stable@^0.1.8:
   version "0.1.8"
   resolved "https://registry.npmjs.org/stable/-/stable-0.1.8.tgz"
@@ -9459,6 +9561,13 @@ svgo@^2.7.0:
     csso "^4.2.0"
     picocolors "^1.0.0"
     stable "^0.1.8"
+
+swiper@^9.1.0:
+  version "9.1.0"
+  resolved "https://registry.yarnpkg.com/swiper/-/swiper-9.1.0.tgz#1a804254aa5b52724038ea1b4007193742a6bbf3"
+  integrity sha512-Ck8CywwfUghkbUAHbxTAWyeUAcNrIDNJ6EnKFBGGcHDjeqbh0Jq08RbmD5fMu1a0oOv1eIkUGVkqNJy/asm+yA==
+  dependencies:
+    ssr-window "^4.0.2"
 
 symbol-tree@^3.2.4:
   version "3.2.4"

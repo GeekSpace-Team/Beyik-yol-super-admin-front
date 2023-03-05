@@ -250,3 +250,15 @@ export const TabStyleLg = {
 export const PhoneNumberInput = {
   height: "50px",
 };
+
+export const littleText = {
+  color: Color.solid,
+  fontSize: "12px",
+  fontFamily: Fonts.OpenSansMedium,
+  fontWeight: "400",
+};
+
+export const carIdName = {
+  fontFamily: Fonts.OpenSansBold,
+  fontWeight: "600",
+};

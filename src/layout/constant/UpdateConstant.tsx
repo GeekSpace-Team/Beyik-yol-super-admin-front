@@ -25,10 +25,12 @@ import SaveIcon from "@mui/icons-material/Save";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { ButtonStyle, Color, Fonts } from "../../assets/theme/theme";
-import { style } from "../../pages/cars/Cars";
+import { addCarStyle, style } from "../../pages/cars/Cars";
 import { ConstantType } from "../../common/types";
 import { ConstantI } from "../../common/model";
 import EditIcon from "@mui/icons-material/Edit";
+import JoditReact from "jodit-react-ts";
+import "jodit/build/jodit.min.css";
 
 interface IProps {
   getData(): void;
@@ -38,8 +40,8 @@ interface IProps {
 const UpdateConstant: FC<IProps> = (props: IProps) => {
   const [name_tm, setName_tm] = useState(props.item.name_tm);
   const [name_ru, setName_ru] = useState(props.item.name_ru);
-  const [content_tm, setContent_tm] = useState(props.item.content_tm);
-  const [content_ru, setContent_ru] = useState(props.item.content_ru);
+  const [content_tm, setContent_tm] = useState<string>(props.item.content_tm);
+  const [content_ru, setContent_ru] = useState<string>(props.item.content_ru);
   const [type, setType] = useState(props.item.type);
 
   const { t } = useTranslation();
@@ -65,6 +67,14 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
     }
   };
 
+  const clearInput = () => {
+    setName_tm("");
+    setName_ru("");
+    setContent_ru("");
+    setContent_tm("");
+    setType("");
+  };
+
   function updateRegion() {
     const data = {
       name_tm: name_tm,
@@ -80,9 +90,6 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setType("");
         } else {
           showError("Something went wrong!");
         }
@@ -115,7 +122,7 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
           }}
         >
           <Fade in={open}>
-            <Box sx={style}>
+            <Box sx={{ ...addCarStyle, overflowY: "scroll" }}>
               <Stack
                 direction="row"
                 alignItems={"center"}
@@ -160,26 +167,12 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
                 </Grid>
 
                 <Grid item xs={2} sm={7} md={6}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Content tm"
-                    multiline
-                    fullWidth
-                    maxRows={9}
-                    value={content_tm}
-                    onChange={(e) => setContent_tm(e.target.value)}
-                  />
+                  <Typography>Content TM</Typography>
+                  <JoditReact onChange={(content) => setContent_tm(content)} />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
-                  <TextField
-                    id="outlined-multiline-flexible"
-                    label="Content ru"
-                    multiline
-                    fullWidth
-                    maxRows={9}
-                    value={content_ru}
-                    onChange={(e) => setContent_ru(e.target.value)}
-                  />
+                  <Typography>Content RU</Typography>
+                  <JoditReact onChange={(content) => setContent_ru(content)} />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
@@ -214,6 +207,7 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
                   Clear
                 </Button>

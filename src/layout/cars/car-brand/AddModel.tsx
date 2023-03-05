@@ -86,7 +86,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
     <>
       <div>
         <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-          Add Model
+          {t("addModel")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -110,7 +110,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Model
+                  {t("addModel")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -126,7 +126,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title Name"
+                    label={t("titleName")}
                     variant="outlined"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
@@ -137,13 +137,13 @@ const AddModel: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -164,7 +164,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
                 <Grid item xs={12} sm={12} md={12}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={5}
@@ -184,7 +184,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
                   startIcon={<ClearIcon />}
                   variant="contained"
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -194,7 +194,7 @@ const AddModel: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

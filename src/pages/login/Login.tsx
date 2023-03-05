@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import styled from "styled-components";
 import { Player } from "@lottiefiles/react-lottie-player";
-import { Button, Grid, Stack, Typography } from "@mui/material";
+import { Grid, Stack, Typography } from "@mui/material";
 import { AppContext } from "../../App";
 import LoginIcon from "@mui/icons-material/Login";
 import { LoadingButton } from "@mui/lab";
@@ -65,7 +65,7 @@ const Login = () => {
             // );
             sessionStorage.setItem("my_token", response.data.access_token);
             sessionStorage.setItem("token", response.data.access_token);
-            window.location.href = "/";
+            window.location.href = "/cars";
           }
         })
         .catch((err) => {

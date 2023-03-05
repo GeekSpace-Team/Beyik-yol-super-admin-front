@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useRef, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -25,6 +25,9 @@ import {
   Stack,
   Typography,
   useMediaQuery,
+  Grid,
+  Divider,
+  Button,
 } from "@mui/material";
 import {
   Color,
@@ -34,11 +37,14 @@ import {
   TableCellStyle,
   TableHeadStyle,
   TabStyle,
+  littleText,
+  carIdName,
+  ButtonStyle,
 } from "../../assets/theme/theme";
 import { Tooltip } from "@material-ui/core";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import AddCar from "../../layout/cars/car/AddCar";
 import CarEngineTable from "../../layout/cars/car-engine/CarEngineTable";
 import CarOptionTable from "../../layout/cars/car-option/CarOptionTable";
@@ -51,6 +57,24 @@ import { convertToDate, getImageUrl, ImageType } from "../../common/utils";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Loading from "../../common/Loading";
+import { AppContext } from "../../App";
+// import "owl.carousel/dist/assets/owl.carousel.css";
+// import "owl.carousel/dist/assets/owl.theme.default.css";
+// import OwlCarousel from "react-owl-carousel";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import Card from "@mui/material/Card";
+import ReactToPrint, { PrintContextConsumer } from "react-to-print";
+import CardMedia from "@mui/material/CardMedia";
+import { CardActionArea } from "@mui/material";
+import { Navigation, Autoplay } from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import "swiper/css/autoplay";
+import PrintIcon from "@mui/icons-material/Print";
+import { useReactToPrint } from "react-to-print";
 
 const CarFilterModal = () => {
   const [open, setOpen] = useState(false);
@@ -96,8 +120,9 @@ const CarFilterModal = () => {
 // General Cars Tab section starts here ...............................................................
 
 const CarTable = () => {
-  const { t } = useTranslation();
+  const { t } = useContext(AppContext);
   const [list, setList] = useState<AllCars[]>([]);
+
   const [loading, setLoading] = useState(false);
 
   const getData = async () => {
@@ -124,11 +149,11 @@ const CarTable = () => {
       AxiosInstance.delete("/cars/delete-car/" + id)
         .then((response) => {
           showSuccess("Deleted!");
-          // setLoading(false);
+          setLoading(false);
           getData();
         })
         .catch((err) => {
-          // setLoading(false);
+          setLoading(false);
           showError(err.toString());
         });
     }
@@ -151,22 +176,22 @@ const CarTable = () => {
                 <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Image</Typography>
+                <Typography sx={TableHeadStyle}>{t("image")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Model</Typography>
+                <Typography sx={TableHeadStyle}>{t("carModel")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Status</Typography>
+                <Typography sx={TableHeadStyle}>{t("status")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Year</Typography>
+                <Typography sx={TableHeadStyle}>{t("carYear")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
               <TableCell>
                 <Typography sx={TableHeadStyle}>More</Typography>
@@ -217,7 +242,7 @@ const CarTable = () => {
                     </IconButton>
                   </TableCell>
                   <TableCell>
-                    <Link to="/carTable">
+                    <Link to={"/cars/" + item.id}>
                       <Tooltip title="full info">
                         <IconButton sx={{ color: Color.secondaryDark }}>
                           <ArrowRightAltIcon />
@@ -239,109 +264,203 @@ const CarTable = () => {
 // Car Table Full Information section starts here ......................................................
 export const CarTableInfo = () => {
   const { t } = useTranslation();
+  const [loading, setLoading] = useState(false);
+  let { id } = useParams();
+  const [listById, setListById] = useState<AllCars>();
+
+  const getCarById = async () => {
+    setLoading(true);
+    await AxiosInstance.get<AllCars>(`/cars/get-car-by-id/${id}`)
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setListById(resp.data);
+        }
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        alert(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getCarById();
+  }, []);
+  const componentRef = useRef<HTMLDivElement>(null);
   return (
     <>
       <Box sx={{ p: 5 }}>
-        <Stack spacing={3} direction="row" alignItems={"center"} pb={3}>
-          <Link to="/">
-            <Tooltip title="Come Back!">
-              <IconButton sx={{ color: Color.secondaryDark }}>
-                <KeyboardBackspaceIcon />
-              </IconButton>
-            </Tooltip>
-          </Link>
-          <Typography sx={PageName}>Full Information Table</Typography>
+        <Stack
+          direction="row"
+          alignItems={"center"}
+          justifyContent="space-between"
+          pb={3}
+        >
+          <Stack direction={"row"} spacing={3}>
+            <Link to="/cars">
+              <Tooltip title="Come Back!">
+                <IconButton sx={{ color: Color.secondaryDark }}>
+                  <KeyboardBackspaceIcon />
+                </IconButton>
+              </Tooltip>
+            </Link>
+            <Typography sx={PageName}>Full Information Table</Typography>
+          </Stack>
+          <ReactToPrint
+            trigger={() => (
+              <Button
+                sx={ButtonStyle}
+                startIcon={<PrintIcon />}
+                variant="contained"
+              >
+                Print Information
+              </Button>
+            )}
+            content={() => componentRef.current}
+          />
         </Stack>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow sx={{ background: "#f0f0f0" }}>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>ID</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Image</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Car Model</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Status</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Car Year</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Car Option</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Car Engine Type</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Car Transmition</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Phone Number</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Created At</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Updated At</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableHeadStyle}>Users</Typography>
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              <TableRow>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>2</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>Halil Gayypov</Typography>
-                </TableCell>
-                <TableCell>
-                  <Image src="/images/tmFlag.jpg" />
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>BMW X7</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>PENDING</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>2022</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>Options</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>Engine Type</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>Transmition</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>+99363430338</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>13.12.2022</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>14.12.2023</Typography>
-                </TableCell>
-                <TableCell>
-                  <Typography sx={TableCellStyle}>Alyyew Shagen</Typography>
-                </TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
-        </TableContainer>
+        <Divider />
+        <div ref={componentRef}>
+          <Grid container mt={2}>
+            <Grid item lg={3}>
+              <Stack direction="row" mb={3} justifyContent={"center"}>
+                <Typography sx={PageName}>Car Images</Typography>
+              </Stack>
+              <Swiper
+                modules={[Navigation, Autoplay]}
+                slidesPerView={1}
+                navigation
+                autoplay={{ delay: 3000, disableOnInteraction: false }}
+              >
+                {listById?.images
+                  ? listById?.images.map((item, i) => {
+                      return (
+                        <SwiperSlide key={`get_by_id_car_image_key${i}`}>
+                          <Card sx={{ width: "90%" }}>
+                            <CardActionArea>
+                              <CardMedia
+                                component="img"
+                                height="270"
+                                image={getImageUrl(item.url, ImageType.Car)}
+                                alt="green iguana"
+                              />
+                            </CardActionArea>
+                          </Card>
+                        </SwiperSlide>
+                      );
+                    })
+                  : null}
+              </Swiper>
+            </Grid>
+            <Grid item lg={1}></Grid>
+            <Grid item lg={8}>
+              <Stack direction="row" justifyContent={"center"}>
+                <Typography sx={PageName}>Umumy Maglumatlar</Typography>
+              </Stack>
+
+              {listById ? (
+                <Grid container mt={3}>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Name</Typography>
+                      <Typography sx={carIdName}>{listById.name}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Status</Typography>
+                      <Typography sx={carIdName}>{listById.status}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Model</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.carModel.name}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Option</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.carOption.name_tm}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Engine</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.carEngineType.name_tm}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Engine Power</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.enginePower}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Transmition</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.carTransmition.name_tm}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Year</Typography>
+                      <Typography sx={carIdName}>{listById.year}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Last Mile</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.lastMile}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Vin Code</Typography>
+                      <Typography sx={carIdName}>{listById.vinCode}</Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Phone Number</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.phoneNumber}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>Created At</Typography>
+                      <Typography sx={carIdName}>
+                        {convertToDate(listById.createdAt)}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                  <Grid item lg={4}>
+                    <Stack pb={2}>
+                      <Typography sx={littleText}>User Name</Typography>
+                      <Typography sx={carIdName}>
+                        {listById.users.fullname}
+                      </Typography>
+                    </Stack>
+                  </Grid>
+                </Grid>
+              ) : null}
+            </Grid>
+          </Grid>
+        </div>
       </Box>
     </>
   );

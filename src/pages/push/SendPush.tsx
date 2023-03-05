@@ -32,7 +32,11 @@ const SendPush: FC<IProps> = (props: IProps) => {
   const [titleRu, setTitleRu] = useState("");
   const [messageTm, setMessageTm] = useState("");
   const [messageRu, setMessageRu] = useState("");
-  const [userId, setUserId] = useState();
+  const [userId, setUserId] = useState<Partial<UserI> | null>({
+    fullname: "All",
+    id: null,
+    blocked: false,
+  });
   const [url, setUrl] = useState("");
   const [isRead, setIsRead] = useState(false);
   const handleClose = () => setOpen(false);
@@ -44,7 +48,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
     await AxiosInstance.get("/users/get-all-users-full")
       .then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
-          setList(resp.data);
+          setList([userId, ...resp.data]);
         }
       })
       .catch((err) => {
@@ -62,11 +66,11 @@ const SendPush: FC<IProps> = (props: IProps) => {
       titleRu: titleRu,
       messageTm: messageTm,
       messageRu: messageRu,
-      userId: userId,
       isRead: isRead,
+      userId: userId ? userId.id : null,
       url: url,
     };
-    AxiosInstance.post("/inbox/send-to-user", body)
+    AxiosInstance.post(`/inbox/send-to-user`, body)
       .then((resp) => {
         if (!resp.data.error) {
           handleClose();
@@ -93,7 +97,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
       titleRu: titleRu,
       messageTm: messageTm,
       messageRu: messageRu,
-      userId: userId,
+      userId: null,
       isRead: isRead,
       url: url,
     };
@@ -118,27 +122,11 @@ const SendPush: FC<IProps> = (props: IProps) => {
       });
   }
 
-  const handleButtonClickAll = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
-      sendMessage();
-    }
-  };
-
-  const handleButtonClickUser = () => {
-    if (!loading) {
-      setSuccess(false);
-      setLoading(true);
-      sendToAll();
-    }
-  };
-
   const handleClick = () => {
-    if (userId === !null) {
-      handleButtonClickAll();
+    if (userId && userId.id === null) {
+      sendToAll();
     } else {
-      handleButtonClickUser();
+      sendMessage();
     }
   };
 
@@ -184,9 +172,14 @@ const SendPush: FC<IProps> = (props: IProps) => {
                   disablePortal
                   id="combo-box-demo"
                   options={list}
+                  onChange={(event: any, newValue: Partial<UserI> | null) => {
+                    setUserId(newValue);
+                  }}
                   value={userId}
                   fullWidth
-                  getOptionLabel={(user) => user.fullname}
+                  getOptionLabel={(user) =>
+                    user.fullname ? user.fullname : ""
+                  }
                   renderInput={(params) => (
                     <TextField {...params} label="Users" />
                   )}

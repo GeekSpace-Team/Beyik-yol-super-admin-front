@@ -81,25 +81,25 @@ const Users: FC = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Full Name</Typography>
+                <Typography sx={TableHeadStyle}>{t("fullname")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>User Name</Typography>
+                <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Phone Number</Typography>
+                <Typography sx={TableHeadStyle}>{t("phoneNumber")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Date</Typography>
+                <Typography sx={TableHeadStyle}>{t("date")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Image</Typography>
+                <Typography sx={TableHeadStyle}>{t("image")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Blocked</Typography>
+                <Typography sx={TableHeadStyle}>{t("blocked")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Status</Typography>
+                <Typography sx={TableHeadStyle}>{t("status")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -143,9 +143,9 @@ const Users: FC = () => {
                           color: "green",
                           textTransform: "none",
                         }}
-                        onClick={(e) => blockUser(item.id)}
+                        onClick={(e) => blockUser(item.id ? item.id : 0)}
                       >
-                        Block
+                        {t("blocked")}
                       </Button>
                     ) : (
                       <Button
@@ -154,9 +154,9 @@ const Users: FC = () => {
                           color: "red",
                           textTransform: "none",
                         }}
-                        onClick={(e) => blockUser(item.id)}
+                        onClick={(e) => blockUser(item.id ? item.id : 0)}
                       >
-                        Unblock
+                        {t("unBlock")}
                       </Button>
                     )}
                   </TableCell>

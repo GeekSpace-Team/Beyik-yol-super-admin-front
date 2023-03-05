@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   IconButton,
   Paper,
@@ -12,7 +12,6 @@ import {
   Typography,
 } from "@mui/material";
 import { TableCellStyle, TableHeadStyle } from "../../../assets/theme/theme";
-import { useTranslation } from "react-i18next";
 import Image from "@jy95/material-ui-image";
 import AddBrand from "./AddBrand";
 import UpdateBrand from "./UpdateBrand";
@@ -23,8 +22,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { showError, showSuccess } from "../../../components/alert/Alert";
 import CarModel from "./CarModel";
 import Loading from "../../../common/Loading";
+import { AppContext } from "../../../App";
 
 const CarBrand = () => {
+  const { t } = useContext(AppContext);
   const [listt, setList] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(false);
 
@@ -63,8 +64,6 @@ const CarBrand = () => {
     }
   }
 
-  const { t } = useTranslation();
-
   return (
     <>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
@@ -78,25 +77,25 @@ const CarBrand = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name</Typography>
+                <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Image</Typography>
+                <Typography sx={TableHeadStyle}>{t("image")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Description</Typography>
+                <Typography sx={TableHeadStyle}>{t("desc")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Status</Typography>
+                <Typography sx={TableHeadStyle}>{t("status")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Model</Typography>
+                <Typography sx={TableHeadStyle}>{t("carModel")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>

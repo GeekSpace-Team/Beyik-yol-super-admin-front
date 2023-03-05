@@ -90,11 +90,11 @@ export interface AllCars {
   updatedAt: string;
   usersId: number;
   images: AllCarsImage[];
-  models: Model[];
-  carTransmition: Transmition[];
-  carOption: Option[];
-  carEngineType: Engine[];
-  users: Users[];
+  carModel: Model;
+  carTransmition: Transmition;
+  carOption: Option;
+  carEngineType: Engine;
+  users: Users;
 }
 
 //
@@ -240,7 +240,7 @@ export interface PusherI {
 }
 
 export interface UserI {
-  id: number;
+  id: number | null;
   fullname: string;
   phonenumber: string;
   username: string;

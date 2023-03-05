@@ -84,12 +84,6 @@ const Constant = () => {
                 <Typography sx={TableHeadStyle}>Name RU</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Content TM</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableHeadStyle}>Content RU</Typography>
-              </TableCell>
-              <TableCell>
                 <Typography sx={TableHeadStyle}>Edit</Typography>
               </TableCell>
               <TableCell>
@@ -109,16 +103,6 @@ const Constant = () => {
                   </TableCell>
                   <TableCell>
                     <Typography sx={TableCellStyle}>{item.name_ru}</Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {item.content_tm}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {item.content_ru}
-                    </Typography>
                   </TableCell>
                   <TableCell>
                     <UpdateConstant getData={getData} item={item} />

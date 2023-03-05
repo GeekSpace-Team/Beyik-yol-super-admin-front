@@ -16,9 +16,9 @@ import {
   SelectChangeEvent,
   Stack,
   TextField,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { useTranslation } from "react-i18next";
 import ClearIcon from "@mui/icons-material/Clear";
 import SaveIcon from "@mui/icons-material/Save";
 import { ButtonStyle, Color, Fonts } from "../../../assets/theme/theme";
@@ -33,12 +33,11 @@ interface IProps {
 }
 
 const AddBrand: FC<IProps> = (props: IProps) => {
-  const { status } = useContext(AppContext);
+  const { status, t } = useContext(AppContext);
   const [selectedImages, setImages] = useState<string | File>();
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [statusValue, setStatusValue] = useState("");
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -93,7 +92,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
     <>
       <div>
         <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-          Add Brand
+          {t("addBrand")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -117,11 +116,13 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Brand
+                  {t("addBrand")}
                 </Typography>
-                <IconButton onClick={handleClose}>
-                  <ClearIcon />
-                </IconButton>
+                <Tooltip title={t("close")}>
+                  <IconButton onClick={handleClose}>
+                    <ClearIcon />
+                  </IconButton>
+                </Tooltip>
               </Stack>
               <Divider />
               <Grid
@@ -133,7 +134,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label={t("user_name")}
                     variant="outlined"
                     fullWidth
                     value={name}
@@ -144,13 +145,13 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -171,7 +172,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={5}
@@ -187,7 +188,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                     component="label"
                     fullWidth
                   >
-                    Upload Image
+                    {t("uploadImg")}
                     <input
                       hidden
                       accept="image/*"
@@ -210,7 +211,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                   startIcon={<ClearIcon />}
                   variant="contained"
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -220,7 +221,7 @@ const AddBrand: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress
