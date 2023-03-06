@@ -1,10 +1,10 @@
 import axios from "axios";
 
-export const BASE_URL = "http://192.168.1.8:6967/";
-export const BASE_URL_2 = "http://192.168.1.8:6967";
+// export const BASE_URL = "http://192.168.1.8:6967/";
+// export const BASE_URL_2 = "http://192.168.1.8:6967";
 
-// export const BASE_URL = "http://192.168.97.125:6967/";
-// export const BASE_URL_2 = "http://192.168.97.125:6967";
+export const BASE_URL = "http://192.168.97.59:6967/";
+export const BASE_URL_2 = "http://192.168.97.59:6967";
 
 // export const BASE_URL = "http://95.85.121.153:6967/";
 // export const BASE_URL_2 = "http://95.85.121.153:6967";
