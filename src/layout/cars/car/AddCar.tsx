@@ -44,7 +44,7 @@ interface IProps {
 
 const AddCar: FC<IProps> = (props: IProps) => {
   const { listAllCars } = useContext(AppContext);
-  const [selectedImages, setImages] = useState<any>();
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const { status } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
@@ -62,6 +62,13 @@ const AddCar: FC<IProps> = (props: IProps) => {
   const [vinCode, setVinCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [usersId, setUsersId] = useState(1);
+
+  function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const files = event.target.files;
+    if (files) {
+      setSelectedImages(Array.from(files));
+    }
+  }
 
   const handleChangeStatus = (event: SelectChangeEvent) => {
     setStatusValue(event.target.value as string);
@@ -184,17 +191,14 @@ const AddCar: FC<IProps> = (props: IProps) => {
     }
   };
 
-  function addCarImages() {
+  function addCarImages(id: number) {
     let formData = new FormData();
     if (selectedImages?.length && selectedImages.length > 0) {
       for (let k = 0; k < selectedImages.length; k++) {
         formData.append("image", selectedImages[k]);
       }
     }
-    AxiosInstanceFormData.post(
-      `/car-image/add-image/${listAllCars.id}`,
-      formData
-    )
+    AxiosInstanceFormData.post(`/car-image/add-image/${id}`, formData)
       .then((response) => {
         props.getData();
       })
@@ -225,7 +229,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          addCarImages();
+          addCarImages(response.data.id);
           setName("");
           setModelId("");
           setOptionId("");
@@ -500,14 +504,13 @@ const AddCar: FC<IProps> = (props: IProps) => {
                     component="label"
                     fullWidth
                   >
-                    Upload Image
+                    Upload Images
                     <input
                       hidden
                       accept="image/*"
                       type="file"
-                      onChange={(e) =>
-                        setImages(e.target.files ? e.target.files[0] : "")
-                      }
+                      onChange={handleImageChange}
+                      multiple
                     />
                   </Button>
                 </Grid>
