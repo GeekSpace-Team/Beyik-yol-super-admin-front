@@ -1,4 +1,4 @@
-const startUrl: string = "http://192.168.97.59:6967";
+const startUrl: string = "http://95.85.121.153:6967";
 const brand = "/car/car-brand/";
 const car = "/car/image/";
 const adsImage = "/car/ads/";

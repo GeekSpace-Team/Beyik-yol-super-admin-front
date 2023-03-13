@@ -187,9 +187,9 @@ const CarTable = () => {
               <TableCell>
                 <Typography sx={TableHeadStyle}>{t("carYear")}</Typography>
               </TableCell>
-              <TableCell>
+              {/* <TableCell>
                 <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
-              </TableCell>
+              </TableCell> */}
               <TableCell>
                 <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
@@ -230,9 +230,9 @@ const CarTable = () => {
                       {convertToDate(item.createdAt)}
                     </Typography>
                   </TableCell>
-                  <TableCell>
+                  {/* <TableCell>
                     <UpdateCar getData={getData} item={item} />
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell>
                     <IconButton
                       color={"error"}
