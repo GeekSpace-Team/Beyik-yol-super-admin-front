@@ -92,37 +92,7 @@ const App: FC = (props) => {
       .then((resp) => {
         if (resp.status >= 200 && resp.status < 300) {
           setList(resp.data);
-        }
-      })
-      .catch((err) => {
-        alert(err + "");
-      });
-  };
-
-  useEffect(() => {
-    getType();
-  }, []);
-
-  const getAdsType = async () => {
-    await AxiosInstance.get("/other/get-types")
-      .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) {
           setAdsList(resp.data);
-        }
-      })
-      .catch((err) => {
-        alert(err + "");
-      });
-  };
-
-  useEffect(() => {
-    getAdsType();
-  }, []);
-
-  const getStatus = async () => {
-    await AxiosInstance.get("/other/get-types")
-      .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) {
           setStatus(resp.data);
         }
       })
@@ -132,7 +102,7 @@ const App: FC = (props) => {
   };
 
   useEffect(() => {
-    getStatus();
+    getType();
   }, []);
 
   useEffect(() => {

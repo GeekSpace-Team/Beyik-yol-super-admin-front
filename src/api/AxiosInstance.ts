@@ -6,8 +6,8 @@ import axios from "axios";
 // export const BASE_URL = "http://192.168.97.59:6967/";
 // export const BASE_URL_2 = "http://192.168.97.59:6967";
 
-export const BASE_URL = "http://95.85.121.153:6967/";
-export const BASE_URL_2 = "http://95.85.121.153:6967";
+export const BASE_URL = "https://beyikyol.com/";
+export const BASE_URL_2 = "https://beyikyol.com";
 
 const AxiosInstance = axios.create({
   baseURL: BASE_URL,

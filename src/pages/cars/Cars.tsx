@@ -67,7 +67,7 @@ import Card from "@mui/material/Card";
 import ReactToPrint, { PrintContextConsumer } from "react-to-print";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
-import { Navigation, Autoplay } from "swiper";
+import { Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -327,9 +327,8 @@ export const CarTableInfo = () => {
                 <Typography sx={PageName}>Car Images</Typography>
               </Stack>
               <Swiper
-                modules={[Navigation, Autoplay]}
+                modules={[Autoplay]}
                 slidesPerView={1}
-                navigation
                 autoplay={{ delay: 3000, disableOnInteraction: false }}
               >
                 {listById?.images
