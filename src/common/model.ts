@@ -222,7 +222,7 @@ export interface AdsI {
   url: string;
   createdAt: string;
   updatedAt: string;
-  adsImage: string;
+  adsImage: AdsImage[];
   statusValue: string;
 }
 

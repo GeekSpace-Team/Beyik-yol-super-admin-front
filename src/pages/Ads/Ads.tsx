@@ -119,7 +119,7 @@ const Ads: FC = () => {
                     <Image
                       src={
                         item.adsImage && item.adsImage.length > 0
-                          ? getImageUrl(item.adsImage, ImageType.Ads)
+                          ? getImageUrl(item.adsImage[0].url, ImageType.Ads)
                           : ""
                       }
                     />

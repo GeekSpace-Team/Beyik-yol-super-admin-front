@@ -169,14 +169,14 @@ const UpdateConstant: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <Typography>Content TM</Typography>
                   <JoditReact
-                    defaultValue="content_tm"
+                    defaultValue={content_tm}
                     onChange={(content) => setContent_tm(content)}
                   />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <Typography>Content RU</Typography>
                   <JoditReact
-                    defaultValue="content_ru"
+                    defaultValue={content_ru}
                     onChange={(content) => setContent_ru(content)}
                   />
                 </Grid>

@@ -32,6 +32,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
+import { loginChecker } from "../../common/utils";
 
 const LeftB = {
   width: "60px",
@@ -207,6 +208,12 @@ interface Props {
 }
 
 const Sidebar: FC = (props: Props) => {
+  let location = useLocation();
+
+  useEffect(() => {
+    loginChecker();
+  }, [location]);
+
   const { t } = useTranslation();
 
   const [checked, setChecked] = useState(true);
@@ -229,7 +236,6 @@ const Sidebar: FC = (props: Props) => {
     setMobileOpen(!mobileOpen);
   };
 
-  const location = useLocation();
   const navigator = useNavigate();
 
   const [alignment, setAlignment] = useState(true);

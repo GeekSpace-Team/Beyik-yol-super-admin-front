@@ -44,3 +44,14 @@ export function convertToDate(value: string): string {
   let val = new Date(value);
   return `${val.getFullYear()}-${val.getMonth()}-${val.getDate()}`;
 }
+
+export const loginChecker = () => {
+  try {
+    let token = window.sessionStorage.getItem("token");
+    if (typeof token === "undefined" || token === null || token === "") {
+      window.location.href = "/";
+    }
+  } catch (err) {
+    window.location.href = "/";
+  }
+};
