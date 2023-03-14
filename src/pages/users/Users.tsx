@@ -22,6 +22,7 @@ import { useTranslation } from "react-i18next";
 import { UserI } from "../../common/model";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { convertToDate, getImageUrl, ImageType } from "../../common/utils";
+import { showError } from "../../components/alert/Alert";
 
 const Users: FC = () => {
   const { t } = useTranslation();
@@ -37,7 +38,7 @@ const Users: FC = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -54,7 +55,7 @@ const Users: FC = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 

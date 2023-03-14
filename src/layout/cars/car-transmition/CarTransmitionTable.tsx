@@ -9,6 +9,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import { TableCellStyle, TableHeadStyle } from "../../../assets/theme/theme";
@@ -68,25 +69,22 @@ const CarTransmitionTable = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Description</Typography>
+                <Typography sx={TableHeadStyle}>{t("desc")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Car Brand</Typography>
+                <Typography sx={TableHeadStyle}>{t("status")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Status</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
-              </TableCell>
-              <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -109,23 +107,20 @@ const CarTransmitionTable = () => {
                     </Typography>
                   </TableCell>
                   <TableCell>
-                    <Typography sx={TableCellStyle}>
-                      {t(item.status)}
-                    </Typography>
-                  </TableCell>
-                  <TableCell>
                     <Typography sx={TableCellStyle}>{item.status}</Typography>
                   </TableCell>
                   <TableCell>
                     <UpdateTransmitionModal getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      color={"error"}
-                      onClick={() => deleteCarOption(item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title={t("delete")}>
+                      <IconButton
+                        color={"error"}
+                        onClick={() => deleteCarOption(item.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );

@@ -49,7 +49,7 @@ import AddCar from "../../layout/cars/car/AddCar";
 import CarEngineTable from "../../layout/cars/car-engine/CarEngineTable";
 import CarOptionTable from "../../layout/cars/car-option/CarOptionTable";
 import CarBrand from "../../layout/cars/car-brand/CarBrand";
-import UpdateCar from "../../layout/cars/car/UpdateCar";
+// import UpdateCar from "../../layout/cars/car/UpdateCar";
 import CarTransmitionTable from "../../layout/cars/car-transmition/CarTransmitionTable";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { AllCars } from "../../common/model";
@@ -58,13 +58,10 @@ import { showError, showSuccess } from "../../components/alert/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Loading from "../../common/Loading";
 import { AppContext } from "../../App";
-// import "owl.carousel/dist/assets/owl.carousel.css";
-// import "owl.carousel/dist/assets/owl.theme.default.css";
-// import OwlCarousel from "react-owl-carousel";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import Card from "@mui/material/Card";
-import ReactToPrint, { PrintContextConsumer } from "react-to-print";
+import ReactToPrint from "react-to-print";
 import CardMedia from "@mui/material/CardMedia";
 import { CardActionArea } from "@mui/material";
 import { Autoplay } from "swiper";
@@ -74,48 +71,47 @@ import "swiper/css/pagination";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 import PrintIcon from "@mui/icons-material/Print";
-import { useReactToPrint } from "react-to-print";
 
-const CarFilterModal = () => {
-  const [open, setOpen] = useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const [valueE, setValueE] = useState<any[]>([]);
+// const CarFilterModal = () => {
+//   const [open, setOpen] = useState(false);
+//   const handleOpen = () => setOpen(true);
+//   const handleClose = () => setOpen(false);
+//   const [valueE, setValueE] = useState<any[]>([]);
 
-  return (
-    <>
-      <Tooltip title="Filterlemek">
-        <IconButton onClick={handleOpen}>
-          <TuneIcon />
-        </IconButton>
-      </Tooltip>
+//   return (
+//     <>
+//       <Tooltip title="Filterlemek">
+//         <IconButton onClick={handleOpen}>
+//           <TuneIcon />
+//         </IconButton>
+//       </Tooltip>
 
-      <Modal
-        aria-labelledby="transition-modal-title"
-        aria-describedby="transition-modal-description"
-        open={open}
-        onClose={handleClose}
-        closeAfterTransition
-        BackdropComponent={Backdrop}
-        BackdropProps={{
-          timeout: 500,
-        }}
-      >
-        <Fade in={open}>
-          <Box sx={deleteStyle}>
-            <PhoneInput
-              style={{ height: "40px" }}
-              defaultCountry="TM"
-              className="phoneNumberInput"
-              values={valueE}
-              onChange={(any) => setValueE([any])}
-            />
-          </Box>
-        </Fade>
-      </Modal>
-    </>
-  );
-};
+//       <Modal
+//         aria-labelledby="transition-modal-title"
+//         aria-describedby="transition-modal-description"
+//         open={open}
+//         onClose={handleClose}
+//         closeAfterTransition
+//         BackdropComponent={Backdrop}
+//         BackdropProps={{
+//           timeout: 500,
+//         }}
+//       >
+//         <Fade in={open}>
+//           <Box sx={deleteStyle}>
+//             <PhoneInput
+//               style={{ height: "40px" }}
+//               defaultCountry="TM"
+//               className="phoneNumberInput"
+//               values={valueE}
+//               onChange={(any) => setValueE([any])}
+//             />
+//           </Box>
+//         </Fade>
+//       </Modal>
+//     </>
+//   );
+// };
 
 // General Cars Tab section starts here ...............................................................
 
@@ -162,7 +158,7 @@ const CarTable = () => {
   return (
     <>
       <Stack pb={3} direction="row" spacing={3} justifyContent={"flex-end"}>
-        <CarFilterModal />
+        {/* <CarFilterModal /> */}
         <AddCar getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
@@ -501,6 +497,7 @@ function a11yProps(index: any) {
 }
 
 const AnimationTab = () => {
+  const { t } = useContext(AppContext);
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
@@ -560,14 +557,14 @@ const AnimationTab = () => {
               iconPosition="start"
               icon={<AirportShuttleIcon />}
               sx={{ ...TabStyle, height: "20px" }}
-              label="Car"
+              label={t("car")}
               {...a11yProps(0)}
             />
             <Tab
               iconPosition="start"
               icon={<AirportShuttleIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Car Brand"
+              label={t("carBrand")}
               {...a11yProps(1)}
             />
 
@@ -575,21 +572,21 @@ const AnimationTab = () => {
               iconPosition="start"
               icon={<AirportShuttleIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Car Option"
+              label={t("carOption")}
               {...a11yProps(2)}
             />
             <Tab
               iconPosition="start"
               icon={<AirportShuttleIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Car Engine"
+              label={t("carEngine")}
               {...a11yProps(2)}
             />
             <Tab
               iconPosition="start"
               icon={<AirportShuttleIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Car Transmition"
+              label={t("carTransmition")}
               {...a11yProps(2)}
             />
           </Tabs>
@@ -669,7 +666,7 @@ const Cars: FC = () => {
         pb={3}
         justifyContent={"space-between"}
       >
-        <Typography sx={PageName}>{t("cars_page")}</Typography>
+        <Typography sx={PageName}>{t("car")}</Typography>
       </Stack>
       <AnimationTab />
     </>

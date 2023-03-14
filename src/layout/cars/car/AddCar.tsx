@@ -24,6 +24,7 @@ import SaveIcon from "@mui/icons-material/Save";
 import { ButtonStyle, Color, PageName } from "../../../assets/theme/theme";
 import { addCarStyle } from "../../../pages/cars/Cars";
 import {
+  AllCars,
   Engine,
   Model,
   Option,
@@ -43,7 +44,7 @@ interface IProps {
 }
 
 const AddCar: FC<IProps> = (props: IProps) => {
-  const { listAllCars } = useContext(AppContext);
+  const { t } = useContext(AppContext);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const { status } = useContext(AppContext);
   const [open, setOpen] = useState(false);
@@ -61,7 +62,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
   const [lastMile, setLastMile] = useState("");
   const [vinCode, setVinCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [usersId, setUsersId] = useState(1);
+  const [usersId, setUsersId] = useState("");
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -88,7 +89,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((error) => {
-        alert(error + "");
+        showError(error + "");
       });
   };
 
@@ -110,7 +111,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -132,7 +133,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -175,7 +176,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -230,16 +231,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
           setLoading(false);
           props.getData();
           addCarImages(response.data.id);
-          setName("");
-          setModelId("");
-          setOptionId("");
-          setEngineTypeId("");
-          setEnginePower("");
-          setTransmitionId("");
-          setLastMile("");
-          setVinCode("");
-          setPhoneNumber("");
-          setUsersId(1);
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -249,11 +241,44 @@ const AddCar: FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setName("");
+    setModelId("");
+    setOptionId("");
+    setEngineTypeId("");
+    setEnginePower("");
+    setTransmitionId("");
+    setLastMile("");
+    setVinCode("");
+    setPhoneNumber("");
+    setUsersId("");
+    setYear("");
+    setStatusValue("");
+  };
+
+  const [listAllCars, setListAllCars] = useState<AllCars[]>([]);
+
+  const getAllCarsData = async () => {
+    await AxiosInstance.get<AllCars[]>("/cars/get-all-cars")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setListAllCars(resp.data);
+        }
+      })
+      .catch((err) => {
+        showError(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getAllCarsData();
+  }, []);
+
   return (
     <>
       <div>
         <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-          Add car
+          {t("addCar")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -274,7 +299,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
                 pb={1}
                 justifyContent={"space-between"}
               >
-                <Typography sx={PageName}>Add Car</Typography>,
+                <Typography sx={PageName}> {t("addCar")}</Typography>,
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
                 </IconButton>
@@ -504,7 +529,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
                     component="label"
                     fullWidth
                   >
-                    Upload Images
+                    {t("uploadImg")}
                     <input
                       hidden
                       accept="image/*"
@@ -520,13 +545,14 @@ const AddCar: FC<IProps> = (props: IProps) => {
                 justifyContent="flex-end"
                 spacing={2}
                 mt={3}
+                onClick={clearInput}
               >
                 <Button
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -536,7 +562,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

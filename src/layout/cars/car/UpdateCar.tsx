@@ -48,7 +48,7 @@ interface IProps {
 }
 
 const UpdateCar: FC<IProps> = (props: IProps) => {
-  const { listAllCars, status } = useContext(AppContext);
+  const { status } = useContext(AppContext);
   const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const { t } = useTranslation();
   const [statusValue, setStatusValue] = useState(props.item.status);
@@ -272,6 +272,24 @@ const UpdateCar: FC<IProps> = (props: IProps) => {
         showError(error + "");
       });
   }
+
+  const [listAllCars, setListAllCars] = useState<AllCars[]>([]);
+
+  const getAllCarsData = async () => {
+    await AxiosInstance.get<AllCars[]>("/cars/get-all-cars")
+      .then((resp) => {
+        if (resp.status >= 200 && resp.status < 300) {
+          setListAllCars(resp.data);
+        }
+      })
+      .catch((err) => {
+        showError(err + "");
+      });
+  };
+
+  useEffect(() => {
+    getAllCarsData();
+  }, []);
 
   return (
     <>

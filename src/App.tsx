@@ -21,7 +21,8 @@ import { ToastContainer } from "react-toastify";
 import Login from "./pages/login/Login";
 import Settings from "./pages/settings/Settings";
 import { AxiosInstance } from "./api/AxiosInstance";
-import { AllCars, TypesI } from "./common/model";
+import { TypesI } from "./common/model";
+import { showError } from "./components/alert/Alert";
 
 export interface ContextProps {
   isDark?: boolean;
@@ -33,7 +34,6 @@ export interface ContextProps {
   list?: Partial<TypesI>;
   adsList?: Partial<TypesI>;
   status?: Partial<TypesI>;
-  listAllCars?: any;
 }
 
 export function useWidth() {
@@ -60,24 +60,6 @@ const App: FC = (props) => {
     i18n.changeLanguage(lng);
   };
 
-  const [listAllCars, setListAllCars] = useState<AllCars[]>([]);
-
-  const getAllCarsData = async () => {
-    await AxiosInstance.get<AllCars[]>("/cars/get-all-cars")
-      .then((resp) => {
-        if (resp.status >= 200 && resp.status < 300) {
-          setListAllCars(resp.data);
-        }
-      })
-      .catch((err) => {
-        alert(err + "");
-      });
-  };
-
-  useEffect(() => {
-    getAllCarsData();
-  }, []);
-
   const { t, i18n } = useTranslation();
 
   const wwidth = useWidth();
@@ -97,7 +79,7 @@ const App: FC = (props) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -127,7 +109,6 @@ const App: FC = (props) => {
         list: list,
         adsList: adsList,
         status: status,
-        listAllCars: listAllCars,
       }}
     >
       <ThemeProvider theme={theme}>

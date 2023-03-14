@@ -8,9 +8,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import Image from "@jy95/material-ui-image";
 import {
   PageName,
@@ -24,8 +25,10 @@ import { showError, showSuccess } from "../../components/alert/Alert";
 import { getImageUrl, ImageType } from "../../common/utils";
 import AddAds from "./AddAds";
 import UpdateAds from "./UpdateAds";
+import { AppContext } from "../../App";
 
 const Ads: FC = () => {
+  const { t } = useContext(AppContext);
   const [list, setList] = useState<AdsI[]>([]);
 
   const getData = async () => {
@@ -62,7 +65,7 @@ const Ads: FC = () => {
   return (
     <>
       <Stack direction="row" justifyContent={"space-between"} pb={3}>
-        <Typography sx={PageName}>Ads</Typography>
+        <Typography sx={PageName}>{t("ads")}</Typography>
         <AddAds getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
@@ -73,28 +76,28 @@ const Ads: FC = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Status</Typography>
+                <Typography sx={TableHeadStyle}>{t("status")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Image</Typography>
+                <Typography sx={TableHeadStyle}>{t("image")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Type</Typography>
+                <Typography sx={TableHeadStyle}>{t("type")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>URL/Link</Typography>
+                <Typography sx={TableHeadStyle}>{t("url")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -134,12 +137,14 @@ const Ads: FC = () => {
                     <UpdateAds getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      color={"error"}
-                      onClick={() => deleteAds(item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title={t("delete")}>
+                      <IconButton
+                        color={"error"}
+                        onClick={() => deleteAds(item.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );

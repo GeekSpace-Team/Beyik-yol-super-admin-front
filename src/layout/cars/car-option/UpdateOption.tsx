@@ -35,7 +35,7 @@ interface IProps {
 }
 
 const UpdateOption: React.FC<IProps> = (props: IProps) => {
-  const { status } = useContext(AppContext);
+  const { t, status } = useContext(AppContext);
   const [name_tm, setName_tm] = useState(props.item.name_tm);
   const [name_ru, setName_ru] = useState(props.item.name_ru);
   const [description, setDescription] = useState(props.item.description);
@@ -87,6 +87,13 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setStatusValue("");
+    setName_tm("");
+    setName_ru("");
+    setDescription("");
+  };
+
   return (
     <>
       <div>
@@ -117,7 +124,7 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Edit Car Option
+                  {t("editCarOption")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -133,7 +140,7 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -143,7 +150,7 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -154,13 +161,13 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -181,7 +188,7 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={5}
@@ -200,8 +207,9 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
 
                 <Box sx={{ m: 1, position: "relative" }}>
@@ -212,7 +220,7 @@ const UpdateOption: React.FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

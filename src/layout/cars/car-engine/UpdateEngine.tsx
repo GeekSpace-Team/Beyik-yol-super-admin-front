@@ -35,7 +35,7 @@ interface IProps {
 }
 
 const UpdateEngine: React.FC<IProps> = (props: IProps) => {
-  const { status } = useContext(AppContext);
+  const { t, status } = useContext(AppContext);
   const [name_tm, setName_tm] = useState(props.item.name_tm);
   const [name_ru, setName_ru] = useState(props.item.name_ru);
   const [description, setDescription] = useState(props.item.description);
@@ -88,10 +88,17 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setStatusValue("");
+    setName_tm("");
+    setName_ru("");
+    setDescription("");
+  };
+
   return (
     <>
       <div>
-        <Tooltip title="Edit">
+        <Tooltip title={t("edit")}>
           <IconButton onClick={handleOpen} sx={{ color: Color.primary }}>
             <EditIcon />
           </IconButton>
@@ -118,7 +125,7 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Edit Car Engine
+                  {t("editCarEngine")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -134,7 +141,7 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -144,7 +151,7 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -155,13 +162,13 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -182,7 +189,7 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={5}
@@ -201,8 +208,9 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
 
                 <Box sx={{ m: 1, position: "relative" }}>
@@ -213,7 +221,7 @@ const UpdateEngine: React.FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

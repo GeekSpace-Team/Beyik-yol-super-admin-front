@@ -19,7 +19,6 @@ import { ButtonStyle, PageName } from "../../assets/theme/theme";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import SaveIcon from "@mui/icons-material/Save";
 import ClearIcon from "@mui/icons-material/Clear";
-import { useTranslation } from "react-i18next";
 import { AxiosInstanceFormData } from "../../api/AxiosInstance";
 import { style } from "../cars/Cars";
 import { showError, showSuccess } from "../../components/alert/Alert";
@@ -31,7 +30,7 @@ interface IProps {
 }
 
 const AddAds: FC<IProps> = (props: IProps) => {
-  const { adsList, status } = useContext(AppContext);
+  const { t, adsList, status } = useContext(AppContext);
   const [selectedImages, setImages] = useState<string | File>();
   const [titleTm, setTitleTm] = useState("");
   const [titleRu, setTitleRu] = useState("");
@@ -39,7 +38,6 @@ const AddAds: FC<IProps> = (props: IProps) => {
   const [statusValue, setStatusValue] = useState("");
   const [adsType, setAdsType] = useState("");
   const [url, setUrl] = useState("");
-  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -73,10 +71,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setStatusValue("");
-          setTitleTm("");
-          setTitleRu("");
-          setAdsType("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -85,6 +80,13 @@ const AddAds: FC<IProps> = (props: IProps) => {
         showError(error + "");
       });
   }
+
+  const clearInput = () => {
+    setStatusValue("");
+    setTitleTm("");
+    setTitleRu("");
+    setAdsType("");
+  };
 
   useEffect(() => {
     console.log(selectedImages);
@@ -101,7 +103,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
     <>
       <div>
         <Button onClick={handleOpen} sx={ButtonStyle} variant="contained">
-          Add Ads
+          {t("addAds")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -122,7 +124,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 pb={1}
                 justifyContent={"space-between"}
               >
-                <Typography sx={PageName}>Add Ads</Typography>
+                <Typography sx={PageName}>{t("addAds")}</Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
                 </IconButton>
@@ -137,7 +139,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title TM"
+                    label={t("nameTm")}
                     variant="outlined"
                     value={titleTm}
                     onChange={(e) => setTitleTm(e.target.value)}
@@ -147,7 +149,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title RU"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={titleRu}
@@ -157,13 +159,13 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -184,13 +186,13 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Ads Type
+                      {t("adsType")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={adsType}
-                      label="Ads Type"
+                      label={t("adsType")}
                       onChange={handleChange}
                     >
                       {adsList?.adsStatus
@@ -211,7 +213,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="URL / Link"
+                    label={t("url")}
                     variant="outlined"
                     fullWidth
                     value={url}
@@ -221,7 +223,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Index"
+                    label={t("index")}
                     variant="outlined"
                     fullWidth
                     value={index}
@@ -237,7 +239,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                     component="label"
                     fullWidth
                   >
-                    Upload Image
+                    {t("uploadImg")}
                     <input
                       hidden
                       accept="image/*"
@@ -259,8 +261,9 @@ const AddAds: FC<IProps> = (props: IProps) => {
                   startIcon={<ClearIcon />}
                   sx={ButtonStyle}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Button
                   startIcon={<SaveIcon />}
@@ -268,7 +271,7 @@ const AddAds: FC<IProps> = (props: IProps) => {
                   variant="contained"
                   onClick={handleButtonClick}
                 >
-                  Save
+                  {t("save")}
                 </Button>
               </Stack>
             </Box>
