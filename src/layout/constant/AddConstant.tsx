@@ -96,7 +96,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
     <>
       <div>
         <Button onClick={handleOpen} sx={ButtonStyle} variant="contained">
-          Add Constant
+          {t("addConstant")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -120,7 +120,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Constant
+                  {t("addConstant")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -136,7 +136,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name TM"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -146,7 +146,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name RU"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -155,23 +155,23 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                 </Grid>
 
                 <Grid item xs={2} sm={7} md={6}>
-                  <Typography>Content TM</Typography>
+                  <Typography>{t("contentTm")}</Typography>
                   <JoditReact onChange={(content) => setContent_tm(content)} />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
-                  <Typography>Content RU</Typography>
+                  <Typography>{t("contentRu")}</Typography>
                   <JoditReact onChange={(content) => setContent_ru(content)} />
                 </Grid>
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Constant Type
+                      {t("constantType")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={type}
-                      label="Constant Type"
+                      label={t("constantType")}
                       onChange={handleChange}
                     >
                       {ConstantType.map((item, i) => {
@@ -197,7 +197,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                   variant="contained"
                   onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -207,7 +207,7 @@ const AddConstant: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

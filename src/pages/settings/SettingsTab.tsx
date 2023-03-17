@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Box, Stack, Tab, Tabs, Typography } from "@mui/material";
 import { indicatorTable, TabsStyle, TabStyle } from "../../assets/theme/theme";
 import { useTheme } from "@mui/material/styles";
@@ -11,6 +11,7 @@ import Price from "../price/Price";
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import ManageHistoryIcon from "@mui/icons-material/ManageHistory";
 import ChangeType from "../changeType/ChangeType";
+import { AppContext } from "../../App";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -44,6 +45,7 @@ function a11yProps(index: any) {
 }
 
 const AnimationTab = () => {
+  const { t } = useContext(AppContext);
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
@@ -98,28 +100,28 @@ const AnimationTab = () => {
               iconPosition="start"
               icon={<LocationOnIcon />}
               sx={{ ...TabStyle, height: "20px" }}
-              label="Region"
+              label={t("region")}
               {...a11yProps(0)}
             />
             <Tab
               iconPosition="start"
               icon={<CarRepairIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Evacuator"
+              label={t("evacuator")}
               {...a11yProps(1)}
             />
             <Tab
               iconPosition="start"
               icon={<LocalGasStationIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Price"
+              label={t("price")}
               {...a11yProps(1)}
             />
             <Tab
               iconPosition="start"
               icon={<ManageHistoryIcon />}
               sx={{ ...TabStyle, height: "20px", marginLeft: "5px" }}
-              label="Change Type"
+              label={t("changeType")}
               {...a11yProps(1)}
             />
           </Tabs>

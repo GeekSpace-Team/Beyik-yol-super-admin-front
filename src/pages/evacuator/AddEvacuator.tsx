@@ -69,9 +69,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setStatusValue("");
-          setDescription("");
-          setPhoneNumber("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -81,6 +79,12 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setStatusValue("");
+    setDescription("");
+    setPhoneNumber("");
+  };
+
   const getSubRegionData = async () => {
     await AxiosInstance.get("/sub-region/get-all-sub-regions")
       .then((resp) => {
@@ -89,7 +93,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -109,7 +113,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
       <div>
         <Stack direction="row" justifyContent={"flex-end"} pb={3}>
           <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-            Add Evacuator
+            {t("addEvacuator")}
           </Button>
         </Stack>
         <Modal
@@ -134,7 +138,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Evacuator
+                  {t("addEvacuator")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -150,7 +154,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Phone Number"
+                    label={t("phoneNumber")}
                     variant="outlined"
                     fullWidth
                     value={phoneNumber}
@@ -162,13 +166,13 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Sub - Region
+                      {t("subRegion")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={subRegionId}
-                      label="Sub - Region"
+                      label={t("subRegion")}
                       onChange={handleChange}
                     >
                       {subRegion.map((item, i) => {
@@ -187,13 +191,13 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={statusValue}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChangeStatus}
                     >
                       {status?.itemStatus
@@ -214,7 +218,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={5}
@@ -233,8 +237,9 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -244,7 +249,7 @@ const AddEvacuator: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

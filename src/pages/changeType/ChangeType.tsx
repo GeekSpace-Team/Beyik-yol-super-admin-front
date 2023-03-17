@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -13,6 +13,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import AddChangeType from "./AddChangeType";
 import UpdateChangeType from "./UpdateChangeType";
+import { AppContext } from "../../App";
 
 export interface ChangeTypeI {
   id: number;
@@ -21,6 +22,7 @@ export interface ChangeTypeI {
 }
 
 const ChangeType = () => {
+  const { t } = useContext(AppContext);
   const [list, setList] = useState<ChangeTypeI[]>([]);
 
   const getData = async () => {
@@ -31,7 +33,7 @@ const ChangeType = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -65,16 +67,16 @@ const ChangeType = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -96,7 +98,7 @@ const ChangeType = () => {
                     <UpdateChangeType getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title="Delete">
+                    <Tooltip title={t("delete")}>
                       <IconButton
                         onClick={() => deleteChangeType(item.id)}
                         sx={{ color: "red" }}

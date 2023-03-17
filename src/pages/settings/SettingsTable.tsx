@@ -29,7 +29,7 @@ const SettingsTable = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -61,22 +61,22 @@ const SettingsTable = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Description</Typography>
+                <Typography sx={TableHeadStyle}>{t("desc")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Sub Region</Typography>
+                <Typography sx={TableHeadStyle}>{t("subRegion")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -102,7 +102,7 @@ const SettingsTable = () => {
                     <UpdateRegion getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title="Delete">
+                    <Tooltip title={t("delete")}>
                       <IconButton
                         onClick={() => deleteRegion(item.id)}
                         sx={{ color: "red" }}

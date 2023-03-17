@@ -65,8 +65,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setTitle("");
-          setType("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -76,6 +75,11 @@ const AddPrice: FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setTitle("");
+    setType("");
+  };
+
   const handleChange = (event: SelectChangeEvent) => {
     setType(event.target.value as string);
   };
@@ -84,7 +88,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
       <div>
         <Stack direction="row" justifyContent={"flex-end"} pb={3}>
           <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-            Add Price
+            {t("addPrice")}
           </Button>
         </Stack>
         <Modal
@@ -109,7 +113,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Price
+                  {t("addPrice")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -125,7 +129,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title"
+                    label={t("fullname")}
                     variant="outlined"
                     fullWidth
                     value={title}
@@ -135,7 +139,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Value"
+                    label={t("value")}
                     variant="outlined"
                     fullWidth
                     value={value}
@@ -146,13 +150,13 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <FormControl fullWidth>
                     <InputLabel id="demo-simple-select-label">
-                      Status
+                      {t("status")}
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
                       value={type}
-                      label="Status"
+                      label={t("status")}
                       onChange={handleChange}
                     >
                       {list?.priceType
@@ -181,8 +185,9 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -192,7 +197,7 @@ const AddPrice: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

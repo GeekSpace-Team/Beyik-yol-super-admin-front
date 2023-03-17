@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, KeyboardEvent } from "react";
 import styled from "styled-components";
 import { Player } from "@lottiefiles/react-lottie-player";
 import { Grid, Stack, Typography } from "@mui/material";
@@ -35,6 +35,10 @@ const Input = styled.input`
 `;
 
 const Login = () => {
+  // const handleKeyboardEvent = (e: KeyboardEvent<HTMLImageElement>): any => {
+  //   // Do something
+  // };
+
   const { isMobile } = useContext(AppContext);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -103,7 +107,7 @@ const Login = () => {
                 color: Color.solid,
               }}
             >
-              {t("WELCOME")}
+              {t("welcome")}
             </Typography>
 
             <Typography
@@ -113,7 +117,7 @@ const Login = () => {
                 color: Color.solid,
               }}
             >
-              {t("Enter your username and password")}
+              {t("logText")}
             </Typography>
 
             <Input
@@ -127,6 +131,7 @@ const Login = () => {
               onChange={(e) => setPassword(e.target.value)}
               //   placeholder={t("Password...")}
               type={"password"}
+              // onKeyDown={handleKeyboardEvent}
             />
             <LoadingButton
               loading={isLoading}
@@ -138,9 +143,9 @@ const Login = () => {
               onClick={login}
             >
               {isLoading ? (
-                <Typography>{t("Please wait...")}</Typography>
+                <Typography>{t("wait...")}</Typography>
               ) : (
-                <Typography>{t("Login")}</Typography>
+                <Typography>{t("login")}</Typography>
               )}
             </LoadingButton>
           </Stack>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
@@ -14,8 +14,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddPrice from "./AddPrice";
 import UpdatePrice from "./UpdatePrice";
 import { showError, showSuccess } from "../../components/alert/Alert";
+import { AppContext } from "../../App";
 
 const Price = () => {
+  const { t } = useContext(AppContext);
   const [list, setList] = useState<PriceI[]>([]);
 
   const getData = async () => {
@@ -26,7 +28,7 @@ const Price = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -60,19 +62,19 @@ const Price = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title</Typography>
+                <Typography sx={TableHeadStyle}>{t("fullname")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Type</Typography>
+                <Typography sx={TableHeadStyle}>{t("type")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Value</Typography>
+                <Typography sx={TableHeadStyle}>{t("value")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -96,7 +98,7 @@ const Price = () => {
                     <UpdatePrice getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title="Delete">
+                    <Tooltip title={t("delete")}>
                       <IconButton
                         onClick={() => deletePrice(item.id)}
                         sx={{ color: "red" }}

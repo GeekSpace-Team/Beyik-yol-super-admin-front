@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -21,11 +21,13 @@ import Autocomplete from "@mui/material/Autocomplete";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { UserI } from "../../common/model";
 import { showError, showSuccess } from "../../components/alert/Alert";
+import { AppContext } from "../../App";
 
 interface IProps {
   getData(): void;
 }
 const SendPush: FC<IProps> = (props: IProps) => {
+  const { t } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const [titleTm, setTitleTm] = useState("");
@@ -52,7 +54,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -87,7 +89,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   }
 
@@ -106,11 +108,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
         if (!response.data.error) {
           props.getData();
           handleClose();
-          setTitleTm("");
-          setTitleRu("");
-          setMessageTm("");
-          setMessageRu("");
-          setUrl("");
+          clearInput();
           setLoading(false);
           showSuccess("Successfully sent to to all user");
         } else {
@@ -118,9 +116,17 @@ const SendPush: FC<IProps> = (props: IProps) => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   }
+
+  const clearInput = () => {
+    setTitleTm("");
+    setTitleRu("");
+    setMessageTm("");
+    setMessageRu("");
+    setUrl("");
+  };
 
   const handleClick = () => {
     if (userId && userId.id === null) {
@@ -133,7 +139,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
   return (
     <>
       <Button variant="contained" onClick={handleOpen} sx={ButtonStyle}>
-        Send Message
+        {t("sendMessage")}
       </Button>
 
       <Modal
@@ -155,7 +161,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               pb={1}
               justifyContent={"space-between"}
             >
-              <Typography sx={PageName}>Send Message</Typography>,
+              <Typography sx={PageName}> {t("sendMessage")}</Typography>,
               <IconButton onClick={handleClose}>
                 <ClearIcon />
               </IconButton>
@@ -188,7 +194,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   id="outlined-basic"
-                  label="Title TM"
+                  label={t("nameTm")}
                   variant="outlined"
                   value={titleTm}
                   onChange={(e) => setTitleTm(e.target.value)}
@@ -198,7 +204,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   id="outlined-basic"
-                  label="Title RU"
+                  label={t("nameRu")}
                   variant="outlined"
                   value={titleRu}
                   onChange={(e) => setTitleRu(e.target.value)}
@@ -208,7 +214,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   id="outlined-basic"
-                  label="Message TM"
+                  label={t("messageTm")}
                   variant="outlined"
                   fullWidth
                   value={messageTm}
@@ -218,7 +224,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   id="outlined-basic"
-                  label="Message RU"
+                  label={t("messageRu")}
                   variant="outlined"
                   fullWidth
                   value={messageRu}
@@ -228,7 +234,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
               <Grid item xs={12} sm={6} md={4}>
                 <TextField
                   id="outlined-basic"
-                  label="URL / Link"
+                  label={t("url")}
                   variant="outlined"
                   fullWidth
                   value={url}
@@ -246,8 +252,9 @@ const SendPush: FC<IProps> = (props: IProps) => {
                 sx={ButtonStyle}
                 startIcon={<ClearIcon />}
                 variant="contained"
+                onClick={clearInput}
               >
-                Clear
+                {t("clear")}
               </Button>
               <Box sx={{ m: 1, position: "relative" }}>
                 <Button
@@ -257,7 +264,7 @@ const SendPush: FC<IProps> = (props: IProps) => {
                   disabled={loading}
                   onClick={handleClick}
                 >
-                  Send Message
+                  {t("sendMessage")}
                 </Button>
                 {loading && (
                   <CircularProgress

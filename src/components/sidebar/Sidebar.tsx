@@ -70,21 +70,21 @@ const SidebarData: SidebarItem[] = [
 
   {
     id: 2,
-    text: "Users",
+    text: "users",
     link: "/users",
     icon: <GroupIcon />,
   },
 
   {
     id: 3,
-    text: "Ads",
+    text: "ads",
     link: "/ads",
     icon: <WifiPasswordIcon />,
   },
 
   {
     id: 4,
-    text: "Pusher",
+    text: "inbox",
     link: "/push",
     icon: <NotificationsIcon />,
   },
@@ -105,7 +105,7 @@ const SidebarData: SidebarItem[] = [
 
   {
     id: 7,
-    text: "Constant",
+    text: "constant",
     link: "/constant",
     icon: <AcUnitIcon />,
   },
@@ -132,7 +132,7 @@ const SidebarData: SidebarItem[] = [
   // },
   {
     id: 11,
-    text: "Settings",
+    text: "settings",
     link: "/settings",
     icon: <SettingsIcon />,
   },
@@ -359,7 +359,7 @@ const Sidebar: FC = (props: Props) => {
                 fontSize: "13px",
               }}
             >
-              Language
+              {t("lang")}
             </Typography>
           </Divider>
         </Stack>
@@ -491,7 +491,7 @@ const Sidebar: FC = (props: Props) => {
                     aria-expanded={open ? "true" : undefined}
                     onClick={handleClick}
                   >
-                    Super Admin
+                    {t("superAdmin")}
                   </Button>
                   <Menu
                     TransitionProps={{
@@ -509,7 +509,7 @@ const Sidebar: FC = (props: Props) => {
                       <IconButton>
                         <AccountCircleIcon />
                       </IconButton>
-                      Profile
+                      {t("profile")}
                     </MenuItem>
                     <Link
                       to={"/"}
@@ -522,7 +522,7 @@ const Sidebar: FC = (props: Props) => {
                         <IconButton>
                           <LogoutIcon />
                         </IconButton>
-                        Logout
+                        {t("logout")}
                       </MenuItem>
                     </Link>
                   </Menu>

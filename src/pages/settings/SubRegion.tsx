@@ -82,7 +82,7 @@ const SubRegion: FC<IProps> = (props: IProps) => {
         alignItems="center"
       >
         <Typography sx={{ fontFamily: Fonts.RalewayBold, fontSize: "18px" }}>
-          Sub Region
+          {t("subRegion")}
         </Typography>
         <AddSubRegion getData={props.getData} regionId={rId} />
       </Stack>
@@ -135,7 +135,7 @@ const SubRegion: FC<IProps> = (props: IProps) => {
   return (
     <div>
       <React.Fragment key={"right"}>
-        <Tooltip title="Sub Region">
+        <Tooltip title={t("subRegion")}>
           <IconButton onClick={toggleDrawer("right", true)}>
             <InfoIcon />
           </IconButton>

@@ -28,7 +28,7 @@ const Evacuator = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err.toString());
       });
   };
 
@@ -60,19 +60,19 @@ const Evacuator = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Phone Number</Typography>
+                <Typography sx={TableHeadStyle}>{t("phoneNumber")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Description</Typography>
+                <Typography sx={TableHeadStyle}>{t("desc")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>

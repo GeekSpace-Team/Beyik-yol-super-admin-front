@@ -69,9 +69,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setDescription("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -81,10 +79,16 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setName_tm("");
+    setName_ru("");
+    setDescription("");
+  };
+
   return (
     <>
       <div>
-        <Tooltip title="Edit">
+        <Tooltip title={t("edit")}>
           <IconButton onClick={handleOpen} sx={{ color: Color.primary }}>
             <EditIcon />
           </IconButton>
@@ -111,7 +115,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Edit Region
+                  {t("editRegion")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -127,7 +131,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name TM"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -137,7 +141,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name RU"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -148,7 +152,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={12} sm={12} md={12}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={9}
@@ -167,8 +171,9 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 {/* <Button sx={ButtonStyle} variant="contained">
                     Save
@@ -181,7 +186,7 @@ const UpdateRegion: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

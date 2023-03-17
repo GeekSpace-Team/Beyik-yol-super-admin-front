@@ -8,9 +8,10 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import {
   PageName,
   TableCellStyle,
@@ -21,8 +22,10 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { PusherI } from "../../common/model";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { showError, showSuccess } from "../../components/alert/Alert";
+import { AppContext } from "../../App";
 
 const Push: FC = () => {
+  const { t } = useContext(AppContext);
   const [list, setList] = useState<PusherI[]>([]);
 
   const getData = async () => {
@@ -33,7 +36,7 @@ const Push: FC = () => {
         }
       })
       .catch((err) => {
-        alert(err + "");
+        showError(err + "");
       });
   };
 
@@ -62,7 +65,7 @@ const Push: FC = () => {
         alignItems="center"
         pb={3}
       >
-        <Typography sx={PageName}>Inbox</Typography>
+        <Typography sx={PageName}>{t("inbox")}</Typography>
         <SendPush getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
@@ -73,22 +76,22 @@ const Push: FC = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Title RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Message Tm</Typography>
+                <Typography sx={TableHeadStyle}>{t("messageTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Message Ru</Typography>
+                <Typography sx={TableHeadStyle}>{t("messageRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>URL/Link</Typography>
+                <Typography sx={TableHeadStyle}>{t("url")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -120,12 +123,14 @@ const Push: FC = () => {
                     <Typography sx={TableCellStyle}>{item.url}</Typography>
                   </TableCell>
                   <TableCell>
-                    <IconButton
-                      color={"error"}
-                      onClick={() => deleteInbox(item.id)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
+                    <Tooltip title={t("delete")}>
+                      <IconButton
+                        color={"error"}
+                        onClick={() => deleteInbox(item.id)}
+                      >
+                        <DeleteIcon />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 </TableRow>
               );

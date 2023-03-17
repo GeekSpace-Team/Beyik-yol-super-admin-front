@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import {
   Backdrop,
   Box,
@@ -19,12 +19,14 @@ import { AxiosInstance } from "../../api/AxiosInstance";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { ButtonStyle, Color, Fonts } from "../../assets/theme/theme";
 import { style } from "../cars/Cars";
+import { AppContext } from "../../App";
 
 interface IProps {
   getData(): void;
 }
 
 const AddChangeType: FC<IProps> = (props: IProps) => {
+  const { t } = useContext(AppContext);
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -54,8 +56,7 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setNameTm("");
-          setNameRu("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -65,12 +66,17 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
       });
   }
 
+  const clearInput = () => {
+    setNameTm("");
+    setNameRu("");
+  };
+
   return (
     <>
       <div>
         <Stack direction="row" justifyContent={"flex-end"} pb={3}>
           <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-            Add Change Type
+            {t("addChangeType")}
           </Button>
         </Stack>
         <Modal
@@ -95,7 +101,7 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add Change Type
+                  {t("addChangeType")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -111,7 +117,7 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -121,7 +127,7 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Title"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -139,8 +145,9 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 <Box sx={{ m: 1, position: "relative" }}>
                   <Button
@@ -150,7 +157,7 @@ const AddChangeType: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress

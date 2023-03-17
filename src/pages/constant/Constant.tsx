@@ -67,7 +67,7 @@ const Constant = () => {
         alignItems="center"
         pb={3}
       >
-        <Typography sx={PageName}>Constant</Typography>
+        <Typography sx={PageName}>{t("constant")}</Typography>
         <AddConstant getData={getData} />
       </Stack>
       <TableContainer component={Paper}>
@@ -78,16 +78,16 @@ const Constant = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name TM</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameTm")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Name RU</Typography>
+                <Typography sx={TableHeadStyle}>{t("nameRu")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Edit</Typography>
+                <Typography sx={TableHeadStyle}>{t("edit")}</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>Delete</Typography>
+                <Typography sx={TableHeadStyle}>{t("delete")}</Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -108,7 +108,7 @@ const Constant = () => {
                     <UpdateConstant getData={getData} item={item} />
                   </TableCell>
                   <TableCell>
-                    <Tooltip title={t("delete constant")}>
+                    <Tooltip title={t("delete")}>
                       <IconButton
                         onClick={() => deleteConstant(item.id)}
                         sx={{ color: "red" }}

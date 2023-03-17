@@ -1,19 +1,10 @@
 import { FC, useState } from "react";
 import SwipeableViews from "react-swipeable-views";
 import { useTheme } from "@mui/material/styles";
-import AppBar from "@mui/material/AppBar";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
-import Zoom from "@mui/material/Zoom";
-import Fab from "@mui/material/Fab";
-import AddIcon from "@mui/icons-material/Add";
-import UpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { green } from "@mui/material/colors";
 import Box from "@mui/material/Box";
-import EditIcon from "@mui/icons-material/Edit";
-import { SxProps } from "@mui/system";
-import DeleteIcon from "@mui/icons-material/Delete";
 import ShareIcon from "@mui/icons-material/Share";
 import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import {

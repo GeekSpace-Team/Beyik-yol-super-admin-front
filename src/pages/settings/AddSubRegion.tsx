@@ -61,9 +61,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
           handleClose();
           setLoading(false);
           props.getData();
-          setName_tm("");
-          setName_ru("");
-          setDescription("");
+          clearInput();
         } else {
           showError("Something went wrong!");
         }
@@ -72,12 +70,17 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
         showError(error + "");
       });
   }
+  const clearInput = () => {
+    setName_tm("");
+    setName_ru("");
+    setDescription("");
+  };
 
   return (
     <>
       <div>
         <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-          Add Sub Region
+          {t("addSubRegion")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -101,7 +104,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                 <Typography
                   sx={{ fontFamily: Fonts.OpenSansBold, fontSize: "18px" }}
                 >
-                  Add SubRegion
+                  {t("addSubRegion")}
                 </Typography>
                 <IconButton onClick={handleClose}>
                   <ClearIcon />
@@ -117,7 +120,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name TM"
+                    label={t("nameTm")}
                     variant="outlined"
                     fullWidth
                     value={name_tm}
@@ -127,7 +130,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={2} sm={7} md={6}>
                   <TextField
                     id="outlined-basic"
-                    label="Name RU"
+                    label={t("nameRu")}
                     variant="outlined"
                     fullWidth
                     value={name_ru}
@@ -138,7 +141,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                 <Grid item xs={12} sm={12} md={12}>
                   <TextField
                     id="outlined-multiline-flexible"
-                    label="Description"
+                    label={t("desc")}
                     multiline
                     fullWidth
                     maxRows={9}
@@ -157,8 +160,9 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                   sx={ButtonStyle}
                   startIcon={<ClearIcon />}
                   variant="contained"
+                  onClick={clearInput}
                 >
-                  Clear
+                  {t("clear")}
                 </Button>
                 {/* <Button sx={ButtonStyle} variant="contained">
                     Save
@@ -171,7 +175,7 @@ const AddSubRegion: FC<IProps> = (props: IProps) => {
                     disabled={loading}
                     onClick={handleButtonClick}
                   >
-                    Save
+                    {t("save")}
                   </Button>
                   {loading && (
                     <CircularProgress
