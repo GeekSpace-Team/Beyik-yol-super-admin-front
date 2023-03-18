@@ -191,7 +191,7 @@ function stringAvatar(name: string) {
 const AvatarCustom = () => {
   return (
     <>
-      <Avatar {...stringAvatar("Gayypow")} />
+      <Avatar {...stringAvatar("Admin")} />
     </>
   );
 };
@@ -267,7 +267,15 @@ const Sidebar: FC = (props: Props) => {
             style={{ width: "50px" }}
             alt="logo"
           />
-          <Typography>Beyik Yol logo</Typography>
+          <Typography
+            sx={{
+              fontFamily: "AppRegular",
+              fontSize: "20px",
+              fontWeight: "700",
+            }}
+          >
+            Beyik Ýol
+          </Typography>
         </Stack>
       </Toolbar>
       {/* <Divider /> */}
@@ -469,13 +477,13 @@ const Sidebar: FC = (props: Props) => {
             >
               <Stack></Stack>
               <Stack direction={"row"} alignItems="center" spacing={2}>
-                <Tooltip title={t("unreadNote")}>
+                {/* <Tooltip title={t("unreadNote")}>
                   <IconButton>
                     <Badge badgeContent={7} color="error">
                       <NotificationsIcon />
                     </Badge>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
                 <AvatarCustom />
                 <Box>
                   <Button

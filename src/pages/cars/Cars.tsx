@@ -11,17 +11,12 @@ import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
 import Image from "@jy95/material-ui-image";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import TuneIcon from "@mui/icons-material/Tune";
-import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import {
-  Backdrop,
   Tab,
   Tabs,
   Box,
-  Fade,
   IconButton,
-  Modal,
   Stack,
   Typography,
   useMediaQuery,
@@ -259,7 +254,7 @@ const CarTable = () => {
 
 // Car Table Full Information section starts here ......................................................
 export const CarTableInfo = () => {
-  const { t } = useTranslation();
+  const { t } = useContext(AppContext);
   const [loading, setLoading] = useState(false);
   let { id } = useParams();
   const [listById, setListById] = useState<AllCars>();
@@ -294,13 +289,13 @@ export const CarTableInfo = () => {
         >
           <Stack direction={"row"} spacing={3}>
             <Link to="/cars">
-              <Tooltip title="Come Back!">
-                <IconButton sx={{ color: Color.secondaryDark }}>
+              <IconButton sx={{ color: Color.secondaryDark }}>
+                <Tooltip title={t("comeBack")}>
                   <KeyboardBackspaceIcon />
-                </IconButton>
-              </Tooltip>
+                </Tooltip>
+              </IconButton>
             </Link>
-            <Typography sx={PageName}>Full Information Table</Typography>
+            <Typography sx={PageName}>{t("fullInfoTab")}</Typography>
           </Stack>
           <ReactToPrint
             trigger={() => (
@@ -309,7 +304,7 @@ export const CarTableInfo = () => {
                 startIcon={<PrintIcon />}
                 variant="contained"
               >
-                Print Information
+                {t("print")}
               </Button>
             )}
             content={() => componentRef.current}
@@ -320,7 +315,7 @@ export const CarTableInfo = () => {
           <Grid container mt={2}>
             <Grid item lg={3}>
               <Stack direction="row" mb={3} justifyContent={"center"}>
-                <Typography sx={PageName}>Car Images</Typography>
+                <Typography sx={PageName}>{t("carImages")}</Typography>
               </Stack>
               <Swiper
                 modules={[Autoplay]}
@@ -350,26 +345,26 @@ export const CarTableInfo = () => {
             <Grid item lg={1}></Grid>
             <Grid item lg={8}>
               <Stack direction="row" justifyContent={"center"}>
-                <Typography sx={PageName}>Umumy Maglumatlar</Typography>
+                <Typography sx={PageName}>{t("generalInfo")}</Typography>
               </Stack>
 
               {listById ? (
                 <Grid container mt={3}>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Name</Typography>
+                      <Typography sx={littleText}>{t("fullname")}</Typography>
                       <Typography sx={carIdName}>{listById.name}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Status</Typography>
+                      <Typography sx={littleText}>{t("status")}</Typography>
                       <Typography sx={carIdName}>{listById.status}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Model</Typography>
+                      <Typography sx={littleText}>{t("carModel")}</Typography>
                       <Typography sx={carIdName}>
                         {listById.carModel.name}
                       </Typography>
@@ -377,7 +372,7 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Option</Typography>
+                      <Typography sx={littleText}>{t("carOption")}</Typography>
                       <Typography sx={carIdName}>
                         {listById.carOption.name_tm}
                       </Typography>
@@ -385,7 +380,7 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Engine</Typography>
+                      <Typography sx={littleText}>{t("carEngine")}</Typography>
                       <Typography sx={carIdName}>
                         {listById.carEngineType.name_tm}
                       </Typography>
@@ -393,7 +388,9 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Engine Power</Typography>
+                      <Typography sx={littleText}>
+                        {t("enginePower")}
+                      </Typography>
                       <Typography sx={carIdName}>
                         {listById.enginePower}
                       </Typography>
@@ -401,7 +398,9 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Transmition</Typography>
+                      <Typography sx={littleText}>
+                        {t("carTransmition")}
+                      </Typography>
                       <Typography sx={carIdName}>
                         {listById.carTransmition.name_tm}
                       </Typography>
@@ -409,13 +408,13 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Year</Typography>
+                      <Typography sx={littleText}>{t("carYear")}</Typography>
                       <Typography sx={carIdName}>{listById.year}</Typography>
                     </Stack>
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Last Mile</Typography>
+                      <Typography sx={littleText}>{t("lastMile")}</Typography>
                       <Typography sx={carIdName}>
                         {listById.lastMile}
                       </Typography>
@@ -429,7 +428,9 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Phone Number</Typography>
+                      <Typography sx={littleText}>
+                        {t("phoneNumber")}
+                      </Typography>
                       <Typography sx={carIdName}>
                         {listById.phoneNumber}
                       </Typography>
@@ -437,7 +438,7 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>Created At</Typography>
+                      <Typography sx={littleText}>{t("createdAt")}</Typography>
                       <Typography sx={carIdName}>
                         {convertToDate(listById.createdAt)}
                       </Typography>
@@ -445,7 +446,7 @@ export const CarTableInfo = () => {
                   </Grid>
                   <Grid item lg={4}>
                     <Stack pb={2}>
-                      <Typography sx={littleText}>User Name</Typography>
+                      <Typography sx={littleText}>{t("user_name")}</Typography>
                       <Typography sx={carIdName}>
                         {listById.users.fullname}
                       </Typography>

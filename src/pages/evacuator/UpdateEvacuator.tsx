@@ -167,7 +167,6 @@ const UpdateEvacuator: FC<IProps> = (props: IProps) => {
                     variant="outlined"
                     fullWidth
                     value={phoneNumber}
-                    type={"number"}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                   />
                 </Grid>

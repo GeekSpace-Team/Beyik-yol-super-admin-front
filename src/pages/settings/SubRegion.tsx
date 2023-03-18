@@ -19,6 +19,7 @@ import { AxiosInstance } from "../../api/AxiosInstance";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { useTranslation } from "react-i18next";
 import UpdateSubRegion from "./UpdateSubRegion";
+import CloseIcon from "@mui/icons-material/Close";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 interface IProps {
@@ -81,9 +82,16 @@ const SubRegion: FC<IProps> = (props: IProps) => {
         pb={3}
         alignItems="center"
       >
-        <Typography sx={{ fontFamily: Fonts.RalewayBold, fontSize: "18px" }}>
-          {t("subRegion")}
-        </Typography>
+        <Stack direction="row" spacing={3} alignItems="center">
+          <Tooltip title="Close">
+            <IconButton>
+              <CloseIcon />
+            </IconButton>
+          </Tooltip>
+          <Typography sx={{ fontFamily: Fonts.RalewayBold, fontSize: "18px" }}>
+            {t("subRegion")}
+          </Typography>
+        </Stack>
         <AddSubRegion getData={props.getData} regionId={rId} />
       </Stack>
 
