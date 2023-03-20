@@ -95,6 +95,7 @@ export interface AllCars {
   carOption: Option;
   carEngineType: Engine;
   users: Users;
+  costChange: Cost[];
 }
 
 //
@@ -265,4 +266,25 @@ export interface SendAllInboxI {
   url: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Cost {
+    id:          number;
+    mile:        number;
+    price:       number;
+    description: string;
+    nextMile:    number;
+    volume:      number;
+    reminder:    boolean;
+    carId:       number;
+    costType:    string;
+    createdAt:   Date;
+    updatedAt:   Date;
+}
+
+
+export enum CostType {
+  CHANGE='CHANGE',
+  REPAIR='REPAIR',
+  FUEL='FUEL'
 }

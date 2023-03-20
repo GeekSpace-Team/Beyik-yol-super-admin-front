@@ -1,5 +1,21 @@
+import AddBrand from "./AddBrand";
+import Box from "@mui/material/Box";
+import CarModel from "./CarModel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Image from "@jy95/material-ui-image";
+import Loading from "../../../common/Loading";
 import React, { useContext, useEffect, useState } from "react";
+import UpdateBrand from "./UpdateBrand";
+import { DataGrid, GridColDef, GridValueGetterParams } from "@mui/x-data-grid";
+import { AppContext } from "../../../App";
+import { AxiosInstance } from "../../../api/AxiosInstance";
+import { TableCellStyle, TableHeadStyle } from "../../../assets/theme/theme";
+import { Brand } from "../../../common/model";
+import { ImageType, getImageUrl } from "../../../common/utils";
+import { showError, showSuccess } from "../../../components/alert/Alert";
+
 import {
+  Button,
   IconButton,
   Paper,
   Stack,
@@ -11,23 +27,18 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { TableCellStyle, TableHeadStyle } from "../../../assets/theme/theme";
-import Image from "@jy95/material-ui-image";
-import AddBrand from "./AddBrand";
-import UpdateBrand from "./UpdateBrand";
-import { AxiosInstance } from "../../../api/AxiosInstance";
-import { getImageUrl, ImageType } from "../../../common/utils";
-import { Brand } from "../../../common/model";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { showError, showSuccess } from "../../../components/alert/Alert";
-import CarModel from "./CarModel";
-import Loading from "../../../common/Loading";
-import { AppContext } from "../../../App";
+
+
+
+
+
 
 const CarBrand = () => {
   const { t } = useContext(AppContext);
   const [listt, setList] = useState<Brand[]>([]);
   const [loading, setLoading] = useState(false);
+
+ 
 
   const getData = async () => {
     setLoading(true);
@@ -64,12 +75,83 @@ const CarBrand = () => {
     }
   }
 
+
+   const columns: GridColDef[] = [
+  { field: 'id', headerName: 'ID', width: 90 },
+  {
+    field: 'name',
+    headerName: t("user_name"),
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'image',
+    headerName: t("image"),
+    width: 150,
+    editable: true,
+  },
+  {
+    field: 'description',
+    headerName: t("desc"),
+    type: 'number',
+    width: 110,
+    editable: true,
+  },
+  {
+    field: 'status',
+    headerName: t("status"),
+    description: 'This column has a value getter and is not sortable.',
+    sortable: false,
+    width: 160
+  },
+  {
+    field: t("edit"),
+    renderCell: (cellValues) => {
+      return (
+        <UpdateBrand getData={getData} item={cellValues.row} />
+      );
+    }
+  },
+  {
+    field: t("delete"),
+    renderCell: (cellValues) => {
+      return (
+          <IconButton
+                      color={"error"}
+                      onClick={() => deleteCarBrand(cellValues.row.id)}
+                    ><DeleteIcon /></IconButton>
+      );
+    }
+  },
+  {
+    field: t("carModel"),
+    renderCell: (cellValues) => {
+      return (
+          <CarModel
+                      brandId={cellValues.row.id}
+                      getData={getData}
+                    />
+      );
+    }
+  }
+];
+
   return (
     <>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
         <AddBrand getData={getData} />
       </Stack>
-      <TableContainer component={Paper}>
+      <Box sx={{ height: 400, width: '100%' }}>
+      <DataGrid
+        rows={listt}
+        columns={columns}
+        autoPageSize
+        pagination
+        pageSizeOptions={[20]}
+        checkboxSelection
+      />
+    </Box>
+      {/* <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow sx={{ background: "#f0f0f0" }}>
@@ -143,7 +225,8 @@ const CarBrand = () => {
             })}
           </TableBody>
         </Table>
-      </TableContainer>
+      </TableContainer> */}
+
       <Loading open={loading} />
     </>
   );

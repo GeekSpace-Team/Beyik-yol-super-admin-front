@@ -1,17 +1,52 @@
+import "react-phone-number-input/style.css";
+import "swiper/css";
+import "swiper/css";
+import "swiper/css/autoplay";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
+import "swiper/css/scrollbar";
+import AddCar from "../../layout/cars/car/AddCar";
+import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
+import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import CarBrand from "../../layout/cars/car-brand/CarBrand";
+import CarEngineTable from "../../layout/cars/car-engine/CarEngineTable";
+import CarOptionTable from "../../layout/cars/car-option/CarOptionTable";
+import CarTransmitionTable from "../../layout/cars/car-transmition/CarTransmitionTable";
+import Card from "@mui/material/Card";
+import CardMedia from "@mui/material/CardMedia";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Image from "@jy95/material-ui-image";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import Loading from "../../common/Loading";
+import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
+import Paper from "@mui/material/Paper";
+import PrintIcon from "@mui/icons-material/Print";
+import PublishedWithChangesIcon from "@mui/icons-material/PublishedWithChanges";
 import React, { FC, useContext, useEffect, useRef, useState } from "react";
+import ReactToPrint from "react-to-print";
+import SettingsSuggestIcon from "@mui/icons-material/SettingsSuggest";
+import SwipeableViews from "react-swipeable-views";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import { Tooltip } from "@material-ui/core";
+import { CardActionArea } from "@mui/material";
+import { useTheme } from "@mui/material/styles";
+import { ArcElement, Chart as ChartJS, Legend } from "chart.js";
+import { Pie } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
-import AirportShuttleIcon from "@mui/icons-material/AirportShuttle";
-import Image from "@jy95/material-ui-image";
-import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
-import "react-phone-number-input/style.css";
+import { Link, useParams } from "react-router-dom";
+import { Autoplay } from "swiper";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { AppContext } from "../../App";
+import { AxiosInstance } from "../../api/AxiosInstance";
+import { AllCars, CostType } from "../../common/model";
+import { ImageType, convertToDate, getImageUrl } from "../../common/utils";
+import { showError, showSuccess } from "../../components/alert/Alert";
+
 import {
   Tab,
   Tabs,
@@ -36,36 +71,10 @@ import {
   carIdName,
   ButtonStyle,
 } from "../../assets/theme/theme";
-import { Tooltip } from "@material-ui/core";
-import SwipeableViews from "react-swipeable-views";
-import { useTheme } from "@mui/material/styles";
-import { Link, useParams } from "react-router-dom";
-import AddCar from "../../layout/cars/car/AddCar";
-import CarEngineTable from "../../layout/cars/car-engine/CarEngineTable";
-import CarOptionTable from "../../layout/cars/car-option/CarOptionTable";
-import CarBrand from "../../layout/cars/car-brand/CarBrand";
+
+ChartJS.register(ArcElement, Legend);
+
 // import UpdateCar from "../../layout/cars/car/UpdateCar";
-import CarTransmitionTable from "../../layout/cars/car-transmition/CarTransmitionTable";
-import { AxiosInstance } from "../../api/AxiosInstance";
-import { AllCars } from "../../common/model";
-import { convertToDate, getImageUrl, ImageType } from "../../common/utils";
-import { showError, showSuccess } from "../../components/alert/Alert";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Loading from "../../common/Loading";
-import { AppContext } from "../../App";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import Card from "@mui/material/Card";
-import ReactToPrint from "react-to-print";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea } from "@mui/material";
-import { Autoplay } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import "swiper/css/scrollbar";
-import "swiper/css/autoplay";
-import PrintIcon from "@mui/icons-material/Print";
 
 // const CarFilterModal = () => {
 //   const [open, setOpen] = useState(false);
@@ -278,6 +287,34 @@ export const CarTableInfo = () => {
     getCarById();
   }, []);
   const componentRef = useRef<HTMLDivElement>(null);
+
+  const data = {
+  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  datasets: [
+    {
+      label: '# of Votes',
+      data: [12, 19, 3, 5, 2, 3],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.2)',
+        'rgba(54, 162, 235, 0.2)',
+        'rgba(255, 206, 86, 0.2)',
+        'rgba(75, 192, 192, 0.2)',
+        'rgba(153, 102, 255, 0.2)',
+        'rgba(255, 159, 64, 0.2)',
+      ],
+      borderColor: [
+        'rgba(255, 99, 132, 1)',
+        'rgba(54, 162, 235, 1)',
+        'rgba(255, 206, 86, 1)',
+        'rgba(75, 192, 192, 1)',
+        'rgba(153, 102, 255, 1)',
+        'rgba(255, 159, 64, 1)',
+      ],
+      borderWidth: 1,
+    },
+  ],
+};
+
   return (
     <>
       <Box sx={{ p: 5 }}>
@@ -458,6 +495,67 @@ export const CarTableInfo = () => {
           </Grid>
         </div>
       </Box>
+
+<Box sx={{width:'100%',height:'200px'}}>
+  <Pie data={data} style={{width:'100%',height:'200px'}} height={200} width={200}  />
+</Box>
+<h3>Costs</h3>
+      
+  <TableContainer component={Paper}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Mile</TableCell>
+            <TableCell align="right">Price</TableCell>
+            <TableCell align="right">Description</TableCell>
+            <TableCell align="right">Next change mile</TableCell>
+            <TableCell align="right">Volume</TableCell>
+            <TableCell align="right">Reminder</TableCell>
+            <TableCell align="right">Cost type</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {listById?
+          listById?.costChange.map((row) => (
+            <TableRow
+              key={row.id}
+              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+            >
+              <TableCell component="th" scope="row">
+                {row.mile} km
+              </TableCell>
+              <TableCell align="right">
+                {row.price} TMT
+                </TableCell>
+              <TableCell align="right">
+                {row.description}
+                </TableCell>
+              <TableCell align="right">
+                {row.nextMile} km
+              </TableCell>
+              <TableCell align="right">
+                {row.volume} litre
+                </TableCell>
+                <TableCell align="right">
+                {row.reminder?'yes':'no'}
+                </TableCell>
+                <TableCell align="right">
+                  {row.costType}: <br/>
+                {row.costType===CostType.FUEL?
+                <LocalGasStationIcon/>
+                :row.costType===CostType.CHANGE?
+                <PublishedWithChangesIcon/>
+                :
+                <SettingsSuggestIcon/>
+                }
+                
+                </TableCell>
+            </TableRow>
+          )):null}
+        </TableBody>
+      </Table>
+    </TableContainer>
+      
     </>
   );
 };

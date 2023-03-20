@@ -1,4 +1,12 @@
+import ClearIcon from "@mui/icons-material/Clear";
+import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import React, { FC, useContext, useEffect, useState } from "react";
+import SaveIcon from "@mui/icons-material/Save";
+import { AppContext } from "../../../App";
+import { ButtonStyle, Color, PageName } from "../../../assets/theme/theme";
+import { showError, showSuccess } from "../../../components/alert/Alert";
+import { addCarStyle } from "../../../pages/cars/Cars";
+
 import {
   Autocomplete,
   Backdrop,
@@ -19,10 +27,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import ClearIcon from "@mui/icons-material/Clear";
-import SaveIcon from "@mui/icons-material/Save";
-import { ButtonStyle, Color, PageName } from "../../../assets/theme/theme";
-import { addCarStyle } from "../../../pages/cars/Cars";
 import {
   AllCars,
   Engine,
@@ -35,9 +39,6 @@ import {
   AxiosInstance,
   AxiosInstanceFormData,
 } from "../../../api/AxiosInstance";
-import { AppContext } from "../../../App";
-import { showError, showSuccess } from "../../../components/alert/Alert";
-import PhotoCamera from "@mui/icons-material/PhotoCamera";
 
 interface IProps {
   getData(): void;
@@ -63,6 +64,7 @@ const AddCar: FC<IProps> = (props: IProps) => {
   const [vinCode, setVinCode] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [usersId, setUsersId] = useState("");
+  const [userValue, setUserValue] = useState<UserI | null>();
 
   function handleImageChange(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -273,6 +275,13 @@ const AddCar: FC<IProps> = (props: IProps) => {
   useEffect(() => {
     getAllCarsData();
   }, []);
+
+
+  useEffect(() => {
+    if(userValue && userValue.id) {
+      setUsersId(`${userValue?.id.toString()}`);
+    }
+  },[userValue])
 
   return (
     <>
@@ -515,6 +524,10 @@ const AddCar: FC<IProps> = (props: IProps) => {
                     id="combo-box-demo"
                     options={listUsers}
                     fullWidth
+                    value={userValue}
+                    onChange={(event: any, newValue: UserI | null) => {
+                      setUserValue(newValue);
+                    }}
                     getOptionLabel={(user) => user.fullname}
                     renderInput={(params) => (
                       <TextField {...params} label="Users" />

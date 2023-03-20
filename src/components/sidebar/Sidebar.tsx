@@ -1,14 +1,30 @@
-import { FC, useEffect, useState } from "react";
+import AcUnitIcon from "@mui/icons-material/AcUnit";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import AppBar from "@mui/material/AppBar";
 import CssBaseline from "@mui/material/CssBaseline";
+import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
+import GroupIcon from "@mui/icons-material/Group";
 import IconButton from "@mui/material/IconButton";
+import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import SettingsIcon from "@mui/icons-material/Settings";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import WifiPasswordIcon from "@mui/icons-material/WifiPassword";
+import i18n from "i18next";
+import { FC, useEffect, useState } from "react";
+import { useContext } from "react";
+import { useTranslation } from "react-i18next";
 import { Link, Outlet, useLocation, useNavigate } from "react-router-dom";
+import { AppContext } from "../../App";
+import { Color, Fonts } from "../../assets/theme/theme";
+import { loginChecker } from "../../common/utils";
+import { SidebarItem } from "./sidebarItems";
+
 import {
   Avatar,
   Stack,
@@ -18,21 +34,6 @@ import {
   Button,
   Menu,
 } from "@mui/material";
-import { useContext } from "react";
-import { AppContext } from "../../App";
-import { Color, Fonts } from "../../assets/theme/theme";
-import i18n from "i18next";
-import { SidebarItem } from "./sidebarItems";
-import DirectionsCarIcon from "@mui/icons-material/DirectionsCar";
-import GroupIcon from "@mui/icons-material/Group";
-import WifiPasswordIcon from "@mui/icons-material/WifiPassword";
-import AcUnitIcon from "@mui/icons-material/AcUnit";
-import { useTranslation } from "react-i18next";
-import LogoutIcon from "@mui/icons-material/Logout";
-import MenuItem from "@mui/material/MenuItem";
-import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import SettingsIcon from "@mui/icons-material/Settings";
-import { loginChecker } from "../../common/utils";
 
 const LeftB = {
   width: "60px",
@@ -513,12 +514,20 @@ const Sidebar: FC = (props: Props) => {
                       "aria-labelledby": "basic-button",
                     }}
                   >
+                    <Link
+                      to={"/profile"}
+                      style={{
+                        textDecoration: "none",
+                        color: Color.solid,
+                      }}
+                    >
                     <MenuItem onClick={handleClose}>
                       <IconButton>
                         <AccountCircleIcon />
                       </IconButton>
                       {t("profile")}
                     </MenuItem>
+                    </Link>
                     <Link
                       to={"/"}
                       style={{

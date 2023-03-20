@@ -1,4 +1,14 @@
+import AddModel from "./AddModel";
+import DeleteIcon from "@mui/icons-material/Delete";
+import InfoIcon from "@mui/icons-material/Info";
+import Loading from "../../../common/Loading";
 import React, { FC, useEffect, useState } from "react";
+import UpdateModel from "./UpdateModel";
+import { AxiosInstance } from "../../../api/AxiosInstance";
+import { Color, Fonts } from "../../../assets/theme/theme";
+import { Model } from "../../../common/model";
+import { showError, showSuccess } from "../../../components/alert/Alert";
+
 import {
   Box,
   Card,
@@ -10,23 +20,14 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import InfoIcon from "@mui/icons-material/Info";
-import AddModel from "./AddModel";
-import UpdateModel from "./UpdateModel";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { Color, Fonts } from "../../../assets/theme/theme";
-import { Model } from "../../../common/model";
-import { AxiosInstance } from "../../../api/AxiosInstance";
-import { showError, showSuccess } from "../../../components/alert/Alert";
 
 type Anchor = "top" | "left" | "bottom" | "right";
 interface IProps {
-  models: Model[];
   brandId: number;
   getData(): void;
 }
 const CarModel: FC<IProps> = (props: IProps) => {
-  const [listModel, setListModel] = useState<Model[]>(props.models);
+  const [listModel, setListModel] = useState<Model[] | undefined>();
   const [brId, setBrId] = useState(props.brandId);
   const [state, setState] = useState({
     top: false,
@@ -45,9 +46,11 @@ const CarModel: FC<IProps> = (props: IProps) => {
       ) {
         return;
       }
-      setListModel(props.models);
       setBrId(props.brandId);
       setState({ ...state, [anchor]: open });
+      if(open){
+        getModels();
+      }
     };
 
   function deleteCarModel(id: number) {
@@ -64,6 +67,18 @@ const CarModel: FC<IProps> = (props: IProps) => {
         });
     }
   }
+
+  function getModels(){
+    AxiosInstance.get<Model[]>('/car-model/get-model-by-brand-id/'+props.brandId)
+    .then(response=>{
+      setListModel(response.data);
+    })
+    .catch(error=>{
+
+    })
+  }
+
+  
 
   const list = (anchor: Anchor) => (
     <Box
@@ -83,7 +98,8 @@ const CarModel: FC<IProps> = (props: IProps) => {
         </Typography>
         <AddModel getData={props.getData} brandId={brId} />
       </Stack>
-      {listModel.map((item, i) => {
+      {listModel?
+      listModel.map((item, i) => {
         return (
           <Card key={`car_model_get_key${i}`} sx={{ marginBottom: 3 }}>
             <CardActionArea>
@@ -147,7 +163,8 @@ const CarModel: FC<IProps> = (props: IProps) => {
             </CardActionArea>
           </Card>
         );
-      })}
+      }):<Loading open={!listModel}/>
+      }
     </Box>
   );
   return (

@@ -1,26 +1,27 @@
-import { createContext, FC, useState } from "react";
 import "./App.css";
-import Sidebar from "./components/sidebar/Sidebar";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Cars, { CarTableInfo } from "./pages/cars/Cars";
 import Ads from "./pages/Ads/Ads";
-import Users from "./pages/users/Users";
-import Push from "./pages/push/Push";
-import Inbox from "./pages/inbox/Inbox";
-import Voices from "./pages/voices/Voices";
-import Constant from "./pages/constant/Constant";
-import Objects from "./pages/objects/Objects";
+import Cars, { CarTableInfo } from "./pages/cars/Cars";
 import Client from "./pages/client/Client";
+import Constant from "./pages/constant/Constant";
 import Costs from "./pages/costs/Costs";
+import Inbox from "./pages/inbox/Inbox";
+import Login from "./pages/login/Login";
+import Objects from "./pages/objects/Objects";
+import Profile from "./layout/profile/Profile";
+import Push from "./pages/push/Push";
+import Settings from "./pages/settings/Settings";
+import Sidebar from "./components/sidebar/Sidebar";
+import Users from "./pages/users/Users";
+import Voices from "./pages/voices/Voices";
 import { ThemeProvider } from "@material-ui/core";
-import { darkMode, lightMode } from "./assets/theme/theme";
 import { Theme, useMediaQuery, useTheme } from "@mui/material";
+import { FC, createContext, useState } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import Login from "./pages/login/Login";
-import Settings from "./pages/settings/Settings";
 import { AxiosInstance } from "./api/AxiosInstance";
+import { darkMode, lightMode } from "./assets/theme/theme";
 import { TypesI } from "./common/model";
 import { showError } from "./components/alert/Alert";
 
@@ -129,6 +130,7 @@ const App: FC = (props) => {
               <Route path="/client" element={<Client />} />
               <Route path="/costs" element={<Costs />} />
               <Route path="/settings" element={<Settings />} />
+              <Route path="/profile" element={<Profile />} />
             </Route>
           </Routes>
         </Router>
