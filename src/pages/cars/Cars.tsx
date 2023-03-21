@@ -35,8 +35,7 @@ import TableRow from "@mui/material/TableRow";
 import { Tooltip } from "@material-ui/core";
 import { CardActionArea } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { ArcElement, Chart as ChartJS, Legend } from "chart.js";
-import { Pie } from "react-chartjs-2";
+import { Bar, Pie } from "react-chartjs-2";
 import { useTranslation } from "react-i18next";
 import { Link, useParams } from "react-router-dom";
 import { Autoplay } from "swiper";
@@ -46,6 +45,16 @@ import { AxiosInstance } from "../../api/AxiosInstance";
 import { AllCars, CostType } from "../../common/model";
 import { ImageType, convertToDate, getImageUrl } from "../../common/utils";
 import { showError, showSuccess } from "../../components/alert/Alert";
+
+import { 
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Legend,
+  ArcElement
+ } from "chart.js";
 
 import {
   Tab,
@@ -72,7 +81,13 @@ import {
   ButtonStyle,
 } from "../../assets/theme/theme";
 
-ChartJS.register(ArcElement, Legend);
+ChartJS.register(ArcElement, 
+   CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Legend
+  );
 
 // import UpdateCar from "../../layout/cars/car/UpdateCar";
 
@@ -288,30 +303,82 @@ export const CarTableInfo = () => {
   }, []);
   const componentRef = useRef<HTMLDivElement>(null);
 
+  function getLengthByType(type: string): number {
+    return listById? listById?.costChange.filter(it=>it.costType === type).length:0;
+  }
+
   const data = {
-  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+  labels: [CostType.CHANGE,CostType.FUEL,CostType.REPAIR],
   datasets: [
     {
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
+      label: '# of costs',
+      data: [
+        getLengthByType(CostType.CHANGE),
+        getLengthByType(CostType.FUEL),
+        getLengthByType(CostType.REPAIR),
+      ],
       backgroundColor: [
         'rgba(255, 99, 132, 0.2)',
         'rgba(54, 162, 235, 0.2)',
         'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)',
       ],
       borderColor: [
         'rgba(255, 99, 132, 1)',
         'rgba(54, 162, 235, 1)',
         'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)',
       ],
       borderWidth: 1,
     },
+  ],
+};
+const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+    title: {
+      display: true,
+      text: 'Statistics by month',
+    },
+  },
+};
+
+
+const labels = listById?listById?.costChange.map(it=>{
+  let date = new Date(it.createdAt.toString());
+  let t = `${date.getFullYear()}-${date.getMonth()+1}`;
+  return t;
+}).filter((value, index, array) => array.indexOf(value) === index):[];
+
+
+function getByTypeAndDate(type:string, d: string): number {
+  return listById?listById?.costChange.filter(it=>{
+    let date = new Date(it.createdAt.toString());
+    let t = `${date.getFullYear()}-${date.getMonth()+1}`;
+    return (it.costType===type && t===d) 
+  }).length:0
+}
+
+
+const data2 = {
+  labels: labels,
+  datasets: [
+    {
+      label: CostType.CHANGE,
+      data: labels.map((it) => getByTypeAndDate(CostType.CHANGE,it)),
+      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+    },
+    {
+      label: CostType.FUEL,
+      data: labels.map((it) => getByTypeAndDate(CostType.FUEL,it)),
+      backgroundColor: 'rgba(53, 162, 235, 0.5)',
+    },
+    {
+      label: CostType.REPAIR,
+      data: labels.map((it) => getByTypeAndDate(CostType.REPAIR,it)),
+      backgroundColor: 'rgba(255, 206, 86, 1)',
+    }
   ],
 };
 
@@ -499,6 +566,9 @@ export const CarTableInfo = () => {
 <Box sx={{width:'100%',height:'200px'}}>
   <Pie data={data} style={{width:'100%',height:'200px'}} height={200} width={200}  />
 </Box>
+<Box sx={{width:'100%',height:'200px'}}>
+<Bar options={options} data={data2} />
+</Box>
 <h3>Costs</h3>
       
   <TableContainer component={Paper}>
@@ -512,11 +582,12 @@ export const CarTableInfo = () => {
             <TableCell align="right">Volume</TableCell>
             <TableCell align="right">Reminder</TableCell>
             <TableCell align="right">Cost type</TableCell>
+            <TableCell align="right">Date/time</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {listById?
-          listById?.costChange.map((row) => (
+          listById?.costChange.slice(0).reverse().map((row) => (
             <TableRow
               key={row.id}
               sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
@@ -550,6 +621,9 @@ export const CarTableInfo = () => {
                 }
                 
                 </TableCell>
+                <TableCell align="right">
+                {row.createdAt.toString()}
+              </TableCell>
             </TableRow>
           )):null}
         </TableBody>
