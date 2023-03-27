@@ -79,6 +79,12 @@ const Login = () => {
     }
   }
 
+  const handleKeyDown = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      login();
+    }
+  };
+
   return (
     <Background>
       <Grid container>
@@ -130,6 +136,7 @@ const Login = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               //   placeholder={t("Password...")}
+              onKeyDown={handleKeyDown}
               type={"password"}
               // onKeyDown={handleKeyboardEvent}
             />
