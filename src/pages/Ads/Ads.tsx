@@ -26,6 +26,7 @@ import { getImageUrl, ImageType } from "../../common/utils";
 import AddAds from "./AddAds";
 import UpdateAds from "./UpdateAds";
 import { AppContext } from "../../App";
+import { Helmet } from "react-helmet-async";
 
 const Ads: FC = () => {
   const { t } = useContext(AppContext);
@@ -64,6 +65,9 @@ const Ads: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Ads Table </title>
+      </Helmet>
       <Stack direction="row" justifyContent={"space-between"} pb={3}>
         <Typography sx={PageName}>{t("ads")}</Typography>
         <AddAds getData={getData} />

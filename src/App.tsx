@@ -24,6 +24,7 @@ import { AxiosInstance } from "./api/AxiosInstance";
 import { darkMode, lightMode } from "./assets/theme/theme";
 import { TypesI } from "./common/model";
 import { showError } from "./components/alert/Alert";
+import { HelmetProvider } from "react-helmet-async";
 
 export interface ContextProps {
   isDark?: boolean;
@@ -99,44 +100,46 @@ const App: FC = (props) => {
     }
   });
   return (
-    <AppContext.Provider
-      value={{
-        isDark: isDark,
-        setIsDark: setIsDark,
-        theme: theme,
-        t: t,
-        changeLanguage: changeLanguage,
-        isMobile: isMobile,
-        list: list,
-        adsList: adsList,
-        status: status,
-      }}
-    >
-      <ThemeProvider theme={theme}>
-        <Router>
-          <Routes>
-            <Route path={"/"} element={<Login />} />
-            <Route path="/" element={<Sidebar />}>
-              <Route path="/cars" element={<Cars />} />
-              <Route path="/cars/:id" element={<CarTableInfo />} />
-              {/* <Route path={"/carTable"} element={< />} /> */}
-              <Route path="/ads" element={<Ads />} />
-              <Route path="/users" element={<Users />} />
-              <Route path="/push" element={<Push />} />
-              <Route path="/inbox" element={<Inbox />} />
-              <Route path="/voices" element={<Voices />} />
-              <Route path="/constant" element={<Constant />} />
-              <Route path="/objects" element={<Objects />} />
-              <Route path="/client" element={<Client />} />
-              <Route path="/costs" element={<Costs />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-          </Routes>
-        </Router>
-      </ThemeProvider>
-      <ToastContainer />
-    </AppContext.Provider>
+    <HelmetProvider>
+      <AppContext.Provider
+        value={{
+          isDark: isDark,
+          setIsDark: setIsDark,
+          theme: theme,
+          t: t,
+          changeLanguage: changeLanguage,
+          isMobile: isMobile,
+          list: list,
+          adsList: adsList,
+          status: status,
+        }}
+      >
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Routes>
+              <Route path={"/"} element={<Login />} />
+              <Route path="/" element={<Sidebar />}>
+                <Route path="/cars" element={<Cars />} />
+                <Route path="/cars/:id" element={<CarTableInfo />} />
+                {/* <Route path={"/carTable"} element={< />} /> */}
+                <Route path="/ads" element={<Ads />} />
+                <Route path="/users" element={<Users />} />
+                <Route path="/push" element={<Push />} />
+                <Route path="/inbox" element={<Inbox />} />
+                <Route path="/voices" element={<Voices />} />
+                <Route path="/constant" element={<Constant />} />
+                <Route path="/objects" element={<Objects />} />
+                <Route path="/client" element={<Client />} />
+                <Route path="/costs" element={<Costs />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
+              </Route>
+            </Routes>
+          </Router>
+        </ThemeProvider>
+        <ToastContainer />
+      </AppContext.Provider>
+    </HelmetProvider>
   );
 };
 

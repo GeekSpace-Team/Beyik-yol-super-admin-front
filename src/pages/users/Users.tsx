@@ -23,6 +23,7 @@ import { UserI } from "../../common/model";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { convertToDate, getImageUrl, ImageType } from "../../common/utils";
 import { showError } from "../../components/alert/Alert";
+import { Helmet } from "react-helmet-async";
 
 const Users: FC = () => {
   const { t } = useTranslation();
@@ -65,6 +66,9 @@ const Users: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Users Table </title>
+      </Helmet>
       <Stack
         direction="row"
         alignItems={"center"}

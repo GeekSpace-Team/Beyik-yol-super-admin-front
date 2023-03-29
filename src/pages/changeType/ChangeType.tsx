@@ -14,6 +14,7 @@ import { showError, showSuccess } from "../../components/alert/Alert";
 import AddChangeType from "./AddChangeType";
 import UpdateChangeType from "./UpdateChangeType";
 import { AppContext } from "../../App";
+import { Helmet } from "react-helmet-async";
 
 export interface ChangeTypeI {
   id: number;
@@ -58,6 +59,9 @@ const ChangeType = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Change - Type Table </title>
+      </Helmet>
       <AddChangeType getData={getData} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

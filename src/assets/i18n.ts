@@ -4,6 +4,7 @@ import { initReactI18next } from "react-i18next";
 const resources = {
   ru: {
     translation: {
+      name: "Называния ",
       car: "Автомобиль",
       carBrand: "Марка машины",
       user_name: "Пользователь",
@@ -96,6 +97,7 @@ const resources = {
 
   tm: {
     translation: {
+      name: "Ady",
       car: "Awtoulag",
       carBrand: "Awtoulag markasy",
       user_name: "Ulanyjy ady",

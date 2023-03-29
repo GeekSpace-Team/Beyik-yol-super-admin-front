@@ -46,15 +46,15 @@ import { AllCars, CostType } from "../../common/model";
 import { ImageType, convertToDate, getImageUrl } from "../../common/utils";
 import { showError, showSuccess } from "../../components/alert/Alert";
 
-import { 
+import {
   Chart as ChartJS,
   CategoryScale,
   LinearScale,
   BarElement,
   Title,
   Legend,
-  ArcElement
- } from "chart.js";
+  ArcElement,
+} from "chart.js";
 
 import {
   Tab,
@@ -80,14 +80,16 @@ import {
   carIdName,
   ButtonStyle,
 } from "../../assets/theme/theme";
+import { Helmet } from "react-helmet-async";
 
-ChartJS.register(ArcElement, 
-   CategoryScale,
+ChartJS.register(
+  ArcElement,
+  CategoryScale,
   LinearScale,
   BarElement,
   Title,
   Legend
-  );
+);
 
 // import UpdateCar from "../../layout/cars/car/UpdateCar";
 
@@ -176,6 +178,9 @@ const CarTable = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Car Table </title>
+      </Helmet>
       <Stack pb={3} direction="row" spacing={3} justifyContent={"flex-end"}>
         {/* <CarFilterModal /> */}
         <AddCar getData={getData} />
@@ -188,7 +193,7 @@ const CarTable = () => {
                 <Typography sx={TableHeadStyle}>ID</Typography>
               </TableCell>
               <TableCell>
-                <Typography sx={TableHeadStyle}>{t("user_name")}</Typography>
+                <Typography sx={TableHeadStyle}>{t("name")}</Typography>
               </TableCell>
               <TableCell>
                 <Typography sx={TableHeadStyle}>{t("image")}</Typography>
@@ -304,86 +309,94 @@ export const CarTableInfo = () => {
   const componentRef = useRef<HTMLDivElement>(null);
 
   function getLengthByType(type: string): number {
-    return listById? listById?.costChange.filter(it=>it.costType === type).length:0;
+    return listById
+      ? listById?.costChange.filter((it) => it.costType === type).length
+      : 0;
   }
 
   const data = {
-  labels: [CostType.CHANGE,CostType.FUEL,CostType.REPAIR],
-  datasets: [
-    {
-      label: '# of costs',
-      data: [
-        getLengthByType(CostType.CHANGE),
-        getLengthByType(CostType.FUEL),
-        getLengthByType(CostType.REPAIR),
-      ],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-      ],
-      borderWidth: 1,
+    labels: [CostType.CHANGE, CostType.FUEL, CostType.REPAIR],
+    datasets: [
+      {
+        label: "# of costs",
+        data: [
+          getLengthByType(CostType.CHANGE),
+          getLengthByType(CostType.FUEL),
+          getLengthByType(CostType.REPAIR),
+        ],
+        backgroundColor: [
+          "rgba(255, 99, 132, 0.2)",
+          "rgba(54, 162, 235, 0.2)",
+          "rgba(255, 206, 86, 0.2)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(255, 206, 86, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: "top" as const,
+      },
+      title: {
+        display: true,
+        text: "Statistics by month",
+      },
     },
-  ],
-};
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: 'top' as const,
-    },
-    title: {
-      display: true,
-      text: 'Statistics by month',
-    },
-  },
-};
+  };
 
+  const labels = listById
+    ? listById?.costChange
+        .map((it) => {
+          let date = new Date(it.createdAt.toString());
+          let t = `${date.getFullYear()}-${date.getMonth() + 1}`;
+          return t;
+        })
+        .filter((value, index, array) => array.indexOf(value) === index)
+    : [];
 
-const labels = listById?listById?.costChange.map(it=>{
-  let date = new Date(it.createdAt.toString());
-  let t = `${date.getFullYear()}-${date.getMonth()+1}`;
-  return t;
-}).filter((value, index, array) => array.indexOf(value) === index):[];
+  function getByTypeAndDate(type: string, d: string): number {
+    return listById
+      ? listById?.costChange.filter((it) => {
+          let date = new Date(it.createdAt.toString());
+          let t = `${date.getFullYear()}-${date.getMonth() + 1}`;
+          return it.costType === type && t === d;
+        }).length
+      : 0;
+  }
 
-
-function getByTypeAndDate(type:string, d: string): number {
-  return listById?listById?.costChange.filter(it=>{
-    let date = new Date(it.createdAt.toString());
-    let t = `${date.getFullYear()}-${date.getMonth()+1}`;
-    return (it.costType===type && t===d) 
-  }).length:0
-}
-
-
-const data2 = {
-  labels: labels,
-  datasets: [
-    {
-      label: CostType.CHANGE,
-      data: labels.map((it) => getByTypeAndDate(CostType.CHANGE,it)),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
-    },
-    {
-      label: CostType.FUEL,
-      data: labels.map((it) => getByTypeAndDate(CostType.FUEL,it)),
-      backgroundColor: 'rgba(53, 162, 235, 0.5)',
-    },
-    {
-      label: CostType.REPAIR,
-      data: labels.map((it) => getByTypeAndDate(CostType.REPAIR,it)),
-      backgroundColor: 'rgba(255, 206, 86, 1)',
-    }
-  ],
-};
+  const data2 = {
+    labels: labels,
+    datasets: [
+      {
+        label: CostType.CHANGE,
+        data: labels.map((it) => getByTypeAndDate(CostType.CHANGE, it)),
+        backgroundColor: "rgba(255, 99, 132, 0.5)",
+      },
+      {
+        label: CostType.FUEL,
+        data: labels.map((it) => getByTypeAndDate(CostType.FUEL, it)),
+        backgroundColor: "rgba(53, 162, 235, 0.5)",
+      },
+      {
+        label: CostType.REPAIR,
+        data: labels.map((it) => getByTypeAndDate(CostType.REPAIR, it)),
+        backgroundColor: "rgba(255, 206, 86, 1)",
+      },
+    ],
+  };
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Car Table Full Information </title>
+      </Helmet>
       <Box sx={{ p: 5 }}>
         <Stack
           direction="row"
@@ -563,73 +576,72 @@ const data2 = {
         </div>
       </Box>
 
-<Box sx={{width:'100%',height:'200px'}}>
-  <Pie data={data} style={{width:'100%',height:'200px'}} height={200} width={200}  />
-</Box>
-<Box sx={{width:'100%',height:'200px'}}>
-<Bar options={options} data={data2} />
-</Box>
-<h3>Costs</h3>
-      
-  <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Mile</TableCell>
-            <TableCell align="right">Price</TableCell>
-            <TableCell align="right">Description</TableCell>
-            <TableCell align="right">Next change mile</TableCell>
-            <TableCell align="right">Volume</TableCell>
-            <TableCell align="right">Reminder</TableCell>
-            <TableCell align="right">Cost type</TableCell>
-            <TableCell align="right">Date/time</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {listById?
-          listById?.costChange.slice(0).reverse().map((row) => (
-            <TableRow
-              key={row.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-            >
-              <TableCell component="th" scope="row">
-                {row.mile} km
-              </TableCell>
-              <TableCell align="right">
-                {row.price} TMT
-                </TableCell>
-              <TableCell align="right">
-                {row.description}
-                </TableCell>
-              <TableCell align="right">
-                {row.nextMile} km
-              </TableCell>
-              <TableCell align="right">
-                {row.volume} litre
-                </TableCell>
-                <TableCell align="right">
-                {row.reminder?'yes':'no'}
-                </TableCell>
-                <TableCell align="right">
-                  {row.costType}: <br/>
-                {row.costType===CostType.FUEL?
-                <LocalGasStationIcon/>
-                :row.costType===CostType.CHANGE?
-                <PublishedWithChangesIcon/>
-                :
-                <SettingsSuggestIcon/>
-                }
-                
-                </TableCell>
-                <TableCell align="right">
-                {row.createdAt.toString()}
-              </TableCell>
+      <Box sx={{ width: "100%", height: "200px" }}>
+        <Pie
+          data={data}
+          style={{ width: "100%", height: "200px" }}
+          height={200}
+          width={200}
+        />
+      </Box>
+      <Box sx={{ width: "100%", height: "200px" }}>
+        <Bar options={options} data={data2} />
+      </Box>
+      <h3>Costs</h3>
+
+      <TableContainer component={Paper}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          <TableHead>
+            <TableRow>
+              <TableCell>Mile</TableCell>
+              <TableCell align="right">Price</TableCell>
+              <TableCell align="right">Description</TableCell>
+              <TableCell align="right">Next change mile</TableCell>
+              <TableCell align="right">Volume</TableCell>
+              <TableCell align="right">Reminder</TableCell>
+              <TableCell align="right">Cost type</TableCell>
+              <TableCell align="right">Date/time</TableCell>
             </TableRow>
-          )):null}
-        </TableBody>
-      </Table>
-    </TableContainer>
-      
+          </TableHead>
+          <TableBody>
+            {listById
+              ? listById?.costChange
+                  .slice(0)
+                  .reverse()
+                  .map((row) => (
+                    <TableRow
+                      key={row.id}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell component="th" scope="row">
+                        {row.mile} km
+                      </TableCell>
+                      <TableCell align="right">{row.price} TMT</TableCell>
+                      <TableCell align="right">{row.description}</TableCell>
+                      <TableCell align="right">{row.nextMile} km</TableCell>
+                      <TableCell align="right">{row.volume} litre</TableCell>
+                      <TableCell align="right">
+                        {row.reminder ? "yes" : "no"}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.costType}: <br />
+                        {row.costType === CostType.FUEL ? (
+                          <LocalGasStationIcon />
+                        ) : row.costType === CostType.CHANGE ? (
+                          <PublishedWithChangesIcon />
+                        ) : (
+                          <SettingsSuggestIcon />
+                        )}
+                      </TableCell>
+                      <TableCell align="right">
+                        {row.createdAt.toString()}
+                      </TableCell>
+                    </TableRow>
+                  ))
+              : null}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </>
   );
 };

@@ -15,6 +15,7 @@ import { showError, showSuccess } from "../../components/alert/Alert";
 import { useTranslation } from "react-i18next";
 import AddEvacuator from "./AddEvacuator";
 import UpdateEvacuator from "./UpdateEvacuator";
+import { Helmet } from "react-helmet-async";
 
 const Evacuator = () => {
   const { t } = useTranslation();
@@ -50,6 +51,9 @@ const Evacuator = () => {
   }
   return (
     <div>
+      <Helmet>
+        <title> Beyik Yol | Evacuator Table </title>
+      </Helmet>
       <AddEvacuator getData={getData} />
 
       <TableContainer component={Paper}>

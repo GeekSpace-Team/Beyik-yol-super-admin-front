@@ -21,6 +21,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import UpdateEngine from "./UpdateEngine";
 import AddEngine from "./AddEngine";
 import Loading from "../../../common/Loading";
+import { Helmet } from "react-helmet-async";
 
 const CarEngineTable = () => {
   const { t } = useTranslation();
@@ -64,6 +65,9 @@ const CarEngineTable = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Car Engine Table </title>
+      </Helmet>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
         <AddEngine getData={getData} />
       </Stack>

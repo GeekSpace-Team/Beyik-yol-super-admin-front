@@ -23,6 +23,7 @@ import { PusherI } from "../../common/model";
 import { AxiosInstance } from "../../api/AxiosInstance";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { AppContext } from "../../App";
+import { Helmet } from "react-helmet-async";
 
 const Push: FC = () => {
   const { t } = useContext(AppContext);
@@ -59,6 +60,9 @@ const Push: FC = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Inbox Table </title>
+      </Helmet>
       <Stack
         direction="row"
         justifyContent={"space-between"}

@@ -89,7 +89,7 @@ const AddOption: FC<IProps> = (props: IProps) => {
     <>
       <div>
         <Button sx={ButtonStyle} onClick={handleOpen} variant="contained">
-          Add Option
+          {t("addCarOption")}
         </Button>
         <Modal
           aria-labelledby="transition-modal-title"

@@ -13,6 +13,7 @@ import {
   showWarning,
 } from "../../components/alert/Alert";
 import { AxiosInstance } from "../../api/AxiosInstance";
+import { Helmet } from "react-helmet-async";
 
 const Background = styled.div`
   width: 100%;
@@ -86,79 +87,84 @@ const Login = () => {
   };
 
   return (
-    <Background>
-      <Grid container>
-        <Grid item xs={12} md={6}>
-          {isMobile ? null : (
-            <Stack
-              alignItems={"center"}
-              justifyContent={"center"}
-              sx={{ width: "100%", height: "100vh", background: "white" }}
-            >
-              <Player
-                autoplay
-                loop
-                src={"/images/lottie/work.json"}
-                style={{ height: "60vh", width: "100%", objectFit: "cover" }}
-              ></Player>
+    <>
+      <Helmet>
+        <title> Beyik Yol | Login Page </title>
+      </Helmet>
+      <Background>
+        <Grid container>
+          <Grid item xs={12} md={6}>
+            {isMobile ? null : (
+              <Stack
+                alignItems={"center"}
+                justifyContent={"center"}
+                sx={{ width: "100%", height: "100vh", background: "white" }}
+              >
+                <Player
+                  autoplay
+                  loop
+                  src={"/images/lottie/work.json"}
+                  style={{ height: "60vh", width: "100%", objectFit: "cover" }}
+                ></Player>
+              </Stack>
+            )}
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <Stack sx={{ mt: 4, p: 4 }} spacing={4}>
+              <Typography
+                sx={{
+                  fontFamily: Fonts.RalewayBlack,
+                  fontSize: "34px",
+                  color: Color.solid,
+                }}
+              >
+                {t("welcome")}
+              </Typography>
+
+              <Typography
+                sx={{
+                  fontFamily: Fonts.RalewayMedium,
+                  fontSize: "22px",
+                  color: Color.solid,
+                }}
+              >
+                {t("logText")}
+              </Typography>
+
+              <Input
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                //   placeholder={t("Username...")}
+                type={"text"}
+              />
+              <Input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                //   placeholder={t("Password...")}
+                onKeyDown={handleKeyDown}
+                type={"password"}
+                // onKeyDown={handleKeyboardEvent}
+              />
+              <LoadingButton
+                loading={isLoading}
+                loadingPosition="start"
+                startIcon={<LoginIcon />}
+                variant="contained"
+                sx={ButtonStyle}
+                fullWidth={true}
+                onClick={login}
+              >
+                {isLoading ? (
+                  <Typography>{t("wait...")}</Typography>
+                ) : (
+                  <Typography>{t("login")}</Typography>
+                )}
+              </LoadingButton>
             </Stack>
-          )}
+          </Grid>
         </Grid>
-        <Grid item xs={12} md={6}>
-          <Stack sx={{ mt: 4, p: 4 }} spacing={4}>
-            <Typography
-              sx={{
-                fontFamily: Fonts.RalewayBlack,
-                fontSize: "34px",
-                color: Color.solid,
-              }}
-            >
-              {t("welcome")}
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: Fonts.RalewayMedium,
-                fontSize: "22px",
-                color: Color.solid,
-              }}
-            >
-              {t("logText")}
-            </Typography>
-
-            <Input
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              //   placeholder={t("Username...")}
-              type={"text"}
-            />
-            <Input
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              //   placeholder={t("Password...")}
-              onKeyDown={handleKeyDown}
-              type={"password"}
-              // onKeyDown={handleKeyboardEvent}
-            />
-            <LoadingButton
-              loading={isLoading}
-              loadingPosition="start"
-              startIcon={<LoginIcon />}
-              variant="contained"
-              sx={ButtonStyle}
-              fullWidth={true}
-              onClick={login}
-            >
-              {isLoading ? (
-                <Typography>{t("wait...")}</Typography>
-              ) : (
-                <Typography>{t("login")}</Typography>
-              )}
-            </LoadingButton>
-          </Stack>
-        </Grid>
-      </Grid>
-    </Background>
+      </Background>
+    </>
   );
 };
 

@@ -16,6 +16,7 @@ import AddRegion from "./AddRegion";
 import UpdateRegion from "./UpdateRegion";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { useTranslation } from "react-i18next";
+import { Helmet } from "react-helmet-async";
 
 const SettingsTable = () => {
   const { t } = useTranslation();
@@ -51,6 +52,9 @@ const SettingsTable = () => {
   }
   return (
     <div>
+      <Helmet>
+        <title> Beyik Yol | Region Table </title>
+      </Helmet>
       <AddRegion getData={getData} />
 
       <TableContainer component={Paper}>

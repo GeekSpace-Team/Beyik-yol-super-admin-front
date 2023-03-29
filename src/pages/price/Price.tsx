@@ -15,6 +15,7 @@ import AddPrice from "./AddPrice";
 import UpdatePrice from "./UpdatePrice";
 import { showError, showSuccess } from "../../components/alert/Alert";
 import { AppContext } from "../../App";
+import { Helmet } from "react-helmet-async";
 
 const Price = () => {
   const { t } = useContext(AppContext);
@@ -53,6 +54,9 @@ const Price = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Price Table </title>
+      </Helmet>
       <AddPrice getData={getData} />
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">

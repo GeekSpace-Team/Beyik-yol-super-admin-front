@@ -20,6 +20,7 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { Transmition } from "../../../common/model";
 import AddTransitionModal from "./AddTransitionModal";
 import UpdateTransmitionModal from "./UpdateTransmitionModal";
+import { Helmet } from "react-helmet-async";
 
 const CarTransmitionTable = () => {
   const { t } = useTranslation();
@@ -58,6 +59,9 @@ const CarTransmitionTable = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Car Transmition Table </title>
+      </Helmet>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
         <AddTransitionModal getData={getData} />
       </Stack>

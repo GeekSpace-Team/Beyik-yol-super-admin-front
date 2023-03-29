@@ -19,6 +19,7 @@ import { Option } from "../../../common/model";
 import { useTranslation } from "react-i18next";
 import { showError, showSuccess } from "../../../components/alert/Alert";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Helmet } from "react-helmet-async";
 
 const CarOptionTable = () => {
   const { t } = useTranslation();
@@ -57,6 +58,9 @@ const CarOptionTable = () => {
 
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Car Option Table </title>
+      </Helmet>
       <Stack direction="row" pb={3} justifyContent={"flex-end"}>
         <AddOption getData={getData} />
       </Stack>

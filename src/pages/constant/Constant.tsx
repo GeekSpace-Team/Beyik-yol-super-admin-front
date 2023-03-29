@@ -24,6 +24,7 @@ import { showError, showSuccess } from "../../components/alert/Alert";
 import AddConstant from "../../layout/constant/AddConstant";
 import UpdateConstant from "../../layout/constant/UpdateConstant";
 import DeleteIcon from "@mui/icons-material/Delete";
+import { Helmet } from "react-helmet-async";
 
 const Constant = () => {
   const { t } = useTranslation();
@@ -61,6 +62,9 @@ const Constant = () => {
   }
   return (
     <>
+      <Helmet>
+        <title> Beyik Yol | Constant Table </title>
+      </Helmet>
       <Stack
         direction="row"
         justifyContent={"space-between"}
